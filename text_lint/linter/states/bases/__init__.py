@@ -1,0 +1,1 @@
+"""Linter state base classes."""
