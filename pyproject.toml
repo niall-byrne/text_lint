@@ -1,0 +1,211 @@
+[build-system]
+build-backend = 'poetry.core.masonry.api'
+requires = ['poetry-core']
+
+[tool]
+[tool.commitizen]
+bump_message = 'bump(RELEASE): $current_version → $new_version'
+pre_bump_hooks = ['.cicd-tools/boxes/bootstrap/commitizen/pre_bump.sh']
+version = '0.1.0'
+version_files = ['pyproject.toml:version']
+version_provider = 'poetry'
+
+[tool.coverage]
+[tool.coverage.report]
+exclude_also = ['\.\.\.']
+exclude_lines = ['no cover']
+fail_under = 100
+ignore_errors = true
+precision = 1
+
+[tool.coverage.run]
+branch = true
+omit = ['*/test*', 'text_lint/__main__.py']
+source = ['.']
+
+[tool.isort]
+default_section = 'FIRSTPARTY'
+include_trailing_comma = true
+indent = '    '
+length_sort = false
+line_length = 79
+multi_line_output = 3
+no_lines_before = 'LOCALFOLDER'
+sections = 'FUTURE,STDLIB,THIRDPARTY,FIRSTPARTY,LOCALFOLDER'
+
+[tool.poetry]
+authors = ['Niall Byrne <9848926+niall-byrne@users.noreply.github.com>']
+description = ''
+name = 'text-lint'
+readme = 'README.md'
+version = '0.1.0'
+
+[tool.poetry.dependencies]
+python = '^3.9'
+
+[[tool.poetry.dependencies.importlib-metadata]]
+python = '^3.9'
+version = '^8'
+
+[[tool.poetry.dependencies.importlib-metadata]]
+python = '>=3.7,<3.9'
+version = '^5'
+
+[[tool.poetry.dependencies.importlib-metadata]]
+python = '>=3.6,<3.7'
+version = '^4'
+
+[[tool.poetry.dependencies.pyyaml]]
+python = '^3.8'
+version = '^6.0'
+
+[[tool.poetry.dependencies.pyyaml]]
+python = '>=3.6,<3.8'
+version = '^5.4.1'
+
+[tool.poetry.group]
+[tool.poetry.group.dev]
+[tool.poetry.group.dev.dependencies]
+[[tool.poetry.group.dev.dependencies.commitizen]]
+python = '^3.9'
+version = '^3'
+
+[[tool.poetry.group.dev.dependencies.commitizen]]
+python = '>=3.6.2,<3.8'
+version = '^2'
+
+[[tool.poetry.group.dev.dependencies.commitizen]]
+python = '<3.6.2'
+version = '*'
+
+[tool.poetry.group.dev.dependencies.coverage]
+python = '^3.9'
+version = '^7.0.0'
+
+[tool.poetry.group.dev.dependencies.mypy]
+python = '^3.9'
+version = '^1.9.0'
+
+[tool.poetry.group.dev.dependencies.pre-commit]
+python = '^3.9'
+version = '^3.6.2'
+
+[tool.poetry.group.dev.dependencies.pylint]
+python = '^3.9'
+version = '^3.1.0'
+
+[tool.poetry.group.dev.dependencies.pytest]
+python = '^3.9'
+version = '^8.1.1'
+
+[[tool.poetry.group.dev.dependencies.types-pyyaml]]
+python = '^3.8'
+version = '^6.0'
+
+[[tool.poetry.group.dev.dependencies.types-pyyaml]]
+python = '>=3.6,<3.8'
+version = '^5.4.1'
+
+[[tool.poetry.include]]
+format = ['sdist', 'wheel']
+path = 'text_lint/locales/**/LC_MESSAGES/*.mo'
+
+[tool.poetry.scripts]
+text_lint = 'text_lint.__main__:cli'
+
+[tool.pylint]
+[tool.pylint.basic]
+argument-rgx = '[a-z_][a-z0-9_]{1,40}$|^(concrete|test)_[a-z0-9_]{2,70}$'
+attr-rgx = '(^[a-z_][a-z0-9_]{1,30})$|^(FLAG)_[A-Z0-9_]{1,30}$'
+bad-names = 'foo,bar,baz,toto,tutu,tata'
+class-attribute-rgx = '([A-Za-z_][A-Za-z0-9_]{1,50}|(__.{2,30}__))$'
+class-rgx = '[A-Z_][a-zA-Z0-9]+$'
+const-rgx = '(([A-Z_][A-Z0-9_]*)|(__.*__))$|^(ReturnType|ApiEnabled)$'
+docstring-min-length = '-1'
+function-rgx = '[A-Za-z_][A-Za-z0-9_]{1,50}$|f$|t$'
+good-names = 'i,j,k,ex,Run,_'
+inlinevar-rgx = '[A-Za-z_][A-Za-z0-9_]*$'
+method-rgx = '^[A-Za-z_][A-Za-z0-9_]{2,40}$|^(build_mock|build_logging|concrete|test)_[A-Za-z0-9_]{2,70}$'
+module-rgx = '(([a-z_][a-z0-9_]*)|([A-Z][a-zA-Z0-9]+))$'
+no-docstring-rgx = '.*'
+variable-rgx = '^[a-z_][a-z0-9_]{1,40}$'
+
+[tool.pylint.classes]
+defining-attr-methods = '__init__,__new__,setUp'
+valid-classmethod-first-arg = 'cls'
+valid-metaclass-classmethod-first-arg = 'mcs'
+
+[tool.pylint.design]
+max-args = 6
+max-attributes = 8
+max-branches = 12
+max-locals = 15
+max-parents = 10
+max-positional-arguments = 6
+max-public-methods = 200
+max-returns = 6
+max-statements = 50
+min-public-methods = 2
+
+[tool.pylint.exceptions]
+overgeneral-exceptions = 'builtins.Exception'
+
+[tool.pylint.format]
+ignore-long-lines = '^\s*(# )?<?https?://\S+>?$'
+indent-string = '  '
+max-line-length = 80
+max-module-lines = 1000
+single-line-if-stmt = 'no'
+
+[tool.pylint.imports]
+deprecated-modules = 'regsub,TERMIOS,Bastion,rexec'
+ext-import-graph = ''
+import-graph = ''
+int-import-graph = ''
+
+[tool.pylint.master]
+ignore = ''
+ignore-patterns = '.*_pb2.py'
+load-plugins = ''
+persistent = 'yes'
+
+[tool.pylint.message_control]
+disable = 'locally-disabled,fixme,too-few-public-methods,C0209,C0411,E1101'
+
+[tool.pylint.miscellaneous]
+notes = 'FIXME,XXX,TODO'
+
+[tool.pylint.reports]
+evaluation = '10.0 - ((float(5 * error + warning + refactor + convention) / statement) * 10)'
+output-format = 'text'
+reports = 'no'
+
+[tool.pylint.similarities]
+ignore-comments = 'yes'
+ignore-docstrings = 'no'
+ignore-imports = 'yes'
+ignore-signatures = 'yes'
+min-similarity-lines = 5
+
+[tool.pylint.typecheck]
+generated-members = 'REQUEST,acl_users,aq_parent'
+ignore-mixin-members = 'yes'
+ignored-classes = 'SQLObject'
+
+[tool.pylint.variables]
+additional-builtins = ''
+dummy-variables-rgx = '_$|dummy'
+ignored-argument-names = '_.*'
+init-import = 'no'
+
+[tool.pytest]
+[tool.pytest.ini_options]
+python_files = ['test_*.py', '__helpers__/*.py']
+
+[tool.yapf]
+align_closing_bracket_with_visual_indent = false
+based_on_style = 'google'
+dedent_closing_brackets = true
+force_multiline_dict = false
+indent_width = 2
+split_before_logical_operator = true
