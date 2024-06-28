@@ -1,0 +1,78 @@
+---
+default_install_hook_types:
+  - pre-commit
+  - commit-msg
+repos:
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.22.0
+    hooks:
+      - id: check-jsonschema
+        name: check-github-workflow-push-schema
+        files: "^\\.github/config/workflows/workflow-push.json$"
+        args:
+          - "--schemafile"
+          - ".github/config/schemas/workflows/workflow-push.json"
+        stages: [pre-commit]
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v3.2.2
+    hooks:
+      - id: commitizen
+        stages: [commit-msg]
+  - repo: https://github.com/pycqa/isort
+    rev: 5.12.0
+    hooks:
+      - id: isort
+        name: isort (python)
+        types: []
+        files: "^.+\\.pyi?$"
+        stages: [pre-commit]
+  - repo: https://github.com/cicd-tools-org/pre-commit.git
+    rev: 0.5.0
+    hooks:
+      - id: format-shell
+        args:
+          - "-w"
+          - "--indent=2"
+          - "-ci"
+          - "-sr"
+      - id: format-toml
+      - id: git-conflict-markers
+      - id: lint-github-workflow-header
+      - id: lint-github-workflow
+      - id: lint-markdown
+        args:
+          - "-c"
+          - ".markdownlint.yml"
+      - id: lint-shell
+        args:
+          - "--color=always"
+          - "--source-path=SCRIPTDIR"
+          - "--exclude=SC2317"
+          - "-x"
+      - id: security-credentials
+      - id: spelling-commit-message
+      - id: spelling-markdown
+      - id: spelling-vale-sync
+      - id: spelling-vale-vocab
+      - id: poetry-lint-python
+      - id: poetry-types-python
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: v1.32.0
+    hooks:
+      - id: yamllint
+        args:
+          - "-c"
+          - "./.yamllint.yml"
+        stages: [pre-commit]
+  - repo: https://github.com/google/yapf
+    rev: v0.40.2
+    hooks:
+      - id: yapf
+        name: "yapf"
+        args:
+          - "-i"
+          - "--parallel"
+        types: []
+        files: "^.+\\.pyi?$"
+        stages: [pre-commit]
+        require_serial: true
