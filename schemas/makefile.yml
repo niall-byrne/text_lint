@@ -1,0 +1,70 @@
+---
+version: "0.1.0"
+
+settings:
+  comment_regex: "^(#\\s|#[^!]).*$"
+
+assertions:
+  - name: shebang is first line and properly indexed
+    operation: assert_equal
+    expected: "#!/usr/bin/make -f"
+
+  - name: blank line after shebang
+    operation: assert_blank
+
+  - name: read all phonies
+    operation: assert_regex
+    regex: "^.PHONY: ([a-z-\\s]+)$"
+    save: phonies
+    splits:
+      - group: 1
+        separator: " "
+
+  - name: blank line after phonies
+    operation: assert_blank
+
+  - name: read help entry
+    operation: assert_equal
+    expected: "help:"
+
+  - name: read help title
+    operation: assert_equal
+    expected: "\t@echo \"Please use 'make <target>' where <target> is one of:\""
+
+  - name: read help content
+    operation: assert_regex_section
+    regex: "^\\t@echo \"  ([a-z-]+)\\s+.+$"
+    save: helps
+
+  - name: blank line after help
+    operation: assert_blank
+
+  - name: read aliases
+    operation: assert_regex_section
+    regex: "^([a-z]+): ([a-z-\\s]+)$"
+    save: aliases
+    splits:
+      - group: 2
+
+  - name: read commands until eof
+    operation: assert_sequence_begins
+    count: -1
+    assertions:
+
+      - name: blank line before command
+        operation: assert_blank
+
+      - name: read command entry
+        operation: assert_regex
+        regex: "^([a-z-]+):$"
+        save: commands
+
+      - name: read command contents
+        operation: assert_regex_section
+        regex: "^\\t@.+$"
+
+validators:
+  - name: print some variables
+    operation: validate_debug
+    saved:
+      - aliases.capture.capture.to_group.~clean-git
