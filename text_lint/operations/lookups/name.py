@@ -3,7 +3,7 @@
 from typing import TYPE_CHECKING
 
 from text_lint.config import LOOKUP_STATIC_VALUE_MARKER
-from text_lint.exceptions.lookups import LookupFailure, LookupUnknown
+from text_lint.exceptions.lookups import LookupFailure
 from text_lint.results.tree import ResultTree
 from text_lint.utilities.translations import _, f
 from .bases.lookup_base import LookupBase
@@ -34,9 +34,6 @@ class NameLookup(LookupBase):
       controller: "Controller",
   ) -> None:
     """Select the specified tree from the current ResultForest location."""
-
-    if not self.lookup_name.startswith(LOOKUP_STATIC_VALUE_MARKER):
-      raise LookupUnknown(lookup=self)
 
     controller.forest.cursor.flatten()
 

@@ -1,13 +1,18 @@
 """Shared lookups testing helpers."""
 
+import random
+import string
 from typing import Any, Tuple
 
 import pytest
 from text_lint.__helpers__.translations import assert_all_translated
+from text_lint.config import LOOKUP_STATIC_VALUE_MARKER
 from text_lint.exceptions.lookups import LookupFailure, LookupUnknown
 from text_lint.operations.lookups.bases.lookup_base import LookupBase
 from text_lint.utilities.translations import f as translation_f
 from text_lint.utilities.whitespace import make_visible
+
+generator = random.SystemRandom()
 
 
 def assert_is_lookup_failure(
@@ -114,3 +119,21 @@ def assert_is_lookup_unknown(
   assert exc.value.__class__ == LookupUnknown
   assert exc.value.args[0] == message
   assert_all_translated(expected_translation)
+
+
+def generate_result_index() -> str:
+  return generator.choice(string.digits)
+
+
+def generate_static_name() -> str:
+  return (
+      generator.choice(string.ascii_letters) + generator.choice(string.digits)
+  )
+
+
+generated_valid_default_lookup_test_cases = pytest.mark.parametrize(
+    "lookup_name", [
+        generate_result_index(),
+        LOOKUP_STATIC_VALUE_MARKER + generate_static_name()
+    ]
+)

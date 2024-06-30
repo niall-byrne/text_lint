@@ -4,10 +4,10 @@ import pytest
 from .. import (
     LOOKUP_SENTINEL,
     CaptureLookup,
+    DefaultLookup,
     GroupLookup,
     JsonLookup,
     LowerLookup,
-    NameLookup,
     NoopLookup,
     UniqueFilterLookup,
     UniqueLookup,
@@ -19,10 +19,10 @@ from .. import (
 class TestLookupRegistry:
   """Test the lookup_registry default dictionary."""
 
-  def test_default__returns_name_lookup(self) -> None:
+  def test_default__returns_default_lookup(self) -> None:
     default_lookup_class = lookup_registry["non-existent-lookup-operation"]
 
-    assert default_lookup_class == NameLookup
+    assert default_lookup_class == DefaultLookup
 
     del lookup_registry["non-existent-lookup-operation"]
 

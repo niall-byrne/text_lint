@@ -4,10 +4,7 @@ from typing import List
 from unittest import mock
 
 import pytest
-from text_lint.__helpers__.lookups import (
-    assert_is_lookup_failure,
-    assert_is_lookup_unknown,
-)
+from text_lint.__helpers__.lookups import assert_is_lookup_failure
 from text_lint.__helpers__.operations import (
     AliasOperationAttributes,
     assert_operation_attributes,
@@ -15,7 +12,7 @@ from text_lint.__helpers__.operations import (
 )
 from text_lint.__helpers__.translations import assert_is_translated
 from text_lint.config import LOOKUP_STATIC_VALUE_MARKER
-from text_lint.exceptions.lookups import LookupFailure, LookupUnknown
+from text_lint.exceptions.lookups import LookupFailure
 from ..bases.lookup_base import LookupBase
 from ..name import NameLookup
 
@@ -229,60 +226,3 @@ class TestNameLookup:
         description_t=(name_lookup_instance.msg_fmt_failure_description,),
         lookup=name_lookup_instance,
     )
-
-  def test_apply__invalid_lookup__does_not_call_forest_cursor_flatten(
-      self,
-      name_lookup_instance: NameLookup,
-      mocked_controller: mock.Mock,
-      mocked_trees_grove: List[List[mock.Mock]],
-  ) -> None:
-    mocked_trees_grove[0][1].value = name_lookup_instance.lookup_name
-    name_lookup_instance.lookup_name = name_lookup_instance.lookup_name
-    mocked_controller.forest.cursor.location = [
-        # simulates flattening
-        tree for grove in mocked_trees_grove for tree in grove
-    ]
-
-    with pytest.raises(LookupUnknown):
-      name_lookup_instance.apply(mocked_controller)
-
-    mocked_controller.forest.cursor.flatten.assert_not_called()
-
-  def test_apply__invalid_lookup__raises_unknown_lookup(
-      self,
-      name_lookup_instance: NameLookup,
-      mocked_controller: mock.Mock,
-      mocked_trees_grove: List[List[mock.Mock]],
-  ) -> None:
-    mocked_trees_grove[0][1].value = name_lookup_instance.lookup_name
-    name_lookup_instance.lookup_name = name_lookup_instance.lookup_name
-    mocked_controller.forest.cursor.location = [
-        # simulates flattening
-        tree for grove in mocked_trees_grove for tree in grove
-    ]
-
-    with pytest.raises(LookupUnknown) as exc:
-      name_lookup_instance.apply(mocked_controller)
-
-    assert_is_lookup_unknown(
-        exc=exc,
-        lookup=name_lookup_instance,
-    )
-
-  def test_apply__invalid_lookup__does_not_update_forest_lookup_results(
-      self,
-      name_lookup_instance: NameLookup,
-      mocked_controller: mock.Mock,
-      mocked_trees_grove: List[List[mock.Mock]],
-  ) -> None:
-    mocked_trees_grove[0][1].value = name_lookup_instance.lookup_name
-    name_lookup_instance.lookup_name = name_lookup_instance.lookup_name
-    mocked_controller.forest.cursor.location = [
-        # simulates flattening
-        tree for grove in mocked_trees_grove for tree in grove
-    ]
-
-    with pytest.raises(LookupUnknown):
-      name_lookup_instance.apply(mocked_controller)
-
-    assert mocked_controller.forest.lookup_results is None
