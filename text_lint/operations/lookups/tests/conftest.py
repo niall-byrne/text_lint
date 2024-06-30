@@ -13,6 +13,7 @@ from .. import (
     index,
     name,
     noop,
+    to_count,
     to_group,
     to_lower,
     to_unique,
@@ -184,6 +185,19 @@ def noop_lookup_instance(
     mocked_requesting_operation_name: str,
 ) -> noop.NoopLookup:
   return noop.NoopLookup(
+      mocked_lookup_name,
+      mocked_lookup_expression,
+      mocked_requesting_operation_name,
+  )
+
+
+@pytest.fixture
+def to_count_lookup_instance(
+    mocked_lookup_expression: mock.Mock,
+    mocked_lookup_name: str,
+    mocked_requesting_operation_name: str,
+) -> to_count.CountLookup:
+  return to_count.CountLookup(
       mocked_lookup_name,
       mocked_lookup_expression,
       mocked_requesting_operation_name,
