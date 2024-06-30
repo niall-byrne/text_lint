@@ -6,8 +6,8 @@ from typing import Dict, Type
 from text_lint.config import LOOKUP_SENTINEL
 from .bases.lookup_base import LookupBase
 from .capture import CaptureLookup
+from .default import DefaultLookup
 from .group import GroupLookup
-from .name import NameLookup
 from .noop import NoopLookup
 from .to_json import JsonLookup
 from .to_lower import LowerLookup
@@ -16,7 +16,7 @@ from .to_upper import UpperLookup
 from .unique import UniqueFilterLookup
 
 lookup_registry: Dict[str, Type[LookupBase]] = defaultdict(
-    lambda: NameLookup, {
+    lambda: DefaultLookup, {
         LOOKUP_SENTINEL: NoopLookup,
         CaptureLookup.operation: CaptureLookup,
         GroupLookup.operation: GroupLookup,

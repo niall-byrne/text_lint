@@ -1,14 +1,16 @@
 """Test fixtures for the text_lint results lookups."""
 # pylint: disable=redefined-outer-name
 
-from typing import Callable, List
+from typing import Callable, Dict, List
 from unittest import mock
 
 import pytest
 from text_lint.results.tree import ResultTree
 from .. import (
     capture,
+    default,
     group,
+    index,
     name,
     noop,
     to_json,
@@ -24,9 +26,9 @@ def create_result_tree_mock(value: str, children_count: int) -> mock.Mock:
   instance = mock.Mock(spec=ResultTree)
   instance.value = value
   instance.children = []
-  for index in range(0, children_count):
+  for child_index in range(0, children_count):
     child = mock.Mock(spec=ResultTree)
-    child.value = str(index)
+    child.value = str(child_index)
     instance.children.append(child)
   return instance
 
@@ -37,6 +39,23 @@ def mocked_controller(mocked_lookups_sequencer: mock.Mock) -> mock.Mock:
   instance.lookup_sequence = mocked_lookups_sequencer
   instance.forest.lookup_results = None
   return instance
+
+
+@pytest.fixture
+def mocked_default_subclasses(
+    monkeypatch: pytest.MonkeyPatch,
+) -> Dict[str, mock.Mock]:
+  instances = {
+      "IndexLookup": mock.Mock(),
+      "NameLookup": mock.Mock(),
+  }
+  for lookup_name, mock_instance in instances.items():
+    monkeypatch.setattr(
+        default,
+        lookup_name,
+        mock_instance,
+    )
+  return instances
 
 
 @pytest.fixture
@@ -131,6 +150,18 @@ def group_lookup_instance(
 ) -> group.GroupLookup:
   return group.GroupLookup(
       mocked_lookup_name,
+      mocked_result_set,
+      mocked_requesting_operation_name,
+  )
+
+
+@pytest.fixture
+def index_lookup_instance(
+    mocked_requesting_operation_name: str,
+    mocked_result_set: mock.Mock,
+) -> index.IndexLookup:
+  return index.IndexLookup(
+      "1",
       mocked_result_set,
       mocked_requesting_operation_name,
   )
