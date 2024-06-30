@@ -4,6 +4,7 @@ import pytest
 from .. import (
     LOOKUP_SENTINEL,
     CaptureLookup,
+    CountLookup,
     DefaultLookup,
     GroupLookup,
     JsonLookup,
@@ -39,6 +40,7 @@ class TestLookupRegistry:
     expected_operations = [
         NoopLookup.operation,
         CaptureLookup.operation,
+        CountLookup.operation,
         GroupLookup.operation,
         JsonLookup.operation,
         LowerLookup.operation,
