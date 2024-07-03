@@ -44,6 +44,7 @@ def concrete_lookup_base_class() -> Type[lookup_base.LookupBase]:
 
     hint = _("mocked_hint_lookup")
     operation = "mocked_operation_lookup"
+    yaml_example = "mocked_yaml_example_lookup"
 
     def apply(self, state: "LookupState") -> None:
       """Mocked implementation."""
@@ -68,6 +69,7 @@ def concrete_lookup_encoder_base_class(
     encoder_class = mocked_encoder_class
     hint = _("mocked_hint_lookup_encoder")
     operation = "mocked_operation_lookup_encoder"
+    yaml_example = "mocked_yaml_example_lookup_encoder"
 
     def apply(self, state: "LookupState") -> None:
       """Mocked implementation."""

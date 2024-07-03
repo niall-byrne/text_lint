@@ -33,6 +33,7 @@ class AssertEqual(assertion_regex_base.AssertionRegexBase):
 
   hint = _("this line must match the expected value")
   operation = "assert_equal"
+  yaml_example = YAML_EXAMPLE
 
   def __init__(
       self,

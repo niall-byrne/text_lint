@@ -9,7 +9,7 @@ from text_lint.__helpers__.operations import (
 )
 from text_lint.__helpers__.translations import assert_is_translated
 from text_lint.operations.assertions.bases.assertion_base import AssertionBase
-from ..assert_blank import AssertBlank
+from ..assert_blank import YAML_EXAMPLE, AssertBlank
 
 
 class TestAssertBlank:
@@ -25,6 +25,7 @@ class TestAssertBlank:
         "operation": "assert_blank",
         "save": None,
         "splits": {},
+        "yaml_example": YAML_EXAMPLE,
     }
 
     assert_assertion_attributes(assert_blank_instance, attributes)

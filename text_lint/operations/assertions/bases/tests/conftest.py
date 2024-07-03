@@ -44,6 +44,7 @@ def concrete_assertion_base_class(
 
     hint = _("a concrete hint")
     operation = "a concrete operation"
+    yaml_example = "mocked_yaml_example_assertion"
 
     def apply(
         self,
@@ -80,6 +81,7 @@ def concrete_assertion_regex_base_class(
 
     hint = _("a concrete regex hint")
     operation = "a concrete operation"
+    yaml_example = "mocked_yaml_example_assertion_regex"
 
     def apply(
         self,

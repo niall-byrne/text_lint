@@ -26,6 +26,7 @@ class LowerLookup(LookupEncoderBase):
   encoder_class = LowerCaseEncoder
   hint = _("convert a save id's values to lowercase")
   operation = LOOKUP_TRANSFORMATION_PREFIX + "lower"
+  yaml_example = YAML_EXAMPLE
 
   def apply(
       self,

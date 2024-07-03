@@ -27,6 +27,7 @@ class TestLookupBase:
         "lookup_name": mocked_lookup_name,
         "operation": "mocked_operation_lookup",
         "requesting_operation_name": mocked_requesting_operation_name,
+        "yaml_example": "mocked_yaml_example_lookup",
     }
 
     assert_operation_attributes(

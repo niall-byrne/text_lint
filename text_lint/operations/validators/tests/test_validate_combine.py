@@ -14,7 +14,7 @@ from text_lint.operations.validators.args.lookup_expression import (
 )
 from text_lint.results.tree import ResultTree
 from ..bases.validator_base import ValidatorBase
-from ..validate_combine import ValidateCombine
+from ..validate_combine import YAML_EXAMPLE, ValidateCombine
 
 
 class TestValidateCombine:
@@ -29,6 +29,7 @@ class TestValidateCombine:
         "hint": "combines a set of lookups into a new save id",
         "name": mocked_validator_name,
         "operation": "validate_combine",
+        "yaml_example": YAML_EXAMPLE,
     }
 
     assert_operation_attributes(
