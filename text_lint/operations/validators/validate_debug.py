@@ -31,6 +31,7 @@ class ValidateDebug(ValidatorBase):
 
   hint = _("output save id lookups to the console")
   operation = "validate_debug"
+  yaml_example = YAML_EXAMPLE
 
   msg_fmt_debug = _("DEBUG: '{0}'")
 

@@ -24,6 +24,7 @@ class CountLookup(LookupBase):
 
   hint = _("transform a save id into a count of values")
   operation = LOOKUP_TRANSFORMATION_PREFIX + "count"
+  yaml_example = YAML_EXAMPLE
 
   def apply(
       self,

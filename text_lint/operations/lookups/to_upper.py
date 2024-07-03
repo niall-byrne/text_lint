@@ -26,6 +26,7 @@ class UpperLookup(LookupEncoderBase):
   encoder_class = UpperCaseEncoder
   hint = _("convert a save id's values to uppercase")
   operation = LOOKUP_TRANSFORMATION_PREFIX + "upper"
+  yaml_example = YAML_EXAMPLE
 
   def apply(
       self,

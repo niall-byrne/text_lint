@@ -19,7 +19,7 @@ YAML_EXAMPLE = """
       operation: assert_blank
     - name: example assert regex assertion
       operation: assert_regex
-      regex: "^([a-z-]+):\\s(.+)$"
+      regex: "^([a-z-]+):\\\\s(.+)$"
       save: example
       splits:
         - group: 1
@@ -37,6 +37,7 @@ class AssertSequenceBegins(AssertionBase):
 
   hint = _("identify a repeating sequence of assertions")
   operation = "assert_sequence_begins"
+  yaml_example = YAML_EXAMPLE
 
   def __init__(
       self,

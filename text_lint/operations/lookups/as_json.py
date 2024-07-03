@@ -28,6 +28,7 @@ class JsonLookup(LookupEncoderBase):
   hint = _("create a JSON representation of a save id")
   is_positional = True
   operation = "as_json"
+  yaml_example = YAML_EXAMPLE
 
   def apply(
       self,

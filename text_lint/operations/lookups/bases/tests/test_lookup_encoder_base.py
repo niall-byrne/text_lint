@@ -33,6 +33,7 @@ class TestLookupEncoderBase:
         "lookup_name": mocked_lookup_name,
         "operation": "mocked_operation_lookup_encoder",
         "requesting_operation_name": mocked_requesting_operation_name,
+        "yaml_example": "mocked_yaml_example_lookup_encoder",
     }
 
     assert_operation_attributes(
