@@ -15,7 +15,7 @@ YAML_EXAMPLE = """
 
 - name: example assert regex section rule
   operation: assert_regex_section
-  regex: "^([a-z\\s]+)\n$"
+  regex: "^([a-z\\\\s]+)\\n$"
   save: assert_regex_section_example
   splits:
     - group: 1
@@ -33,6 +33,7 @@ class AssertRegexSection(rule_regex_base.RuleRegexBase):
 
   hint = _("sections must be separated and contain lines that match this regex")
   operation = "assert_regex_section"
+  yaml_example = YAML_EXAMPLE
 
   def apply(
       self,

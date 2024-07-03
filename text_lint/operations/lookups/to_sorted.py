@@ -26,6 +26,7 @@ class SortedLookup(LookupEncoderBase):
   encoder_class = SortedEncoder
   hint = _("sort the saved results")
   operation = LOOKUP_TRANSFORMATION_PREFIX + "sorted"
+  yaml_example = YAML_EXAMPLE
 
   def apply(
       self,

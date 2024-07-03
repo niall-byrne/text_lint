@@ -15,7 +15,7 @@ from text_lint.__helpers__.translations import assert_is_translated
 from text_lint.exceptions.rules import RuleViolation
 from text_lint.operations.rules.bases.rule_base import RuleBase
 from text_lint.operations.rules.bases.rule_regex_base import RuleRegexBase
-from ..assert_regex import AssertRegex
+from ..assert_regex import YAML_EXAMPLE, AssertRegex
 
 
 class TestAssertRegex:
@@ -30,6 +30,7 @@ class TestAssertRegex:
         "regex": "^([a-z-]+):\\s.+\n$",
         "save": None,
         "splits": {},
+        "yaml_example": YAML_EXAMPLE,
     }
 
     instance = AssertRegex(
@@ -52,7 +53,8 @@ class TestAssertRegex:
         "save": "example",
         "splits": {
             1: " "
-        }
+        },
+        "yaml_example": YAML_EXAMPLE,
     }
 
     assert_rule_attributes(assert_regex_instance, attributes)

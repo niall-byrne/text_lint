@@ -24,6 +24,7 @@ class GroupLookup(LookupBase):
 
   hint = _("group the currently selected values of the saved result")
   operation = "group"
+  yaml_example = YAML_EXAMPLE
 
   def apply(
       self,

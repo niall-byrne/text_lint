@@ -39,6 +39,7 @@ def concrete_rule_base_class(
 
     hint = _("a concrete hint")
     operation = "a concrete operation"
+    yaml_example = "mocked_yaml_example_rule"
 
     def apply(
         self,
@@ -75,6 +76,7 @@ def concrete_rule_regex_base_class() -> Type[rule_regex_base.RuleRegexBase]:
 
     hint = _("a concrete regex hint")
     operation = "a concrete operation"
+    yaml_example = "mocked_yaml_example_rule_regex"
 
     def apply(
         self,

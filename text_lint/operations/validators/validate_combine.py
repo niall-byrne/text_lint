@@ -30,6 +30,7 @@ class ValidateCombine(ValidationBase):
 
   hint = _("combines a set of lookups into a new saved result")
   operation = "validate_combine"
+  yaml_example = YAML_EXAMPLE
 
   msg_fmt_combine = _("COMBINE: '{0}' into '{1}'")
 

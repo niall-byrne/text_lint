@@ -24,6 +24,7 @@ class AssertSequenceEnds(RuleBase):
 
   hint = _("reserved")
   operation = "assert_sequence_ends"
+  yaml_example = YAML_EXAMPLE
 
   def __init__(
       self,

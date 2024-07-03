@@ -23,6 +23,7 @@ class AssertBlank(RuleBase):
 
   hint = _("sections must be separated by blank lines")
   operation = "assert_blank"
+  yaml_example = YAML_EXAMPLE
 
   def __init__(
       self,

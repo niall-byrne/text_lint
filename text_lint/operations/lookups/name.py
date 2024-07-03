@@ -26,6 +26,7 @@ class NameLookup(LookupBase):
 
   hint = _("select a named entry from the saved result")
   operation = "name"
+  yaml_example = YAML_EXAMPLE
 
   msg_fmt_failure_description = _("Could not find the specified entry.")
 

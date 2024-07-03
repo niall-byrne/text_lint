@@ -14,7 +14,7 @@ YAML_EXAMPLE = """
 
 - name: example assert regex rule
   operation: assert_regex
-  regex: "^([a-z-]+):\\s.+$\n"
+  regex: "^([a-z-]+):\\\\s.+$\\n"
   save: assert_regex_example
   splits:
     - group: 1
@@ -30,6 +30,7 @@ class AssertRegex(rule_regex_base.RuleRegexBase):
 
   hint = _("this line must match the regex")
   operation = "assert_regex"
+  yaml_example = YAML_EXAMPLE
 
   def apply(
       self,

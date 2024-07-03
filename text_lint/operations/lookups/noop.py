@@ -23,6 +23,7 @@ class NoopLookup(LookupBase):
 
   hint = _("a simple no-operation")
   operation = "noop"
+  yaml_example = YAML_EXAMPLE
 
   def apply(
       self,

@@ -13,7 +13,7 @@ from text_lint.operations.lookups.bases.lookup_encoder_base import (
 )
 from text_lint.operations.lookups.encoders.lower import LowerCaseEncoder
 from ..bases.lookup_base import LookupBase
-from ..to_lower import LowerLookup
+from ..to_lower import YAML_EXAMPLE, LowerLookup
 
 
 class TestLowerLookup:
@@ -33,6 +33,7 @@ class TestLowerLookup:
         "operation": LOOKUP_TRANSFORMATION_PREFIX + "lower",
         "requesting_operation_name": mocked_requesting_operation_name,
         "result_set": mocked_result_set,
+        "yaml_example": YAML_EXAMPLE,
     }
 
     assert_operation_attributes(to_lower_lookup_instance, attributes)

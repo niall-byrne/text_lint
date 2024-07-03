@@ -11,7 +11,7 @@ from text_lint.__helpers__.operations import (
 )
 from text_lint.__helpers__.translations import assert_is_translated
 from ..bases.lookup_base import LookupBase
-from ..group import GroupLookup
+from ..group import YAML_EXAMPLE, GroupLookup
 
 
 class TestGroupLookup:
@@ -30,6 +30,7 @@ class TestGroupLookup:
         "operation": "group",
         "requesting_operation_name": mocked_requesting_operation_name,
         "result_set": mocked_result_set,
+        "yaml_example": YAML_EXAMPLE,
     }
 
     assert_operation_attributes(group_lookup_instance, attributes)

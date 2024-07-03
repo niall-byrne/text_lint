@@ -16,7 +16,7 @@ from text_lint.exceptions.rules import RuleViolation
 from text_lint.operations.rules.bases.rule_base import RuleBase
 from text_lint.operations.rules.bases.rule_regex_base import RuleRegexBase
 from text_lint.utilities.whitespace import new_line
-from ..assert_regex_section import AssertRegexSection
+from ..assert_regex_section import YAML_EXAMPLE, AssertRegexSection
 
 
 class TestAssertRegexSection:
@@ -35,6 +35,7 @@ class TestAssertRegexSection:
         "regex": "^([a-z-]+):\\s(.+)\n$",
         "save": None,
         "splits": {},
+        "yaml_example": YAML_EXAMPLE,
     }
 
     instance = AssertRegexSection(
@@ -62,6 +63,7 @@ class TestAssertRegexSection:
         "splits": {
             2: None
         },
+        "yaml_example": YAML_EXAMPLE,
     }
 
     assert_rule_attributes(assert_regex_section_instance, attributes)

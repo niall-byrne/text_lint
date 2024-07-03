@@ -14,7 +14,7 @@ from text_lint.operations.lookups.bases.lookup_encoder_base import (
 )
 from text_lint.operations.lookups.encoders.tree import ResultTreeEncoder
 from ..bases.lookup_base import LookupBase
-from ..to_json import JsonLookup
+from ..to_json import YAML_EXAMPLE, JsonLookup
 
 
 class TestJsonLookup:
@@ -34,6 +34,7 @@ class TestJsonLookup:
         "operation": LOOKUP_TRANSFORMATION_PREFIX + "json",
         "requesting_operation_name": mocked_requesting_operation_name,
         "result_set": mocked_result_set,
+        "yaml_example": YAML_EXAMPLE,
     }
 
     assert_operation_attributes(to_json_lookup_instance, attributes)

@@ -22,6 +22,7 @@ class TestValidationBase:
         "hint": "mocked_hint",
         "name": mocked_validator_name,
         "operation": "mocked_operation",
+        "yaml_example": "mocked_yaml_example",
     }
 
     assert_operation_attributes(

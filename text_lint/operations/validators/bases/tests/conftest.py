@@ -36,6 +36,7 @@ def concrete_validator_base_class() -> Type[validator_base.ValidationBase]:
 
     hint = _("mocked_hint")
     operation = "mocked_operation"
+    yaml_example = "mocked_yaml_example"
 
     def apply(self, controller: "Controller") -> None:
       """Mocked implementation."""
@@ -61,6 +62,7 @@ def concrete_validator_comparison_base_class(
   ):
     hint = _("mocked_hint")
     operation = "mocked_operation"
+    yaml_example = "mocked_yaml_example"
 
     msg_fmt_comparison_failure = _("'{0}' comparison '{1}'")
     msg_fmt_comparison_success = _("MOCKED: '{0}' and '{1}'")

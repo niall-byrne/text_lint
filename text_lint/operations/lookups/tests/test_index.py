@@ -13,7 +13,7 @@ from text_lint.__helpers__.operations import (
 from text_lint.__helpers__.translations import assert_is_translated
 from text_lint.exceptions.lookups import LookupFailure
 from ..bases.lookup_base import LookupBase
-from ..index import IndexLookup
+from ..index import YAML_EXAMPLE, IndexLookup
 
 
 class TestIndexLookup:
@@ -31,6 +31,7 @@ class TestIndexLookup:
         "operation": "index",
         "requesting_operation_name": mocked_requesting_operation_name,
         "result_set": mocked_result_set,
+        "yaml_example": YAML_EXAMPLE,
     }
 
     assert_operation_attributes(index_lookup_instance, attributes)
