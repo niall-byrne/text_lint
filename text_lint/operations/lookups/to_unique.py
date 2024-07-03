@@ -26,6 +26,7 @@ class UniqueLookup(LookupEncoderBase):
   encoder_class = UniqueEncoder
   hint = _("select only unique values from a save id")
   operation = LOOKUP_TRANSFORMATION_PREFIX + "unique"
+  yaml_example = YAML_EXAMPLE
 
   def apply(
       self,

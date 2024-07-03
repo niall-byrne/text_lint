@@ -30,6 +30,7 @@ class TestAssertionBase:
         "operation": concrete_assertion_base_class.operation,
         "save": None,
         "splits": {},
+        "yaml_example": "mocked_yaml_example_assertion",
     }
 
     instance = concrete_assertion_base_class(name="concrete name",)
@@ -49,6 +50,7 @@ class TestAssertionBase:
         "splits": {
             1: None
         },
+        "yaml_example": "mocked_yaml_example_assertion",
     }
 
     assert_assertion_attributes(concrete_assertion_base_instance, attributes)

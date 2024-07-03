@@ -17,9 +17,10 @@ class TestValidatorBase:
       mocked_validator_name: str,
   ) -> None:
     attributes: AliasOperationAttributes = {
-        "hint": "mocked_hint",
+        "hint": "mocked_validator_base_hint",
         "name": mocked_validator_name,
-        "operation": "mocked_operation",
+        "operation": "mocked_validator_base_operation",
+        "yaml_example": "mocked_validator_base_yaml_example",
     }
 
     assert_operation_attributes(

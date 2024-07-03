@@ -13,7 +13,7 @@ from text_lint.__helpers__.translations import assert_is_translated
 from text_lint.config import LOOKUP_STATIC_VALUE_MARKER
 from text_lint.utilities.translations import f
 from ..bases.lookup_base import LookupBase
-from ..name import NameLookup
+from ..name import YAML_EXAMPLE, NameLookup
 
 if TYPE_CHECKING:  # no cover
   from text_lint.results.forest import AliasLookupResult
@@ -36,6 +36,7 @@ class TestNameLookup:
         "lookup_name": mocked_lookup_name,
         "operation": "name",
         "requesting_operation_name": mocked_requesting_operation_name,
+        "yaml_example": YAML_EXAMPLE,
     }
 
     assert_operation_attributes(name_lookup_instance, attributes)

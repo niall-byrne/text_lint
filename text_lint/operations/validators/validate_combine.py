@@ -34,6 +34,7 @@ class ValidateCombine(ValidatorBase):
 
   hint = _("combines a set of lookups into a new save id")
   operation = "validate_combine"
+  yaml_example = YAML_EXAMPLE
 
   msg_fmt_combine = _("COMBINE: '{0}' into '{1}'")
 

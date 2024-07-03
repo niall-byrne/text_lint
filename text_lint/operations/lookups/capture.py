@@ -35,6 +35,7 @@ class CaptureLookup(LookupBase):
   hint = _("select the next capture group of a save id")
   is_positional = True
   operation = "capture"
+  yaml_example = YAML_EXAMPLE
 
   def apply(
       self,

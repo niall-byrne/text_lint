@@ -13,6 +13,7 @@ class OperationBase(Generic[TypeState], abc.ABC):
 
   hint: str
   operation: str
+  yaml_example: str
 
   @abc.abstractmethod
   def apply(

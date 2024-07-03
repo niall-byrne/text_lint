@@ -27,6 +27,7 @@ class TestAssertionRegexBase:
         "regex": r'(.*).py',
         "save": None,
         "splits": {},
+        "yaml_example": "mocked_yaml_example_assertion_regex",
     }
 
     instance = concrete_assertion_regex_base_class(
@@ -49,6 +50,7 @@ class TestAssertionRegexBase:
         "splits": {
             1: None
         },
+        "yaml_example": "mocked_yaml_example_assertion_regex",
     }
 
     assert_assertion_attributes(

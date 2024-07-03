@@ -12,7 +12,7 @@ from text_lint.__helpers__.operations import (
 from text_lint.__helpers__.translations import assert_is_translated
 from text_lint.config import LOOKUP_TRANSFORMATION_PREFIX
 from ..bases.lookup_base import LookupBase
-from ..to_count import CountLookup
+from ..to_count import YAML_EXAMPLE, CountLookup
 
 if TYPE_CHECKING:  # pragma: no-cover
   from text_lint.results.forest import AliasLookupResult
@@ -35,6 +35,7 @@ class TestCountLookup:
         "lookup_name": mocked_lookup_name,
         "operation": LOOKUP_TRANSFORMATION_PREFIX + "count",
         "requesting_operation_name": mocked_requesting_operation_name,
+        "yaml_example": YAML_EXAMPLE,
     }
 
     assert_operation_attributes(to_count_lookup_instance, attributes)

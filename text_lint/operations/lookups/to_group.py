@@ -25,6 +25,7 @@ class GroupLookup(LookupBase):
 
   hint = _("group the values of a save id")
   operation = LOOKUP_TRANSFORMATION_PREFIX + "group"
+  yaml_example = YAML_EXAMPLE
 
   def apply(
       self,

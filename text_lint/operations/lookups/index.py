@@ -24,6 +24,7 @@ class IndexLookup(LookupBase):
 
   hint = _("select a value from a save id by index")
   operation = "index"
+  yaml_example = YAML_EXAMPLE
 
   msg_fmg_invalid_index_description = _("No value at index '{0}' !")
 

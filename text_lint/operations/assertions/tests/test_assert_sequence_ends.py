@@ -9,7 +9,7 @@ from text_lint.__helpers__.operations import (
 )
 from text_lint.__helpers__.translations import assert_is_translated
 from text_lint.operations.assertions.bases.assertion_base import AssertionBase
-from ..assert_sequence_ends import AssertSequenceEnds
+from ..assert_sequence_ends import YAML_EXAMPLE, AssertSequenceEnds
 
 
 class TestAssertSequenceEnds:
@@ -25,6 +25,7 @@ class TestAssertSequenceEnds:
         "operation": "assert_sequence_ends",
         "save": None,
         "splits": {},
+        "yaml_example": YAML_EXAMPLE,
     }
 
     assert_assertion_attributes(assert_sequence_ends_instance, attributes)

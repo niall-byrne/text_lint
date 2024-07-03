@@ -21,6 +21,7 @@ from text_lint.operations.assertions.bases.assertion_regex_base import (
 )
 from text_lint.utilities.translations import f as translation_f
 from text_lint.utilities.whitespace import make_visible
+from .operations import REQUIRED_ATTRIBUTES
 
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.sequencers.textfile import TextFileSequencer
@@ -32,6 +33,9 @@ def assert_assertion_attributes(
     assertion_instance: "AssertionBase",
     attributes: AliasAssertionAttributes,
 ) -> None:
+
+  for required_attribute in REQUIRED_ATTRIBUTES:
+    assert required_attribute in attributes
 
   for attribute_name, attribute_value in attributes.items():
     attribute = getattr(assertion_instance, attribute_name)

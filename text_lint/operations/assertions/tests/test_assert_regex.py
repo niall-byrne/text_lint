@@ -15,7 +15,7 @@ from text_lint.operations.assertions.bases.assertion_base import AssertionBase
 from text_lint.operations.assertions.bases.assertion_regex_base import (
     AssertionRegexBase,
 )
-from ..assert_regex import AssertRegex
+from ..assert_regex import YAML_EXAMPLE, AssertRegex
 
 
 class TestAssertRegex:
@@ -29,6 +29,7 @@ class TestAssertRegex:
         "regex": "^([a-z-]+):\\s.+$",
         "save": None,
         "splits": {},
+        "yaml_example": YAML_EXAMPLE,
     }
 
     instance = AssertRegex(
@@ -50,7 +51,8 @@ class TestAssertRegex:
         "save": "example",
         "splits": {
             1: " "
-        }
+        },
+        "yaml_example": YAML_EXAMPLE,
     }
 
     assert_assertion_attributes(assert_regex_instance, attributes)

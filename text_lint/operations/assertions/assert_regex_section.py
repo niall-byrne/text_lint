@@ -13,7 +13,7 @@ YAML_EXAMPLE = """
 
 - name: example assert regex section assertion
   operation: assert_regex_section
-  regex: "^([a-z\\s]+)$"
+  regex: "^([a-z\\\\s]+)$"
   save: assert_regex_section_example
   splits:
     - group: 1
@@ -31,6 +31,7 @@ class AssertRegexSection(assertion_regex_base.AssertionRegexBase):
 
   hint = _("one or more adjacent lines (the 'section') must match this regex")
   operation = "assert_regex_section"
+  yaml_example = YAML_EXAMPLE
 
   def apply(
       self,

@@ -14,7 +14,7 @@ from text_lint.operations.lookups.bases.lookup_encoder_base import (
 )
 from text_lint.operations.lookups.encoders.unique import UniqueEncoder
 from ..bases.lookup_base import LookupBase
-from ..to_unique import UniqueLookup
+from ..to_unique import YAML_EXAMPLE, UniqueLookup
 
 
 class TestUniqueLookup:
@@ -35,6 +35,7 @@ class TestUniqueLookup:
         "lookup_name": mocked_lookup_name,
         "operation": LOOKUP_TRANSFORMATION_PREFIX + "unique",
         "requesting_operation_name": mocked_requesting_operation_name,
+        "yaml_example": YAML_EXAMPLE,
     }
 
     assert_operation_attributes(to_unique_lookup_instance, attributes)

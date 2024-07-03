@@ -13,7 +13,7 @@ from text_lint.__helpers__.translations import assert_is_translated
 from text_lint.__helpers__.validators import assert_is_validation_failure
 from text_lint.exceptions.validators import ValidationFailure
 from ..bases.validator_base import ValidatorBase
-from ..validate_equal import ValidateEqual
+from ..validate_equal import YAML_EXAMPLE, ValidateEqual
 
 
 class TestValidateEqual:
@@ -28,6 +28,7 @@ class TestValidateEqual:
         "hint": "validates equality between sets of values",
         "name": mocked_validator_name,
         "operation": "validate_equal",
+        "yaml_example": YAML_EXAMPLE,
     }
 
     assert_operation_attributes(
