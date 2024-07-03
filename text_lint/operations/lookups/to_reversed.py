@@ -26,6 +26,7 @@ class ReversedLookup(LookupEncoderBase):
   encoder_class = ReversedEncoder
   hint = _("reverse the order of a save id")
   operation = LOOKUP_TRANSFORMATION_PREFIX + "reversed"
+  yaml_example = YAML_EXAMPLE
 
   def apply(
       self,

@@ -27,6 +27,7 @@ class ValidateEqual(ValidationComparisonBase):
 
   hint = _("validates equality between sets of values")
   operation = "validate_equal"
+  yaml_example = YAML_EXAMPLE
 
   msg_fmt_comparison_failure = _("'{0}' != '{1}'")
   msg_fmt_comparison_success = _("EQUAL: '{0}' == '{1}'")
