@@ -21,6 +21,7 @@ class AssertBlank(AssertionBase):
 
   hint = _("the line contains no text")
   operation = "assert_blank"
+  yaml_example = YAML_EXAMPLE
 
   def __init__(
       self,

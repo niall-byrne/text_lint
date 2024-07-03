@@ -30,6 +30,7 @@ class NameLookup(LookupBase):
 
   hint = _("select a static value from a save id")
   operation = "name"
+  yaml_example = YAML_EXAMPLE
 
   msg_fmt_failure_description = _("Could not find the specified value.")
 

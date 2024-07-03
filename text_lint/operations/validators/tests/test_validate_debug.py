@@ -14,7 +14,7 @@ from text_lint.operations.validators.args.lookup_expression import (
     LookupExpressionSetArg,
 )
 from ..bases.validator_base import ValidatorBase
-from ..validate_debug import ValidateDebug
+from ..validate_debug import YAML_EXAMPLE, ValidateDebug
 
 
 class TestValidateDebug:
@@ -29,6 +29,7 @@ class TestValidateDebug:
         "hint": "output save id lookups to the console",
         "name": mocked_validator_name,
         "operation": "validate_debug",
+        "yaml_example": YAML_EXAMPLE,
     }
 
     assert_operation_attributes(

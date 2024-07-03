@@ -12,7 +12,7 @@ from text_lint.__helpers__.operations import (
 from text_lint.__helpers__.translations import assert_is_translated
 from text_lint.config import LOOP_COUNT
 from text_lint.operations.assertions.bases.assertion_base import AssertionBase
-from ..assert_sequence_begins import AssertSequenceBegins
+from ..assert_sequence_begins import YAML_EXAMPLE, AssertSequenceBegins
 
 
 class TestAssertSequenceBegins:
@@ -31,6 +31,7 @@ class TestAssertSequenceBegins:
         "assertions": mocked_nested_assertions,
         "save": None,
         "splits": {},
+        "yaml_example": YAML_EXAMPLE,
     }
 
     assert_assertion_attributes(assert_sequence_begins_instance, attributes)

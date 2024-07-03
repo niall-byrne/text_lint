@@ -14,7 +14,7 @@ from text_lint.config import LOOKUP_TRANSFORMATION_PREFIX
 from text_lint.operations.lookups.encoders.sorted import SortedEncoder
 from ..bases.lookup_base import LookupBase
 from ..bases.lookup_encoder_base import LookupEncoderBase
-from ..to_sorted import SortedLookup
+from ..to_sorted import YAML_EXAMPLE, SortedLookup
 
 if TYPE_CHECKING:  # pragma: no-cover
   from text_lint.results.forest import AliasLookupResult
@@ -38,6 +38,7 @@ class TestSortedLookup:
         "lookup_name": mocked_lookup_name,
         "operation": LOOKUP_TRANSFORMATION_PREFIX + "sorted",
         "requesting_operation_name": mocked_requesting_operation_name,
+        "yaml_example": YAML_EXAMPLE,
     }
 
     assert_operation_attributes(to_sorted_lookup_instance, attributes)
