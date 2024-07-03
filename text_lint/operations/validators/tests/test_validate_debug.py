@@ -12,7 +12,7 @@ from text_lint.__helpers__.operations import (
 from text_lint.__helpers__.translations import assert_is_translated
 from text_lint.operations.validators.args.result_set import ResultSetArg
 from ..bases.validator_base import ValidationBase
-from ..validate_debug import ValidateDebug
+from ..validate_debug import YAML_EXAMPLE, ValidateDebug
 
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.__fixtures__.mocks import AliasMethodMocker
@@ -30,6 +30,7 @@ class TestValidateDebug:
         "hint": "outputs result values to the console",
         "name": mocked_validator_name,
         "operation": "validate_debug",
+        "yaml_example": YAML_EXAMPLE,
     }
 
     assert_operation_attributes(

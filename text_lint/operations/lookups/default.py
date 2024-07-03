@@ -28,6 +28,7 @@ class DefaultLookup(LookupBase):
 
   hint = _("handler for unknown lookups which may be result values or indexes")
   operation = "default"
+  yaml_example = YAML_EXAMPLE
 
   def apply(
       self,

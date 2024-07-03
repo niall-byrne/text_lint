@@ -14,7 +14,7 @@ from text_lint.config import LOOKUP_TRANSFORMATION_PREFIX
 from text_lint.operations.lookups.encoders.reversed import ReversedEncoder
 from ..bases.lookup_base import LookupBase
 from ..bases.lookup_encoder_base import LookupEncoderBase
-from ..to_reversed import ReversedLookup
+from ..to_reversed import YAML_EXAMPLE, ReversedLookup
 
 if TYPE_CHECKING:  # pragma: no-cover
   from text_lint.results.forest import AliasLookupResult
@@ -37,6 +37,7 @@ class TestReversedLookup:
         "operation": LOOKUP_TRANSFORMATION_PREFIX + "reversed",
         "requesting_operation_name": mocked_requesting_operation_name,
         "result_set": mocked_result_set,
+        "yaml_example": YAML_EXAMPLE,
     }
 
     assert_operation_attributes(to_reversed_lookup_instance, attributes)

@@ -11,7 +11,7 @@ from text_lint.__helpers__.operations import (
 from text_lint.__helpers__.translations import assert_is_translated
 from text_lint.operations.lookups.bases.lookup_base import LookupBase
 from .. import unique
-from ..unique import UniqueFilterLookup
+from ..unique import YAML_EXAMPLE, UniqueFilterLookup
 
 
 class TestUniqueFilterLookup:
@@ -30,6 +30,7 @@ class TestUniqueFilterLookup:
         "operation": "unique",
         "requesting_operation_name": mocked_requesting_operation_name,
         "result_set": mocked_result_set,
+        "yaml_example": YAML_EXAMPLE,
     }
 
     assert_operation_attributes(unique_lookup_instance, attributes)

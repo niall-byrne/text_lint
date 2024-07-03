@@ -14,7 +14,7 @@ from text_lint.__helpers__.validators import assert_is_validation_failure
 from text_lint.exceptions.validators import ValidationFailure
 from text_lint.operations.validators.args.result_set import ResultSetArg
 from ..bases.validator_base import ValidationBase
-from ..validate_equal import ValidateEqual
+from ..validate_equal import YAML_EXAMPLE, ValidateEqual
 
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.__fixtures__.mocks import AliasMethodMocker
@@ -32,6 +32,7 @@ class TestValidateEqual:
         "hint": "validates equality between sets of values",
         "name": mocked_validator_name,
         "operation": "validate_equal",
+        "yaml_example": YAML_EXAMPLE,
     }
 
     assert_operation_attributes(

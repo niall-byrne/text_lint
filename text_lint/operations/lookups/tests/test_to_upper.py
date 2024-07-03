@@ -13,7 +13,7 @@ from text_lint.operations.lookups.bases.lookup_encoder_base import (
 )
 from text_lint.operations.lookups.encoders.upper import UpperCaseEncoder
 from ..bases.lookup_base import LookupBase
-from ..to_upper import UpperLookup
+from ..to_upper import YAML_EXAMPLE, UpperLookup
 
 
 class TestUpperLookup:
@@ -33,6 +33,7 @@ class TestUpperLookup:
         "operation": LOOKUP_TRANSFORMATION_PREFIX + "upper",
         "requesting_operation_name": mocked_requesting_operation_name,
         "result_set": mocked_result_set,
+        "yaml_example": YAML_EXAMPLE,
     }
 
     assert_operation_attributes(to_upper_lookup_instance, attributes)

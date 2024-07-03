@@ -24,6 +24,7 @@ class UniqueFilterLookup(LookupBase):
 
   hint = _("filter unique values from the saved result")
   operation = "unique"
+  yaml_example = YAML_EXAMPLE
 
   def apply(
       self,

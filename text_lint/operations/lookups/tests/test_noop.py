@@ -10,7 +10,7 @@ from text_lint.__helpers__.operations import (
 )
 from text_lint.__helpers__.translations import assert_is_translated
 from ..bases.lookup_base import LookupBase
-from ..noop import NoopLookup
+from ..noop import YAML_EXAMPLE, NoopLookup
 
 
 class TestNoopLookup:
@@ -29,6 +29,7 @@ class TestNoopLookup:
         "operation": "noop",
         "requesting_operation_name": mocked_requesting_operation_name,
         "result_set": mocked_result_set,
+        "yaml_example": YAML_EXAMPLE,
     }
 
     assert_operation_attributes(noop_lookup_instance, attributes)

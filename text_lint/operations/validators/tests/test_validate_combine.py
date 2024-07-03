@@ -12,7 +12,7 @@ from text_lint.__helpers__.translations import assert_is_translated
 from text_lint.operations.validators.args.result_set import ResultSetArg
 from text_lint.results.tree import ResultTree
 from ..bases.validator_base import ValidationBase
-from ..validate_combine import ValidateCombine
+from ..validate_combine import YAML_EXAMPLE, ValidateCombine
 
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.__fixtures__.mocks import AliasMethodMocker
@@ -30,6 +30,7 @@ class TestValidateCombine:
         "hint": "combines a set of lookups into a new saved result",
         "name": mocked_validator_name,
         "operation": "validate_combine",
+        "yaml_example": YAML_EXAMPLE,
     }
 
     assert_operation_attributes(

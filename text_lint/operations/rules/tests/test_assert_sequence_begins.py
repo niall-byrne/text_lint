@@ -11,7 +11,7 @@ from text_lint.__helpers__.operations import (
 from text_lint.__helpers__.rules import assert_rule_attributes
 from text_lint.__helpers__.translations import assert_is_translated
 from text_lint.operations.rules.bases.rule_base import RuleBase
-from ..assert_sequence_begins import AssertSequenceBegins
+from ..assert_sequence_begins import YAML_EXAMPLE, AssertSequenceBegins
 
 
 class TestAssertSequenceBegins:
@@ -31,6 +31,7 @@ class TestAssertSequenceBegins:
         "rules": mocked_nested_rules,
         "save": None,
         "splits": {},
+        "yaml_example": YAML_EXAMPLE,
     }
 
     assert_rule_attributes(assert_sequence_begins_instance, attributes)

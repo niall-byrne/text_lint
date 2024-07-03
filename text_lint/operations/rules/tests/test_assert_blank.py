@@ -15,7 +15,7 @@ from text_lint.__helpers__.translations import assert_is_translated
 from text_lint.exceptions.rules import RuleViolation
 from text_lint.operations.rules.bases.rule_base import RuleBase
 from text_lint.utilities.whitespace import new_line
-from ..assert_blank import AssertBlank
+from ..assert_blank import YAML_EXAMPLE, AssertBlank
 
 
 class TestAssertBlank:
@@ -32,6 +32,7 @@ class TestAssertBlank:
         "operation": "assert_blank",
         "save": None,
         "splits": {},
+        "yaml_example": YAML_EXAMPLE,
     }
 
     assert_rule_attributes(assert_blank_instance, attributes)

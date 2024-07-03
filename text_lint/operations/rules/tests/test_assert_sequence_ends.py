@@ -9,7 +9,7 @@ from text_lint.__helpers__.operations import (
 from text_lint.__helpers__.rules import assert_rule_attributes
 from text_lint.__helpers__.translations import assert_is_translated
 from text_lint.operations.rules.bases.rule_base import RuleBase
-from ..assert_sequence_ends import AssertSequenceEnds
+from ..assert_sequence_ends import YAML_EXAMPLE, AssertSequenceEnds
 
 
 class TestAssertSequenceEnds:
@@ -26,6 +26,7 @@ class TestAssertSequenceEnds:
         "operation": "assert_sequence_ends",
         "save": None,
         "splits": {},
+        "yaml_example": YAML_EXAMPLE,
     }
 
     assert_rule_attributes(assert_sequence_ends_instance, attributes)

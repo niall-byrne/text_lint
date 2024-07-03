@@ -19,7 +19,7 @@ from text_lint.__helpers__.translations import assert_is_translated
 from text_lint.config import LOOKUP_STATIC_VALUE_MARKER
 from text_lint.exceptions.lookups import LookupUnknown
 from ..bases.lookup_base import LookupBase
-from ..default import DefaultLookup
+from ..default import YAML_EXAMPLE, DefaultLookup
 
 
 class TestDefaultLookup:
@@ -42,6 +42,7 @@ class TestDefaultLookup:
         "operation": "default",
         "requesting_operation_name": mocked_requesting_operation_name,
         "result_set": mocked_result_set,
+        "yaml_example": YAML_EXAMPLE,
     }
 
     instance = DefaultLookup(

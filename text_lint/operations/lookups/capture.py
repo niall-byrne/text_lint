@@ -34,6 +34,7 @@ class CaptureLookup(LookupBase):
 
   hint = _("select the next capture group of the saved result")
   operation = "capture"
+  yaml_example = YAML_EXAMPLE
 
   def _retrieve_next_capture_group(
       self,

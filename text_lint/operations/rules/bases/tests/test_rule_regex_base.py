@@ -26,6 +26,7 @@ class TestRuleRegexBase:
         "regex": r'(.*).py',
         "save": None,
         "splits": {},
+        "yaml_example": "mocked_yaml_example_rule_regex",
     }
 
     instance = concrete_rule_regex_base_class(
@@ -49,6 +50,7 @@ class TestRuleRegexBase:
         "splits": {
             1: None
         },
+        "yaml_example": "mocked_yaml_example_rule_regex",
     }
 
     assert_rule_attributes(concrete_rule_regex_base_instance, attributes)

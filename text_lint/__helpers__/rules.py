@@ -13,6 +13,7 @@ from text_lint.operations.rules.args.split import SplitArgs
 from text_lint.operations.rules.bases.rule_base import RuleBase
 from text_lint.utilities.translations import f as translation_f
 from text_lint.utilities.whitespace import make_visible
+from .operations import REQUIRED_ATTRIBUTES
 
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.sequencers.textfile import TextFileSequencer
@@ -77,6 +78,9 @@ def assert_rule_attributes(
     rule_instance: "RuleBase",
     attributes: AliasRuleAttributes,
 ) -> None:
+
+  for required_attribute in REQUIRED_ATTRIBUTES:
+    assert required_attribute in attributes
 
   for attribute_name, attribute_value in attributes.items():
     attribute = getattr(rule_instance, attribute_name)

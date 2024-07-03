@@ -25,6 +25,7 @@ class TestRuleBase:
         "operation": concrete_rule_base_class.operation,
         "save": None,
         "splits": {},
+        "yaml_example": "mocked_yaml_example_rule",
     }
 
     instance = concrete_rule_base_class(name="concrete name",)
@@ -45,6 +46,7 @@ class TestRuleBase:
         "splits": {
             1: None
         },
+        "yaml_example": "mocked_yaml_example_rule",
     }
 
     assert_rule_attributes(concrete_rule_base_instance, attributes)

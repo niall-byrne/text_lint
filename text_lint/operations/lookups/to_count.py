@@ -24,6 +24,7 @@ class CountLookup(LookupBase):
 
   hint = _("convert the saved result to a counted value")
   operation = LOOKUP_TRANSFORMATION_PREFIX + "count"
+  yaml_example = YAML_EXAMPLE
 
   def apply(
       self,

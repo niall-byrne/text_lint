@@ -12,6 +12,7 @@ class OperationBase(abc.ABC):
 
   hint: str
   operation: str
+  yaml_example: str
 
   @abc.abstractmethod
   def apply(

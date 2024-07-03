@@ -15,7 +15,7 @@ YAML_EXAMPLE = """
 
 - name: example assert equal rule
   operation: assert_equal
-  expected: "simple-string-MATCHING\n"
+  expected: "simple-string-MATCHING\\n"
   case_insensitive: False
   save: assert_equal_example
   splits:
@@ -34,6 +34,7 @@ class AssertEqual(rule_regex_base.RuleRegexBase):
 
   hint = _("this line must match the expected value")
   operation = "assert_equal"
+  yaml_example = YAML_EXAMPLE
 
   def __init__(
       self,
