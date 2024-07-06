@@ -68,7 +68,10 @@ class TestSchemaSectionBase:
 
     instances = concrete_schema_section_instance.load(cloned_schema)
 
-    mocked_load_operation_instances_hook.assert_called_once_with(instances)
+    mocked_load_operation_instances_hook.assert_called_once_with(
+        instances,
+        cloned_schema,
+    )
     assert mocked_create_operation_instance_hook.mock_calls == [
         mock.call(
             mocked_operation_classes[

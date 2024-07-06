@@ -35,16 +35,19 @@ class SchemaSectionBase(Generic[TypeOperation]):
     """Load the operation instances from the schema."""
 
     operation_instances: List["TypeOperation"] = []
+    operation_definitions: List["AliasYamlOperation"] = []
 
     for operation_index, operation_definition in enumerate(source):
       operation_instance = self._parse_schema_instances(
           operation_definition,
           operation_index,
       )
+      operation_definitions.append(operation_definition)
       operation_instances.append(operation_instance)
 
     operation_instances = self.hook_load_operation_instances(
-        operation_instances
+        operation_instances,
+        operation_definitions,
     )
     return operation_instances
 
@@ -107,6 +110,8 @@ class SchemaSectionBase(Generic[TypeOperation]):
   def hook_load_operation_instances(
       self,
       operation_instances: List["TypeOperation"],
+      # pylint: disable=unused-argument
+      operation_definitions: List["AliasYamlOperation"],
   ) -> List["TypeOperation"]:
     """Modify the operation instances prior to returning loaded results."""
 

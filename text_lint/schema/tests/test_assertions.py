@@ -20,6 +20,7 @@ if TYPE_CHECKING:  # pragma: no cover
   from text_lint.operations.assertions.bases.assertion_base import (
       AssertionBase,
   )
+  from text_lint.schema import AliasYamlOperation
 
 
 class TestSchemaAssertions:
@@ -34,21 +35,51 @@ class TestSchemaAssertions:
   def test_translated_attributes(self,) -> None:
     assert_is_translated(SchemaAssertions.automated_section_end_assertion_name)
 
-  def test_hook_load_operation_instances__appends_assert_sequence_end(
+  def test_hook_load_operation_instances__calls_schema_validator(
       self,
+      mocked_operation_definitions: List["AliasYamlOperation"],
       mocked_operation_instances: List["AssertionBase"],
       mocked_schema: mock.Mock,
   ) -> None:
     instance = SchemaAssertions(mocked_schema)
 
-    result = instance.hook_load_operation_instances(mocked_operation_instances)
+    instance.hook_load_operation_instances(
+        mocked_operation_instances,
+        mocked_operation_definitions,
+    )
+
+    for index, assertion in enumerate(mocked_operation_instances):
+      if isinstance(assertion, mock.Mock):
+        assert index < len(mocked_operation_instances) - 1
+        assertion.schema_validator.assert_called_once_with(
+            index,
+            mocked_operation_instances,
+            mocked_operation_definitions,
+            mocked_schema,
+        )
+      else:
+        assert index == len(mocked_operation_instances) - 1
+        assert isinstance(assertion, AssertSequenceEnds)
+
+  def test_hook_load_operation_instances__appends_assert_sequence_end(
+      self,
+      mocked_operation_definitions: List["AliasYamlOperation"],
+      mocked_operation_instances: List["AssertionBase"],
+      mocked_schema: mock.Mock,
+  ) -> None:
+    instance = SchemaAssertions(mocked_schema)
+
+    result = instance.hook_load_operation_instances(
+        mocked_operation_instances,
+        mocked_operation_definitions,
+    )
 
     assert len(result) == 3
     assert result[0] == mocked_operation_instances[0]
     assert result[1] == mocked_operation_instances[1]
     assert isinstance(result[2], AssertSequenceEnds)
-    assert result[2
-                 ].name == SchemaAssertions.automated_section_end_assertion_name
+    assert result[2].name == \
+           SchemaAssertions.automated_section_end_assertion_name
 
   def test_hook_create_operation_instance__nested__appends_nested_assertions(
       self,
