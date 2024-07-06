@@ -1,7 +1,7 @@
 """Schema class."""
 
 import re
-from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple, cast
+from typing import TYPE_CHECKING, List, Optional, Tuple
 
 import yaml
 from text_lint.exceptions.schema import SchemaError
@@ -44,8 +44,10 @@ class Schema:
 
   def _parse_schema_assertions(self) -> List["AliasYamlOperation"]:
     try:
-      return cast(List[Dict[str, Any]], self._content["assertions"])
-    except KeyError as exc:
+      schema_assertions = self._content["assertions"]
+      assert isinstance(schema_assertions, list)
+      return schema_assertions
+    except (KeyError, AssertionError) as exc:
       raise self.create_exception(
           description=f(self.msg_fmt_no_assertions, nl=1),
       ) from exc
@@ -56,8 +58,10 @@ class Schema:
 
   def _parse_schema_validators(self) -> List["AliasYamlOperation"]:
     try:
-      return cast(List[Dict[str, Any]], self._content["validators"])
-    except KeyError as exc:
+      schema_validators = self._content["validators"]
+      assert isinstance(schema_validators, list)
+      return schema_validators
+    except (KeyError, AssertionError) as exc:
       raise self.create_exception(
           description=f(self.msg_fmt_no_validators, nl=1),
       ) from exc
