@@ -133,3 +133,18 @@ class TestAssertionBase:
         assertion=concrete_assertion_base_instance,
         capture_group=1,
     )
+
+  def test_schema_validator__is_a_noop(
+      self,
+      concrete_assertion_base_instance: AssertionBase,
+  ) -> None:
+    operation_instances = [concrete_assertion_base_instance]
+    mocked_yaml_definitions = [{"mock": "yaml"}]
+    mocked_schema = mock.Mock()
+
+    concrete_assertion_base_instance.schema_validator(
+        0,
+        operation_instances,
+        mocked_yaml_definitions,
+        mocked_schema,
+    )
