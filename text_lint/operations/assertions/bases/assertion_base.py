@@ -1,7 +1,7 @@
 """AssertionBase class."""
 
 import abc
-from typing import TYPE_CHECKING, Match, Optional, Sequence
+from typing import TYPE_CHECKING, List, Match, Optional, Sequence
 
 from text_lint.exceptions.assertions import AssertionCaptureGroupNotFound
 from text_lint.exceptions.results import SplitGroupNotFound
@@ -14,6 +14,7 @@ from text_lint.results.tree import ResultTree
 
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.linter import states
+  from text_lint.schema import AliasYamlOperation, Schema
 
 
 class AssertionBase(OperationBase["states.AssertionState"], abc.ABC):
@@ -54,3 +55,12 @@ class AssertionBase(OperationBase["states.AssertionState"], abc.ABC):
         ) from exc
 
     return result
+
+  def schema_validator(
+      self,
+      schema_assertion_index: int,
+      schema_assertion_instances: List["AssertionBase"],
+      schema_assertion_definitions: List["AliasYamlOperation"],
+      schema: "Schema",
+  ) -> None:
+    """Optional additional schema level validation for this assertion."""

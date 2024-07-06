@@ -27,12 +27,22 @@ class SchemaAssertions(SchemaSectionBase["AssertionBase"]):
   def hook_load_operation_instances(
       self,
       operation_instances: List["AssertionBase"],
+      operation_definitions: List["AliasYamlOperation"],
   ) -> List["AssertionBase"]:
     """Modify the operation instances prior to returning them all."""
+
+    for operation_index, operation_instance in enumerate(operation_instances):
+      operation_instance.schema_validator(
+          operation_index,
+          operation_instances,
+          operation_definitions,
+          self._schema,
+      )
 
     operation_instances.append(
         AssertSequenceEnds(name=self.automated_section_end_assertion_name)
     )
+
     return operation_instances
 
   def hook_create_operation_instance(
@@ -43,7 +53,14 @@ class SchemaAssertions(SchemaSectionBase["AssertionBase"]):
     """Modify the yaml definition prior to creating each operation instance."""
 
     if operation_class.operation == AssertSequenceBegins.operation:
-      nested_assertion_set = self.load(yaml_definition["assertions"])
-      yaml_definition["assertions"] = nested_assertion_set
+      yaml_definition = self._append_nested_yaml_assertions(yaml_definition)
 
+    return yaml_definition
+
+  def _append_nested_yaml_assertions(
+      self,
+      yaml_definition: "AliasYamlOperation",
+  ) -> "AliasYamlOperation":
+    nested_assertion_set = self.load(yaml_definition["assertions"])
+    yaml_definition["assertions"] = nested_assertion_set
     return yaml_definition
