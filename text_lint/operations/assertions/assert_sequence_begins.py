@@ -4,10 +4,11 @@ from typing import TYPE_CHECKING, List
 
 from text_lint.config import LOOP_COUNT
 from text_lint.operations.assertions.bases.assertion_base import AssertionBase
-from text_lint.utilities.translations import _
+from text_lint.utilities.translations import _, f
 
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.linter.states import AssertionState
+  from text_lint.schema import AliasYamlOperation, Schema
 
 YAML_EXAMPLE = """
 
@@ -39,6 +40,11 @@ class AssertSequenceBegins(AssertionBase):
   operation = "assert_sequence_begins"
   yaml_example = YAML_EXAMPLE
 
+  msg_fmt_unexpected_assertions_after_eof_sequence = _(
+      "assertion #{0} there are unexpected additional assertions following "
+      "this 'to eof' sequence declaration"
+  )
+
   def __init__(
       self,
       name: str,
@@ -56,3 +62,37 @@ class AssertSequenceBegins(AssertionBase):
     """Apply the AssertSequenceBegins assertion logic."""
 
     state.loop(self.assertions, self.count)
+
+  def schema_validator(
+      self,
+      schema_assertion_index: int,
+      schema_assertion_instances: List["AssertionBase"],
+      schema_assertion_definitions: List["AliasYamlOperation"],
+      schema: "Schema",
+  ) -> None:
+    """Optional additional schema level validation for this assertion."""
+
+    if (
+        self.count == LOOP_COUNT
+        and schema_assertion_index + 1 != len(schema_assertion_instances)
+    ):
+      raise schema.create_exception(
+          description=f(
+              self.msg_fmt_unexpected_assertions_after_eof_sequence,
+              schema_assertion_index,
+              nl=1,
+          ),
+          operation_definition=self._simplify_yaml_definition(
+              schema_assertion_definitions[schema_assertion_index],
+          )
+      )
+
+  def _simplify_yaml_definition(
+      self,
+      schema_assertion_definition: "AliasYamlOperation",
+  ) -> "AliasYamlOperation":
+    schema_assertion_definition["assertions"] = [
+        assertion.operation
+        for assertion in schema_assertion_definition["assertions"]
+    ]
+    return schema_assertion_definition
