@@ -106,3 +106,18 @@ class TestRuleBase:
     results = concrete_rule_base_instance.results
 
     assert results == mocked_result_class.return_value
+
+  def test_schema_validator__is_a_noop(
+      self,
+      concrete_rule_base_instance: RuleBase,
+  ) -> None:
+    operation_instances = [concrete_rule_base_instance]
+    mocked_yaml_definitions = [{"mock": "yaml"}]
+    mocked_schema = mock.Mock()
+
+    concrete_rule_base_instance.schema_validator(
+        0,
+        operation_instances,
+        mocked_yaml_definitions,
+        mocked_schema,
+    )

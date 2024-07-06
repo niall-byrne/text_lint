@@ -18,6 +18,7 @@ from .fixtures import schemas
 
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.operations.rules.bases.rule_base import RuleBase
+  from text_lint.schema import AliasYamlOperation
 
 
 class TestSchemaRules:
@@ -33,14 +34,44 @@ class TestSchemaRules:
   def test_translated_attributes(self,) -> None:
     assert_is_translated(SchemaRules.automated_section_end_rule_name)
 
-  def test_hook_load_operation_instances__appends_assert_sequence_end(
+  def test_hook_load_operation_instances__calls_schema_validator(
       self,
+      mocked_operation_definitions: List["AliasYamlOperation"],
       mocked_operation_instances: List["RuleBase"],
       mocked_schema: mock.Mock,
   ) -> None:
     instance = SchemaRules(mocked_schema)
 
-    result = instance.hook_load_operation_instances(mocked_operation_instances)
+    instance.hook_load_operation_instances(
+        mocked_operation_instances,
+        mocked_operation_definitions,
+    )
+
+    for index, rule in enumerate(mocked_operation_instances):
+      if isinstance(rule, mock.Mock):
+        assert index < len(mocked_operation_instances) - 1
+        rule.schema_validator.assert_called_once_with(
+            index,
+            mocked_operation_instances,
+            mocked_operation_definitions,
+            mocked_schema,
+        )
+      else:
+        assert index == len(mocked_operation_instances) - 1
+        assert isinstance(rule, AssertSequenceEnds)
+
+  def test_hook_load_operation_instances__appends_assert_sequence_end(
+      self,
+      mocked_operation_definitions: List["AliasYamlOperation"],
+      mocked_operation_instances: List["RuleBase"],
+      mocked_schema: mock.Mock,
+  ) -> None:
+    instance = SchemaRules(mocked_schema)
+
+    result = instance.hook_load_operation_instances(
+        mocked_operation_instances,
+        mocked_operation_definitions,
+    )
 
     assert len(result) == 3
     assert result[0] == mocked_operation_instances[0]
@@ -59,7 +90,8 @@ class TestSchemaRules:
     mocked_load_method = method_mocker(instance.load)
 
     result = instance.hook_create_operation_instance(
-        mocked_operation_class, {"rules": "mocked_yaml_content"}
+        mocked_operation_class,
+        {"rules": "mocked_yaml_content"},
     )
 
     assert result == {"rules": mocked_load_method.return_value}

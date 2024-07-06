@@ -25,12 +25,22 @@ class SchemaRules(SchemaSectionBase["RuleBase"]):
   def hook_load_operation_instances(
       self,
       operation_instances: List["RuleBase"],
+      operation_definitions: List["AliasYamlOperation"],
   ) -> List["RuleBase"]:
     """Modify the operation instances prior to returning them all."""
+
+    for operation_index, operation_instance in enumerate(operation_instances):
+      operation_instance.schema_validator(
+          operation_index,
+          operation_instances,
+          operation_definitions,
+          self._schema,
+      )
 
     operation_instances.append(
         AssertSequenceEnds(name=self.automated_section_end_rule_name)
     )
+
     return operation_instances
 
   def hook_create_operation_instance(
@@ -41,7 +51,14 @@ class SchemaRules(SchemaSectionBase["RuleBase"]):
     """Modify the yaml definition prior to creating each operation instance."""
 
     if operation_class.operation == AssertSequenceBegins.operation:
-      nested_rule_set = self.load(yaml_definition["rules"])
-      yaml_definition["rules"] = nested_rule_set
+      yaml_definition = self._append_nested_yaml_rules(yaml_definition)
 
+    return yaml_definition
+
+  def _append_nested_yaml_rules(
+      self,
+      yaml_definition: "AliasYamlOperation",
+  ) -> "AliasYamlOperation":
+    nested_rule_set = self.load(yaml_definition["rules"])
+    yaml_definition["rules"] = nested_rule_set
     return yaml_definition

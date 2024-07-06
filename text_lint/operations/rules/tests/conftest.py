@@ -16,6 +16,7 @@ from .. import (
 
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.operations.rules.bases.rule_base import RuleBase
+  from text_lint.schema import AliasYamlOperation
 
 
 class CaseSensitivityScenario(NamedTuple):
@@ -40,8 +41,34 @@ def mocked_nested_rules() -> List[mock.Mock]:
 
 
 @pytest.fixture
+def mocked_operation_definitions(
+    mocked_nested_rules: List[mock.Mock]
+) -> List["AliasYamlOperation"]:
+  return [
+      {
+          "definition": 1,
+          "rules": mocked_nested_rules
+      },
+      {
+          "definition": 2,
+          "rules": mocked_nested_rules
+      },
+  ]
+
+
+@pytest.fixture
+def mocked_operation_instances() -> List[mock.Mock]:
+  return [mock.Mock(), mock.Mock()]
+
+
+@pytest.fixture
 def mocked_rule_sequencer() -> mock.MagicMock:
   return mock.MagicMock()
+
+
+@pytest.fixture
+def mocked_schema() -> mock.Mock:
+  return mock.Mock()
 
 
 @pytest.fixture
