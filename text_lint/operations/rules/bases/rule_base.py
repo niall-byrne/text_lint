@@ -9,6 +9,7 @@ from text_lint.results.tree import ResultTree
 
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.controller import Controller
+  from text_lint.schema import AliasYamlOperation, Schema
 
 
 class RuleBase(OperationBase, abc.ABC):
@@ -47,3 +48,12 @@ class RuleBase(OperationBase, abc.ABC):
       result.add_matches(match.groups(), self.splits.as_dict())
 
     return result
+
+  def schema_validator(
+      self,
+      schema_rule_index: int,
+      schema_rule_instances: List["RuleBase"],
+      schema_rule_definitions: List["AliasYamlOperation"],
+      schema: "Schema",
+  ) -> None:
+    """Optional additional schema level validation for this rule."""

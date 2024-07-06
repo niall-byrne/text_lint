@@ -3,10 +3,11 @@
 from typing import TYPE_CHECKING, List
 
 from text_lint.operations.rules.bases.rule_base import RuleBase
-from text_lint.utilities.translations import _
+from text_lint.utilities.translations import _, f
 
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.controller import Controller
+  from text_lint.schema import AliasYamlOperation, Schema
 
 YAML_EXAMPLE = """
 
@@ -38,6 +39,11 @@ class AssertSequenceBegins(RuleBase):
   operation = "assert_sequence_begins"
   yaml_example = YAML_EXAMPLE
 
+  msg_fmt_unexpected_rules_after_eof_sequence = _(
+      "rule #{0} there are unexpected additional rules following "
+      "this 'to eof' sequence declaration"
+  )
+
   def __init__(
       self,
       name: str,
@@ -57,3 +63,36 @@ class AssertSequenceBegins(RuleBase):
     if self.count == -1 or self.count > 0:
       controller.rules.start_repeating(self.count)
       controller.rules.insert(self.rules)
+
+  def schema_validator(
+      self,
+      schema_rule_index: int,
+      schema_rule_instances: List["RuleBase"],
+      schema_rule_definitions: List["AliasYamlOperation"],
+      schema: "Schema",
+  ) -> None:
+    """Optional additional schema level validation for this rule."""
+
+    if (
+        self.count == -1
+        and schema_rule_index + 1 != len(schema_rule_instances)
+    ):
+      raise schema.create_exception(
+          description=f(
+              self.msg_fmt_unexpected_rules_after_eof_sequence,
+              schema_rule_index,
+              nl=1,
+          ),
+          operation_definition=self._simplify_yaml_definition(
+              schema_rule_definitions[schema_rule_index],
+          )
+      )
+
+  def _simplify_yaml_definition(
+      self,
+      schema_rule_definition: "AliasYamlOperation",
+  ) -> "AliasYamlOperation":
+    schema_rule_definition["rules"] = [
+        rule.operation for rule in schema_rule_definition["rules"]
+    ]
+    return schema_rule_definition
