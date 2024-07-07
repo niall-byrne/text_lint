@@ -1,5 +1,4 @@
 """Test fixtures for the text file linter."""
-# pylint: disable=redefined-outer-name
 
 from typing import List, Type
 from unittest import mock

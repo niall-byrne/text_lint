@@ -3,6 +3,7 @@
 from text_lint.exceptions.sequencers import UnconsumedData
 from text_lint.results.forest import ResultForest
 from text_lint.schema import Schema
+from text_lint.sequencers.patterns.loop import LinearLoopPattern
 from text_lint.sequencers.rules import RuleSequencer
 from text_lint.sequencers.textfile import TextFileSequencer
 from text_lint.sequencers.validators import ValidatorSequencer
@@ -59,7 +60,7 @@ class Controller:
     except StopIteration:
       pass
     else:
-      if not self.rules.pattern:
+      if not isinstance(self.rules.pattern, LinearLoopPattern):
         raise UnconsumedData(self.msg_fmt_all_rules_not_read)
 
   def _ensure_eof(self) -> None:

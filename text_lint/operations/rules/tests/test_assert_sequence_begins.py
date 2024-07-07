@@ -10,7 +10,7 @@ from text_lint.__helpers__.operations import (
 )
 from text_lint.__helpers__.rules import assert_rule_attributes
 from text_lint.__helpers__.translations import assert_is_translated
-from text_lint.config import NEW_LINE
+from text_lint.config import LOOP_COUNT, NEW_LINE
 from text_lint.operations.rules.bases.rule_base import RuleBase
 from ..assert_sequence_begins import YAML_EXAMPLE, AssertSequenceBegins
 
@@ -62,7 +62,7 @@ class TestAssertSequenceBegins:
         ),
     )
 
-  @pytest.mark.parametrize("count", [-1, 2, 4])
+  @pytest.mark.parametrize("count", [LOOP_COUNT, 2, 4])
   def test_apply__infinite_or_bound_count__calls_parser_methods(
       self,
       assert_sequence_begins_instance: AssertSequenceBegins,
@@ -134,7 +134,7 @@ class TestAssertSequenceBegins:
       mocked_schema: mock.Mock,
       assert_sequence_begins_instance: AssertSequenceBegins,
   ) -> None:
-    setattr(assert_sequence_begins_instance, "count", -1)
+    setattr(assert_sequence_begins_instance, "count", LOOP_COUNT)
 
     assert_sequence_begins_instance.schema_validator(
         schema_rule_index=len(mocked_operation_instances) - 1,
@@ -153,7 +153,7 @@ class TestAssertSequenceBegins:
   ) -> None:
     mocked_schema_error = "mocked_schema_error"
     mocked_schema.create_exception.return_value = Exception(mocked_schema_error)
-    setattr(assert_sequence_begins_instance, "count", -1)
+    setattr(assert_sequence_begins_instance, "count", LOOP_COUNT)
 
     with pytest.raises(Exception) as exc:
       assert_sequence_begins_instance.schema_validator(

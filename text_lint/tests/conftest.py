@@ -6,6 +6,7 @@ from unittest import mock
 
 import pytest
 from text_lint import controller
+from text_lint.sequencers.patterns.linear import LinearPattern
 
 
 @pytest.fixture
@@ -21,7 +22,7 @@ def mocked_result_forest() -> mock.Mock:
 @pytest.fixture
 def mocked_rule_sequencer() -> mock.MagicMock:
   instance = mock.MagicMock()
-  instance.return_value.pattern = None
+  instance.return_value.pattern = LinearPattern()
   return instance
 
 

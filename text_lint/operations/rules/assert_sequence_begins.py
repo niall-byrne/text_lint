@@ -2,6 +2,7 @@
 
 from typing import TYPE_CHECKING, List
 
+from text_lint.config import LOOP_COUNT
 from text_lint.operations.rules.bases.rule_base import RuleBase
 from text_lint.utilities.translations import _, f
 
@@ -27,9 +28,9 @@ YAML_EXAMPLE = """
         - group: 2
 
 note: set count to 0 to disable the nested sequence of steps.
-      set count to -1 to repeat the nested steps until the eof is reached.
+      set count to {0} to repeat the nested steps until the eof is reached.
 
-"""
+""".format(LOOP_COUNT)
 
 
 class AssertSequenceBegins(RuleBase):
@@ -60,7 +61,7 @@ class AssertSequenceBegins(RuleBase):
   ) -> None:
     """Apply the AssertSequenceBegins rule logic."""
 
-    if self.count == -1 or self.count > 0:
+    if self.count == LOOP_COUNT or self.count > 0:
       controller.rules.insert(self.rules, self.count)
 
   def schema_validator(
@@ -73,7 +74,7 @@ class AssertSequenceBegins(RuleBase):
     """Optional additional schema level validation for this rule."""
 
     if (
-        self.count == -1
+        self.count == LOOP_COUNT
         and schema_rule_index + 1 != len(schema_rule_instances)
     ):
       raise schema.create_exception(
