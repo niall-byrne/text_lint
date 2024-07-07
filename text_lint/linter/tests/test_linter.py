@@ -9,7 +9,7 @@ from text_lint.__helpers__.translations import assert_is_translated
 from text_lint.exceptions.sequencers import UnconsumedData
 from text_lint.linter import Linter
 from text_lint.linter.settings import LinterSettings
-from text_lint.sequencers.patterns.loop import LoopPattern
+from text_lint.sequencers.patterns.loop import LinearLoopPattern
 
 
 class TestLinter:
@@ -228,7 +228,7 @@ class TestLinter:
       mocked_state_factory: mock.Mock,
       linter_instance: Linter,
   ) -> None:
-    linter_instance.assertions.pattern = mock.Mock(spec=LoopPattern)
+    linter_instance.assertions.pattern = mock.Mock(spec=LinearLoopPattern)
 
     linter_instance.start()
 
@@ -250,7 +250,7 @@ class TestLinter:
       mocked_state_factory: mock.Mock,
       linter_instance: Linter,
   ) -> None:
-    linter_instance.assertions.pattern = mock.Mock(spec=LoopPattern)
+    linter_instance.assertions.pattern = mock.Mock(spec=LinearLoopPattern)
 
     linter_instance.start()
 
@@ -269,7 +269,7 @@ class TestLinter:
       mocked_state_factory: mock.Mock,
       linter_instance: Linter,
   ) -> None:
-    linter_instance.assertions.pattern = mock.Mock(spec=LoopPattern)
+    linter_instance.assertions.pattern = mock.Mock(spec=LinearLoopPattern)
 
     linter_instance.start()
 
@@ -288,7 +288,7 @@ class TestLinter:
       mocked_state_factory: mock.Mock,
       linter_instance: Linter,
   ) -> None:
-    linter_instance.assertions.pattern = mock.Mock(spec=LoopPattern)
+    linter_instance.assertions.pattern = mock.Mock(spec=LinearLoopPattern)
 
     linter_instance.start()
 
