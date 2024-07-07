@@ -6,6 +6,7 @@ from unittest import mock
 import pytest
 from text_lint.__helpers__.translations import assert_is_translated
 from text_lint.exceptions.sequencers import UnconsumedData
+from text_lint.sequencers.patterns.loop import LinearLoopPattern
 from ..controller import Controller
 
 
@@ -145,7 +146,9 @@ class TestController:
     mocked_text_file_sequencer.return_value.__next__.side_effect = (
         StopIteration
     )
-    mocked_rule_sequencer.return_value.pattern = True
+    mocked_rule_sequencer.return_value.pattern = LinearLoopPattern(
+        start=1, end=2
+    )
 
     controller_instance.start()
 
@@ -171,7 +174,9 @@ class TestController:
     mocked_text_file_sequencer.return_value.__next__.side_effect = (
         StopIteration
     )
-    mocked_rule_sequencer.return_value.pattern = True
+    mocked_rule_sequencer.return_value.pattern = LinearLoopPattern(
+        start=1, end=2
+    )
 
     controller_instance.start()
 
@@ -198,7 +203,9 @@ class TestController:
     mocked_validator_sequencer.return_value.__iter__.return_value = (
         mocked_sequence
     )
-    mocked_rule_sequencer.return_value.pattern = True
+    mocked_rule_sequencer.return_value.pattern = LinearLoopPattern(
+        start=1, end=2
+    )
 
     controller_instance.start()
 
