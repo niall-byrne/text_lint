@@ -7,6 +7,7 @@ from unittest import mock
 import pytest
 from text_lint import linter
 from text_lint.linter import settings
+from text_lint.sequencers.patterns.linear import LinearPattern
 # pylint: disable=wildcard-import,unused-wildcard-import
 from .scenarios import *
 
@@ -49,7 +50,7 @@ def mocked_sequence_validators() -> List[mock.Mock]:
 @pytest.fixture
 def mocked_sequencer_assertions() -> mock.MagicMock:
   instance = mock.MagicMock()
-  instance.return_value.pattern = None
+  instance.return_value.pattern = LinearPattern()
   return instance
 
 

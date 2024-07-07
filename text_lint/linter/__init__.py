@@ -9,6 +9,7 @@ from text_lint.linter.logging import contexts as logging_contexts
 from text_lint.results.forest import ResultForest
 from text_lint.schema import Schema
 from text_lint.sequencers.assertions import AssertionSequencer
+from text_lint.sequencers.patterns.loop import LinearLoopPattern
 from text_lint.sequencers.textfile import TextFileSequencer
 from text_lint.sequencers.validators import ValidatorSequencer
 from text_lint.utilities.translations import _
@@ -75,7 +76,7 @@ class Linter:
     except StopIteration:
       pass
     else:
-      if not self.assertions.pattern:
+      if not isinstance(self.assertions.pattern, LinearLoopPattern):
         raise UnconsumedData(self.msg_fmt_all_assertions_not_read)
 
   def _ensure_eof(self) -> None:
