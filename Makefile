@@ -64,7 +64,7 @@ format-python:
 
 lint-make:
 	@echo "Checking Makefiles ..."
-	@poetry run bash -c "./testing_shim -s schemas/makefile.yml Makefile"
+	@poetry run bash -c "./testing_shim check -s schemas/makefile.yml Makefile"
 	@echo "Done."
 
 lint-markdown:
