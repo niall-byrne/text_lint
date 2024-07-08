@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-from text_lint import __main__
+from text_lint.__main__ import cli
 
-__main__.cli()
+cli()
