@@ -44,6 +44,7 @@ class Schema:
     try:
       schema_rules = self._content["rules"]
       assert isinstance(schema_rules, list)
+      assert len(schema_rules) > 0
       return schema_rules
     except (KeyError, AssertionError) as exc:
       raise self.create_exception(

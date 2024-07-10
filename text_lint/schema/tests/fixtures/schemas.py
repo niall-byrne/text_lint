@@ -55,6 +55,11 @@ schema_settings_invalid_regex: AliasRawSchema = {
 
 schema_missing_rules: AliasRawSchema = {"version": "0.1.0"}
 
+schema_empty_rules: AliasRawSchema = {
+    "version": "0.1.0",
+    "rules": [],
+}
+
 schema_missing_validators: AliasRawSchema = {
     "version":
         "0.1.0",

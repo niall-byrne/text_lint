@@ -158,6 +158,27 @@ class TestSchema:
         schema_path=mocked_schema_file,
     )
 
+  @pytest.mark.parametrize("invalid_schema", [schemas.schema_empty_rules])
+  def test_load_rules__empty_rules__raises_exception(
+      self,
+      schema_class: Type[Schema],
+      mocked_file_handle: StringIO,
+      mocked_schema_file: str,
+      invalid_schema: Dict[str, Any],
+  ) -> None:
+    mocked_file_handle.write(json.dumps(invalid_schema))
+    mocked_file_handle.seek(0)
+    instance = schema_class(mocked_schema_file)
+
+    with pytest.raises(SchemaError) as exc:
+      instance.load_rules()
+
+    assert_is_schema_error(
+        exc=exc,
+        description_t=(Schema.msg_fmt_no_rules,),
+        schema_path=mocked_schema_file,
+    )
+
   def test_load_rules__returns_rule_schema_section_content(
       self,
       schema_class: Type[Schema],
