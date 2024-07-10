@@ -46,6 +46,7 @@ class Schema:
     try:
       schema_assertions = self._content["assertions"]
       assert isinstance(schema_assertions, list)
+      assert len(schema_assertions) > 0
       return schema_assertions
     except (KeyError, AssertionError) as exc:
       raise self.create_exception(
