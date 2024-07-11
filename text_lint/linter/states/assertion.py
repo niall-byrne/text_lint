@@ -43,13 +43,7 @@ class AssertionState(StateBase):
   def loop(self, assertions: List["AssertionBase"], count: int) -> None:
     """Start a looped sequence of assertions after the current operation."""
 
-    self._linter.assertions.start_repeating(count)
-    self._linter.assertions.insert(assertions)
-
-  def loop_stop(self) -> None:
-    """Stop a looped sequence of assertions."""
-
-    self._linter.assertions.stop_repeating()
+    self._linter.assertions.insert(assertions, count)
 
   def next(self) -> str:
     """Read the next line from the text file."""

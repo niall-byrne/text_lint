@@ -48,7 +48,9 @@ def mocked_sequence_validators() -> List[mock.Mock]:
 
 @pytest.fixture
 def mocked_sequencer_assertions() -> mock.MagicMock:
-  return mock.MagicMock()
+  instance = mock.MagicMock()
+  instance.return_value.pattern = None
+  return instance
 
 
 @pytest.fixture
