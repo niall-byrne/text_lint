@@ -2,6 +2,8 @@
 
 from typing import TYPE_CHECKING
 
+from text_lint.exceptions.validators import ValidationFailure
+from text_lint.utilities.whitespace import new_line
 from .bases.state_base import StateBase
 
 if TYPE_CHECKING:  # no cover
@@ -23,6 +25,19 @@ class ValidatorState(StateBase):
   def __init__(self, linter: "Linter") -> None:
     super().__init__(linter)
     self.operation = self._linter.validators.last
+
+  def fail(
+      self,
+      translated_description: str,
+      translated_detail: str,
+  ) -> None:
+    """Raise an exception indicating an operation has failed."""
+
+    raise ValidationFailure(
+        description=new_line(translated_description),
+        detail=new_line(translated_detail),
+        validator=self.operation
+    )
 
   def lookup_expression(
       self,

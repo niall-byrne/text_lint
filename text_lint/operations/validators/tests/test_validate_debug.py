@@ -54,7 +54,7 @@ class TestValidateDebug:
 
   def test_initialize__creates_lookup_expression_set_arg_instance(
       self,
-      mocked_lookup_expression_set: List[str],
+      mocked_lookup_expression_set_a: List[str],
       validate_debug_instance: ValidateDebug,
   ) -> None:
     assert isinstance(
@@ -62,8 +62,8 @@ class TestValidateDebug:
         LookupExpressionSetArg,
     )
     requested_results = list(validate_debug_instance.lookup_expressions)
-    assert requested_results[0].name == mocked_lookup_expression_set[0]
-    assert requested_results[1].name == mocked_lookup_expression_set[1]
+    assert requested_results[0].name == mocked_lookup_expression_set_a[0]
+    assert requested_results[1].name == mocked_lookup_expression_set_a[1]
 
   def test_apply__valid_lookups__performs_each_expected_lookup(
       self,
@@ -81,7 +81,7 @@ class TestValidateDebug:
   def test_apply__valid_lookups__logs_expected_lookup_results(
       self,
       mocked_state: mock.Mock,
-      mocked_lookup_expression_set: List[str],
+      mocked_lookup_expression_set_a: List[str],
       validate_debug_instance: ValidateDebug,
   ) -> None:
     mocked_state.lookup_expression.side_effect = ("result_0", "result_1")
@@ -102,6 +102,7 @@ class TestValidateDebug:
                         default=str,
                     )
                 ),
-            ] for index, mock_result in enumerate(mocked_lookup_expression_set)
+            ]
+            for index, mock_result in enumerate(mocked_lookup_expression_set_a)
         ] for call in call_group
     ]
