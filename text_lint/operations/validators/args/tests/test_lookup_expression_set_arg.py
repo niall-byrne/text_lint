@@ -65,8 +65,17 @@ class TestLookupExpressionSetArgSetArg:
   def test_create__no_yaml_definition__does_not_create_instances(self) -> None:
     instance = LookupExpressionSetArg.create([])
 
-    results = list(instance)
-    assert len(results) == 0
+    assert len(instance) == 0
+
+  def test_len__multiple_result_sets__returns_expected_value(
+      self,
+      lookup_expression_set_instances: List[LookupExpression],
+  ) -> None:
+    instance = LookupExpressionSetArg(
+        lookup_expression_set=lookup_expression_set_instances
+    )
+
+    assert len(instance) == len(lookup_expression_set_instances)
 
   def test_create__single_yaml_definition__creates_instance(self) -> None:
     instance = LookupExpressionSetArg.create(
