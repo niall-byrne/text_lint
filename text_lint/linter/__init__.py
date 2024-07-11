@@ -61,6 +61,7 @@ class Linter:
         with logging_contexts.assertion(self, operation):
           operation.apply(self.states.assertion())
       except StopIteration:
+        # Text file has finished.
         break
 
   def _run_validators(self) -> None:
@@ -74,7 +75,8 @@ class Linter:
     except StopIteration:
       pass
     else:
-      raise UnconsumedData(self.msg_fmt_all_assertions_not_read)
+      if not self.assertions.pattern:
+        raise UnconsumedData(self.msg_fmt_all_assertions_not_read)
 
   def _ensure_eof(self) -> None:
     try:

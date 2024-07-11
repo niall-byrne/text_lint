@@ -37,5 +37,3 @@ class AssertSequenceEnds(AssertionBase):
       state: "AssertionState",
   ) -> None:
     """Apply the AssertSequenceEnds assertion logic."""
-
-    state.loop_stop()
