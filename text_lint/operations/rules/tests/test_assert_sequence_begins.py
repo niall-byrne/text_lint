@@ -73,11 +73,9 @@ class TestAssertSequenceBegins:
 
     assert_sequence_begins_instance.apply(mocked_controller)
 
-    mocked_controller.rules.start_repeating.assert_called_with(
-        assert_sequence_begins_instance.count
-    )
     mocked_controller.rules.insert.assert_called_with(
-        assert_sequence_begins_instance.rules
+        assert_sequence_begins_instance.rules,
+        count,
     )
 
   @pytest.mark.parametrize("count", [0, -10])

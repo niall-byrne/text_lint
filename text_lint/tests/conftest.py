@@ -20,7 +20,9 @@ def mocked_result_forest() -> mock.Mock:
 
 @pytest.fixture
 def mocked_rule_sequencer() -> mock.MagicMock:
-  return mock.MagicMock()
+  instance = mock.MagicMock()
+  instance.return_value.pattern = None
+  return instance
 
 
 @pytest.fixture
@@ -36,6 +38,14 @@ def mocked_schema_path() -> str:
 @pytest.fixture
 def mocked_sequence() -> List[mock.Mock]:
   return [mock.Mock(), mock.Mock(), mock.Mock()]
+
+
+@pytest.fixture
+def mocked_interrupted_rule_sequence(
+    mocked_sequence: List[mock.Mock],
+) -> List[mock.Mock]:
+  mocked_sequence[1].apply.side_effect = StopIteration
+  return mocked_sequence
 
 
 @pytest.fixture

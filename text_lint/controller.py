@@ -39,10 +39,13 @@ class Controller:
     self._run_validators()
 
   def _run_rules(self) -> None:
+    count = 0
     for operation in self.rules:
+      count += 1
       try:
         operation.apply(self)
       except StopIteration:
+        # Text file has finished.
         break
       self.forest.add(operation.results)
 
@@ -56,7 +59,8 @@ class Controller:
     except StopIteration:
       pass
     else:
-      raise UnconsumedData(self.msg_fmt_all_rules_not_read)
+      if not self.rules.pattern:
+        raise UnconsumedData(self.msg_fmt_all_rules_not_read)
 
   def _ensure_eof(self) -> None:
     try:

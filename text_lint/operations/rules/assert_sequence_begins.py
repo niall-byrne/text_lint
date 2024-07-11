@@ -61,8 +61,7 @@ class AssertSequenceBegins(RuleBase):
     """Apply the AssertSequenceBegins rule logic."""
 
     if self.count == -1 or self.count > 0:
-      controller.rules.start_repeating(self.count)
-      controller.rules.insert(self.rules)
+      controller.rules.insert(self.rules, self.count)
 
   def schema_validator(
       self,

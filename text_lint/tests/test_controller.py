@@ -106,13 +106,10 @@ class TestController:
 
     controller_instance.start()
 
-    mocked_results: List[mock.Mock] = []
-    for mocked_rule in mocked_sequence:
-      mocked_rule.apply.assert_called_once_with(controller_instance)
-      mocked_results.append(mocked_rule.results)
-    mocked_result_forest.return_value.add.assert_has_calls(
-        [mock.call(result) for result in mocked_results]
-    )
+    mocked_results = [
+        mock.call(mocked_rule.results) for mocked_rule in mocked_sequence
+    ]
+    mocked_result_forest.return_value.add.assert_has_calls(mocked_results)
 
   def test_start__all_text__all_schema__rules_finish__run_all_validators(
       self,
@@ -135,51 +132,54 @@ class TestController:
     for mocked_validator in mocked_sequence:
       mocked_validator.apply.assert_called_once_with(controller_instance)
 
-  def test_start__all_text__all_schema__rules_signal_stop__run_some_rules(
+  def test_start__all_text__all_schema__loop_signals_stop__run_some_rules(
       self,
+      mocked_interrupted_rule_sequence: List[mock.Mock],
       mocked_rule_sequencer: mock.MagicMock,
-      mocked_sequence: List[mock.Mock],
       mocked_text_file_sequencer: mock.Mock,
       controller_instance: Controller,
   ) -> None:
-    mocked_rule_sequencer.return_value.__iter__.return_value = mocked_sequence
-    mocked_rule_sequencer.return_value.__next__.side_effect = StopIteration
+    mocked_rule_sequencer.return_value.__iter__.return_value = (
+        mocked_interrupted_rule_sequence
+    )
     mocked_text_file_sequencer.return_value.__next__.side_effect = (
         StopIteration
     )
-    mocked_sequence[1].apply.side_effect = StopIteration
+    mocked_rule_sequencer.return_value.pattern = True
 
     controller_instance.start()
 
-    mocked_sequence[0].apply.assert_called_once_with(controller_instance)
-    mocked_sequence[1].apply.assert_called_once_with(controller_instance)
-    mocked_sequence[2].apply.assert_not_called()
+    mocked_interrupted_rule_sequence[0].apply.assert_called_once_with(
+        controller_instance
+    )
+    mocked_interrupted_rule_sequence[1].apply.assert_called_once_with(
+        controller_instance
+    )
+    mocked_interrupted_rule_sequence[2].apply.assert_not_called()
 
-  def test_start__all_text__all_schema__rules_signal_stop__add_some_results(
+  def test_start__all_text__all_schema__loop_signals_stop__add_some_results(
       self,
+      mocked_interrupted_rule_sequence: List[mock.Mock],
+      mocked_rule_sequencer: mock.MagicMock,
       mocked_result_forest: mock.Mock,
-      mocked_rule_sequencer: mock.MagicMock,
-      mocked_sequence: List[mock.Mock],
       mocked_text_file_sequencer: mock.Mock,
       controller_instance: Controller,
   ) -> None:
-    mocked_rule_sequencer.return_value.__iter__.return_value = mocked_sequence
-    mocked_rule_sequencer.return_value.__next__.side_effect = StopIteration
+    mocked_rule_sequencer.return_value.__iter__.return_value = (
+        mocked_interrupted_rule_sequence
+    )
     mocked_text_file_sequencer.return_value.__next__.side_effect = (
         StopIteration
     )
-    mocked_sequence[1].apply.side_effect = StopIteration
+    mocked_rule_sequencer.return_value.pattern = True
 
     controller_instance.start()
 
-    mocked_sequence[0].apply.assert_called_once_with(controller_instance)
-    mocked_sequence[1].apply.assert_called_once_with(controller_instance)
-    mocked_sequence[2].apply.assert_not_called()
     mocked_result_forest.return_value.add.assert_called_once_with(
-        mocked_sequence[0].results
+        mocked_interrupted_rule_sequence[0].results
     )
 
-  def test_start__all_text__all_schema__rules_signal_stop__run_all_validators(
+  def test_start__all_text__all_schema__loop_signals_stop__run_all_validators(
       self,
       mocked_rule_sequencer: mock.MagicMock,
       mocked_sequence: List[mock.Mock],
@@ -187,18 +187,18 @@ class TestController:
       mocked_validator_sequencer: mock.MagicMock,
       controller_instance: Controller,
   ) -> None:
-    mocked_rule_with_stop_signal = mock.Mock()
-    mocked_rule_with_stop_signal.apply.side_effect = StopIteration
+    mocked_interrupted_rule = mock.Mock()
+    mocked_interrupted_rule.apply.side_effect = StopIteration
     mocked_rule_sequencer.return_value.__iter__.return_value = [
-        mocked_rule_with_stop_signal
+        mocked_interrupted_rule
     ]
-    mocked_rule_sequencer.return_value.__next__.side_effect = StopIteration
     mocked_text_file_sequencer.return_value.__next__.side_effect = (
         StopIteration
     )
     mocked_validator_sequencer.return_value.__iter__.return_value = (
         mocked_sequence
     )
+    mocked_rule_sequencer.return_value.pattern = True
 
     controller_instance.start()
 
@@ -222,7 +222,7 @@ class TestController:
 
     for mocked_rule in mocked_sequence:
       mocked_rule.apply.assert_called_once_with(controller_instance)
-      assert str(exc.value) == controller_instance.msg_fmt_all_rules_not_read
+    assert str(exc.value) == controller_instance.msg_fmt_all_rules_not_read
 
   def test_start__all_text__partial_schema__run_no_validators__raise_exception(
       self,
@@ -240,7 +240,6 @@ class TestController:
 
     for mocked_validator in mocked_sequence:
       mocked_validator.apply.assert_not_called()
-
     assert str(exc.value) == controller_instance.msg_fmt_all_rules_not_read
 
   def test_start__partial_text__all_schema__run_all_rules__raise_exception(

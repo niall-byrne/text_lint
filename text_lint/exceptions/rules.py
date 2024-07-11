@@ -32,6 +32,9 @@ class RuleViolation(RuleExceptionBase):
       expected: str,
       textfile: "TextFileSequencer",
   ) -> None:
+
+    textfile.index -= 1
+
     message = f(self.msg_fmt_rule_operation, rule.operation, nl=1)
     message += f(
         self.msg_fmt_source_file,
@@ -43,4 +46,5 @@ class RuleViolation(RuleExceptionBase):
     message += f(self.msg_fmt_file_line, make_visible(textfile.current), nl=1)
     message += f(self.msg_fmt_file_line_number, textfile.index + 1, nl=1)
     message += f(self.msg_fmt_hint, rule.hint, nl=1)
+
     super().__init__(message)

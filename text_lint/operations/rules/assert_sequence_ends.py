@@ -37,5 +37,3 @@ class AssertSequenceEnds(RuleBase):
       controller: "Controller",
   ) -> None:
     """Apply the AssertSequenceEnds rule logic."""
-
-    controller.rules.stop_repeating()
