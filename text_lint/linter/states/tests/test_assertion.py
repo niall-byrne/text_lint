@@ -61,19 +61,10 @@ class TestAssertionState:
         count=mocked_count,
     )
 
-    mocked_linter.assertions.start_repeating.assert_called_once_with(
-        mocked_count
+    mocked_linter.assertions.insert.assert_called_once_with(
+        mocked_assertions,
+        mocked_count,
     )
-    mocked_linter.assertions.insert.assert_called_once_with(mocked_assertions)
-
-  def test_loop_stop__calls_linter_methods(
-      self,
-      assertion_state_instance: AssertionState,
-      mocked_linter: mock.Mock,
-  ) -> None:
-    assertion_state_instance.loop_stop()
-
-    mocked_linter.assertions.stop_repeating.assert_called_once_with()
 
   def test_next__calls_linter_methods(
       self,

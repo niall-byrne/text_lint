@@ -1,7 +1,5 @@
 """Test AssertSequenceEnds class."""
 
-from unittest import mock
-
 from text_lint.__helpers__.assertion import assert_assertion_attributes
 from text_lint.__helpers__.operations import (
     AliasOperationAttributes,
@@ -47,12 +45,3 @@ class TestAssertSequenceEnds:
             AssertSequenceEnds,
         ),
     )
-
-  def test_apply__calls_loop_stop(
-      self,
-      assert_sequence_ends_instance: AssertSequenceEnds,
-      mocked_state: mock.Mock,
-  ) -> None:
-    assert_sequence_ends_instance.apply(mocked_state)
-
-    mocked_state.loop_stop.assert_called_once_with()
