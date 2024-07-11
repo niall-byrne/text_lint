@@ -47,7 +47,6 @@ class AssertRegexSection(rule_regex_base.RuleRegexBase):
         break
 
       match = re.match(self.regex, data)
-
       if not match:
         raise RuleViolation(
             rule=self,

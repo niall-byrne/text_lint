@@ -6,8 +6,8 @@ class LoopPattern:
 
   def __init__(
       self,
-      index: int,
-      count: int,
+      start: int,
+      end: int,
   ) -> None:
-    self.index = index
-    self.count = count
+    self.start = start
+    self.end = end

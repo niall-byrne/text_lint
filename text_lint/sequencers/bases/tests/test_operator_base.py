@@ -22,22 +22,40 @@ class TestOperatorBase:
 
     assert instance.index == 0
 
-  def test_insert__inserts_rules_in_correct_order(
+  @pytest.mark.parametrize("count", [2, 4, 6])
+  def test_insert__vary_bounded_count__inserts_rules_correctly(
       self,
       concrete_operator_class: Type["OperatorBase[mock.Mock]"],
       mocked_operations: List["mock.Mock"],
+      count: int,
   ) -> None:
     mocked_new_rules = [mock.Mock()]
     instance = concrete_operator_class(mocked_operations)
     instance.index = 1
 
-    instance.insert(mocked_new_rules)
+    instance.insert(mocked_new_rules, count)
 
     instance.index = 0
     rules = list(instance)
     assert rules == (
-        mocked_operations[:1] + mocked_new_rules + mocked_operations[1:]
+        mocked_operations[:1] + mocked_new_rules * count + mocked_operations[1:]
     )
+
+  def test_insert__infinite_count__inserts_rules_correctly(
+      self,
+      concrete_operator_class: Type["OperatorBase[mock.Mock]"],
+      mocked_operations: List["mock.Mock"],
+  ) -> None:
+    mocked_new_rules = [mock.Mock(), mock.Mock(), mock.Mock()]
+    instance = concrete_operator_class(mocked_operations)
+    instance.index = 1
+
+    instance.insert(mocked_new_rules, -1)
+
+    instance.index = 0
+
+    rules = [next(instance) for _ in range(0, 100)]
+    assert rules == mocked_operations[:1] + mocked_new_rules * 33
 
   def test_iter__returns_iterator(
       self,
@@ -72,41 +90,3 @@ class TestOperatorBase:
 
     with pytest.raises(StopIteration):
       next(instance)
-
-  def test_start_repeating__bounded__creates_bounded_looping_pattern(
-      self,
-      concrete_operator_class: Type["OperatorBase[mock.Mock]"],
-      mocked_operations: List["mock.Mock"],
-  ) -> None:
-    instance = concrete_operator_class(mocked_operations)
-
-    instance.start_repeating(count=4)
-    rules_list = list(instance)
-
-    assert len(rules_list) == 3 * 4
-    assert rules_list == mocked_operations * 4
-
-  def test_start_repeating__infinite__creates_infinite_looping_pattern(
-      self,
-      concrete_operator_class: Type["OperatorBase[mock.Mock]"],
-      mocked_operations: List["mock.Mock"],
-  ) -> None:
-    instance = concrete_operator_class(mocked_operations)
-
-    instance.start_repeating(count=-1)
-    rules_list = [next(instance) for _ in range(0, 6)]
-
-    assert len(rules_list) == 6
-    assert rules_list == mocked_operations * 2
-
-  def test_stop_repeating__infinite__no_effect(
-      self,
-      concrete_operator_class: Type["OperatorBase[mock.Mock]"],
-      mocked_operations: List["mock.Mock"],
-  ) -> None:
-    instance = concrete_operator_class(mocked_operations)
-
-    instance.start_repeating(count=-1)
-    _ = [next(instance) for _ in range(0, 4)]
-    instance.stop_repeating()
-    _ = [next(instance) for _ in range(0, 4)]

@@ -1,7 +1,5 @@
 """Test AssertSequenceEnds class."""
 
-from unittest import mock
-
 from text_lint.__helpers__.operations import (
     AliasOperationAttributes,
     assert_operation_inheritance,
@@ -48,12 +46,3 @@ class TestAssertSequenceEnds:
             AssertSequenceEnds,
         ),
     )
-
-  def test_apply__calls_parser_methods(
-      self,
-      assert_sequence_ends_instance: AssertSequenceEnds,
-      mocked_controller: mock.Mock,
-  ) -> None:
-    assert_sequence_ends_instance.apply(mocked_controller)
-
-    mocked_controller.rules.stop_repeating.assert_called_once_with()
