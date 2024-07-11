@@ -9,6 +9,7 @@ from text_lint.__helpers__.translations import assert_is_translated
 from text_lint.exceptions.sequencers import UnconsumedData
 from text_lint.linter import Linter
 from text_lint.linter.settings import LinterSettings
+from text_lint.sequencers.patterns.loop import LoopPattern
 
 
 class TestLinter:
@@ -210,6 +211,84 @@ class TestLinter:
       mocked_state_factory: mock.Mock,
       linter_instance: Linter,
   ) -> None:
+    linter_instance.start()
+
+    for mocked_validator in mocked_sequence_validators:
+      mocked_validator.apply.assert_called_once_with(
+          mocked_state_factory.return_value.validator.return_value
+      )
+    assert mocked_state_factory.return_value.validator.mock_calls == (
+        [mock.call()] * len(mocked_sequence_validators)
+    )
+
+  @pytest.mark.usefixtures("scenario__all_text__all_schema__some_assertions")
+  def test_start__all_text__all_schema__loop_signals_stop__run_assertions(
+      self,
+      mocked_sequence_assertions: List[mock.Mock],
+      mocked_state_factory: mock.Mock,
+      linter_instance: Linter,
+  ) -> None:
+    linter_instance.assertions.pattern = mock.Mock(spec=LoopPattern)
+
+    linter_instance.start()
+
+    mocked_sequence_assertions[0].apply.assert_called_once_with(
+        mocked_state_factory.return_value.assertion.return_value
+    )
+    mocked_sequence_assertions[1].apply.assert_called_once_with(
+        mocked_state_factory.return_value.assertion.return_value
+    )
+    mocked_sequence_assertions[2].apply.assert_not_called()
+    assert mocked_state_factory.return_value.assertion.mock_calls == (
+        [mock.call()] * (len(mocked_sequence_assertions) - 1)
+    )
+
+  @pytest.mark.usefixtures("scenario__all_text__all_schema__some_assertions")
+  def test_start__all_text__all_schema__loop_signals_stop__run_all_validators(
+      self,
+      mocked_sequence_validators: List[mock.Mock],
+      mocked_state_factory: mock.Mock,
+      linter_instance: Linter,
+  ) -> None:
+    linter_instance.assertions.pattern = mock.Mock(spec=LoopPattern)
+
+    linter_instance.start()
+
+    for mocked_validator in mocked_sequence_validators:
+      mocked_validator.apply.assert_called_once_with(
+          mocked_state_factory.return_value.validator.return_value
+      )
+    assert mocked_state_factory.return_value.validator.mock_calls == (
+        [mock.call()] * len(mocked_sequence_validators)
+    )
+
+  @pytest.mark.usefixtures("scenario__all_text__some_schema__all_assertions")
+  def test_start__all_text__some_schema__loop_signals_stop__run_assertions(
+      self,
+      mocked_sequence_assertions: List[mock.Mock],
+      mocked_state_factory: mock.Mock,
+      linter_instance: Linter,
+  ) -> None:
+    linter_instance.assertions.pattern = mock.Mock(spec=LoopPattern)
+
+    linter_instance.start()
+
+    for mocked_assertion in mocked_sequence_assertions:
+      mocked_assertion.apply.assert_called_once_with(
+          mocked_state_factory.return_value.assertion.return_value
+      )
+    assert mocked_state_factory.return_value.assertion.mock_calls == (
+        [mock.call()] * len(mocked_sequence_assertions)
+    )
+
+  @pytest.mark.usefixtures("scenario__all_text__some_schema__all_assertions")
+  def test_start__all_text__some_schema__loop_signals_stop__run_all_validators(
+      self,
+      mocked_sequence_validators: List[mock.Mock],
+      mocked_state_factory: mock.Mock,
+      linter_instance: Linter,
+  ) -> None:
+    linter_instance.assertions.pattern = mock.Mock(spec=LoopPattern)
 
     linter_instance.start()
 
