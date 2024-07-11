@@ -33,22 +33,41 @@ class TestOperatorBase:
       if instance.index < len(mocked_operations):
         assert instance.current == mocked_operations[instance.index]
 
-  def test_insert__inserts_assertions_in_correct_order(
+  @pytest.mark.parametrize("count", [2, 4, 6])
+  def test_insert__vary_bounded_count__inserts_assertions_correctly(
       self,
       concrete_operator_class: Type["OperatorBase[mock.Mock]"],
       mocked_operations: List["mock.Mock"],
+      count: int,
   ) -> None:
     mocked_new_assertions = [mock.Mock()]
     instance = concrete_operator_class(mocked_operations)
     instance.index = 1
 
-    instance.insert(mocked_new_assertions)
+    instance.insert(mocked_new_assertions, count)
 
     instance.index = 0
     assertions = list(instance)
     assert assertions == (
-        mocked_operations[:1] + mocked_new_assertions + mocked_operations[1:]
+        mocked_operations[:1] + mocked_new_assertions * count +
+        mocked_operations[1:]
     )
+
+  def test_insert__infinite_count__inserts_assertions_correctly(
+      self,
+      concrete_operator_class: Type["OperatorBase[mock.Mock]"],
+      mocked_operations: List["mock.Mock"],
+  ) -> None:
+    mocked_new_assertions = [mock.Mock(), mock.Mock(), mock.Mock()]
+    instance = concrete_operator_class(mocked_operations)
+    instance.index = 1
+
+    instance.insert(mocked_new_assertions, -1)
+
+    instance.index = 0
+
+    assertions = [next(instance) for _ in range(0, 100)]
+    assert assertions == mocked_operations[:1] + mocked_new_assertions * 33
 
   def test_iter__returns_iterator(
       self,
@@ -94,41 +113,3 @@ class TestOperatorBase:
 
     with pytest.raises(StopIteration):
       next(instance)
-
-  def test_start_repeating__bounded__creates_bounded_looping_pattern(
-      self,
-      concrete_operator_class: Type["OperatorBase[mock.Mock]"],
-      mocked_operations: List["mock.Mock"],
-  ) -> None:
-    instance = concrete_operator_class(mocked_operations)
-
-    instance.start_repeating(count=4)
-    assertion_list = list(instance)
-
-    assert len(assertion_list) == 3 * 4
-    assert assertion_list == mocked_operations * 4
-
-  def test_start_repeating__infinite__creates_infinite_looping_pattern(
-      self,
-      concrete_operator_class: Type["OperatorBase[mock.Mock]"],
-      mocked_operations: List["mock.Mock"],
-  ) -> None:
-    instance = concrete_operator_class(mocked_operations)
-
-    instance.start_repeating(count=-1)
-    assertion_list = [next(instance) for _ in range(0, 6)]
-
-    assert len(assertion_list) == 6
-    assert assertion_list == mocked_operations * 2
-
-  def test_stop_repeating__infinite__no_effect(
-      self,
-      concrete_operator_class: Type["OperatorBase[mock.Mock]"],
-      mocked_operations: List["mock.Mock"],
-  ) -> None:
-    instance = concrete_operator_class(mocked_operations)
-
-    instance.start_repeating(count=-1)
-    _ = [next(instance) for _ in range(0, 4)]
-    instance.stop_repeating()
-    _ = [next(instance) for _ in range(0, 4)]
