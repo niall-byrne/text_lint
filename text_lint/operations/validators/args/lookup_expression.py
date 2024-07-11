@@ -17,6 +17,9 @@ class LookupExpressionSetArg:
   def __iter__(self) -> Iterator["LookupExpression"]:
     return iter(self._lookup_expression_set)
 
+  def __len__(self) -> int:
+    return len(self._lookup_expression_set)
+
   @classmethod
   def create(
       cls, yaml_input: AliasYamlLookupExpressionSet
