@@ -2,6 +2,10 @@
 
 from unittest import mock
 
+import pytest
+from text_lint.__helpers__.validators import assert_is_validation_failure
+from text_lint.exceptions.validators import ValidationFailure
+from text_lint.utilities.translations import _
 from ..bases.state_base import StateBase
 from ..validator import ValidatorState
 
@@ -29,6 +33,26 @@ class TestValidatorState:
     assert isinstance(
         validator_state_instance,
         StateBase,
+    )
+
+  def test_fail__raises_exception(
+      self,
+      validator_state_instance: ValidatorState,
+  ) -> None:
+    mocked_translated_description = _("mocked_translated_description")
+    mocked_translated_detail = _("mocked_translated_detail")
+
+    with pytest.raises(ValidationFailure) as exc:
+      validator_state_instance.fail(
+          translated_description=mocked_translated_description,
+          translated_detail=mocked_translated_detail
+      )
+
+    assert_is_validation_failure(
+        exc=exc,
+        description_t=(mocked_translated_description,),
+        detail_t=(mocked_translated_detail,),
+        validator=validator_state_instance.operation,
     )
 
   def test_lookup_expression__calls_linter_methods(
