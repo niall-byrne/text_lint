@@ -49,6 +49,19 @@ class TestResultSetArg:
         lookups=[UpperLookup.operation]
     )
 
+  def test_len__no_result_sets__returns_expected_value(self) -> None:
+    instance = ResultSetArg(saved_result_set=[])
+
+    assert len(instance) == 0
+
+  def test_len__multiple_result_sets__returns_expected_value(
+      self,
+      result_set_instances: List[ResultSet],
+  ) -> None:
+    instance = ResultSetArg(saved_result_set=result_set_instances)
+
+    assert len(instance) == len(result_set_instances)
+
   def test_create__no_yaml_definition__does_not_create_result_sets(
       self
   ) -> None:
