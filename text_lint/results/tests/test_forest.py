@@ -116,7 +116,7 @@ class TestResultForest:
         mocked_requesting_operation,
     )
 
-  def test_lookup__existing__calls_all_lookup_operations(
+  def test_lookup__valid_operations__calls_all_lookup_operations(
       self,
       result_forest_instance: ResultForest,
       mocked_controller: mock.Mock,
@@ -136,7 +136,7 @@ class TestResultForest:
     for mock_operation in mocked_lookup_operations:
       mock_operation.apply.assert_called_once_with(mocked_controller)
 
-  def test_lookup__existing__returns_correct_results(
+  def test_lookup__valid_source__returns_correct_results(
       self,
       result_forest_instance: ResultForest,
       mocked_controller: mock.Mock,
@@ -154,7 +154,7 @@ class TestResultForest:
 
     assert lookup_results == [[mocked_requested_result.source]]
 
-  def test_lookup__no_existing__raises_does_not_exist(
+  def test_lookup__invalid_source__raises_does_not_exist(
       self,
       result_forest_instance: ResultForest,
       mocked_controller: mock.Mock,

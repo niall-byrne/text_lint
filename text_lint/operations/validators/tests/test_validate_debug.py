@@ -55,13 +55,13 @@ class TestValidateDebug:
 
   def test_initialize__creates_result_set_arg_instance(
       self,
-      mocked_result_set: List[str],
+      mocked_result_set_a: List[str],
       validate_debug_instance: ValidateDebug,
   ) -> None:
     assert isinstance(validate_debug_instance.saved_results, ResultSetArg)
     requested_results = list(validate_debug_instance.saved_results)
-    assert requested_results[0].name == mocked_result_set[0]
-    assert requested_results[1].name == mocked_result_set[1]
+    assert requested_results[0].name == mocked_result_set_a[0]
+    assert requested_results[1].name == mocked_result_set_a[1]
 
   def test_apply__valid_lookups__performs_each_expected_lookup(
       self,
@@ -88,15 +88,15 @@ class TestValidateDebug:
       self,
       method_mocker: "AliasMethodMocker",
       mocked_controller: mock.Mock,
-      mocked_result_set: List[str],
+      mocked_result_set_a: List[str],
       validate_debug_instance: ValidateDebug,
   ) -> None:
     mocked_print = method_mocker(validate_debug_instance.print)
     mocked_controller.forest.lookup.side_effect = ("result_0", "result_1")
     expected_mock_calls: List[str] = []
-    for index, mock_result in enumerate(mocked_result_set):
+    for index, mock_result in enumerate(mocked_result_set_a):
       expected_mock_calls.append(
-          ValidateDebug.msg_fmt_debug.format(mock_result)
+          validate_debug_instance.msg_fmt_debug.format(mock_result)
       )
       expected_mock_calls.append(
           json.dumps("result_{0}".format(index), indent=4, default=str)

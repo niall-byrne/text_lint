@@ -19,6 +19,9 @@ class ResultSetArg:
   def __init__(self, saved_result_set: List["ResultSet"]) -> None:
     self._saved_result_set = saved_result_set
 
+  def __len__(self) -> int:
+    return len(self._saved_result_set)
+
   def __iter__(self) -> Iterator["ResultSet"]:
     return iter(self._saved_result_set)
 
