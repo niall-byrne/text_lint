@@ -27,6 +27,7 @@ class DefaultLookup(LookupBase):
   """Default operation for unknown lookups on the ResultForest instances."""
 
   hint = _("handler for unknown lookups which may be result values or indexes")
+  internal_use_only = True
   operation = "default"
   yaml_example = YAML_EXAMPLE
 

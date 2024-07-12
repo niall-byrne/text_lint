@@ -29,6 +29,7 @@ class TestUpperLookup:
     attributes: AliasOperationAttributes = {
         "encoder_class": UpperCaseEncoder,
         "hint": "convert the saved result's values to uppercase",
+        "internal_use_only": False,
         "lookup_name": mocked_lookup_name,
         "operation": LOOKUP_TRANSFORMATION_PREFIX + "upper",
         "requesting_operation_name": mocked_requesting_operation_name,

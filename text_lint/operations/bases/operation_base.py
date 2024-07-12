@@ -11,6 +11,7 @@ class OperationBase(abc.ABC):
   """Text file operation base class."""
 
   hint: str
+  internal_use_only: bool = False
   operation: str
   yaml_example: str
 

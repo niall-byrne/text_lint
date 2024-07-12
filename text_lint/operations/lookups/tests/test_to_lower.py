@@ -29,6 +29,7 @@ class TestLowerLookup:
     attributes: AliasOperationAttributes = {
         "encoder_class": LowerCaseEncoder,
         "hint": "convert the saved result's values to lowercase",
+        "internal_use_only": False,
         "lookup_name": mocked_lookup_name,
         "operation": LOOKUP_TRANSFORMATION_PREFIX + "lower",
         "requesting_operation_name": mocked_requesting_operation_name,

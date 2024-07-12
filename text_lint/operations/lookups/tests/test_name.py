@@ -29,6 +29,7 @@ class TestNameLookup:
   ) -> None:
     attributes: AliasOperationAttributes = {
         "hint": "select a named entry from the saved result",
+        "internal_use_only": False,
         "lookup_name": mocked_lookup_name,
         "operation": "name",
         "requesting_operation_name": mocked_requesting_operation_name,

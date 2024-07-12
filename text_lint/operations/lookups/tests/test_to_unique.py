@@ -30,6 +30,7 @@ class TestUniqueLookup:
     attributes: AliasOperationAttributes = {
         "encoder_class": UniqueEncoder,
         "hint": "select only unique values from the saved result",
+        "internal_use_only": False,
         "lookup_name": mocked_lookup_name,
         "operation": LOOKUP_TRANSFORMATION_PREFIX + "unique",
         "requesting_operation_name": mocked_requesting_operation_name,

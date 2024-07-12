@@ -27,6 +27,7 @@ class TestAssertBlank:
   ) -> None:
     attributes: AliasOperationAttributes = {
         "hint": "sections must be separated by blank lines",
+        "internal_use_only": False,
         "matches": [],
         "name": "example assert blank rule",
         "operation": "assert_blank",

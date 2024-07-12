@@ -25,6 +25,7 @@ class TestNoopLookup:
   ) -> None:
     attributes: AliasOperationAttributes = {
         "hint": "a simple no-operation",
+        "internal_use_only": True,
         "lookup_name": mocked_lookup_name,
         "operation": "noop",
         "requesting_operation_name": mocked_requesting_operation_name,

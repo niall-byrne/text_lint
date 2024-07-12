@@ -26,6 +26,7 @@ class TestCaptureLookup:
   ) -> None:
     attributes: AliasOperationAttributes = {
         "hint": "select the next capture group of the saved result",
+        "internal_use_only": False,
         "lookup_name": mocked_lookup_name,
         "operation": "capture",
         "requesting_operation_name": mocked_requesting_operation_name,

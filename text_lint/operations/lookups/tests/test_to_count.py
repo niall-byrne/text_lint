@@ -30,6 +30,7 @@ class TestCountLookup:
   ) -> None:
     attributes: AliasOperationAttributes = {
         "hint": "convert the saved result to a counted value",
+        "internal_use_only": False,
         "lookup_name": mocked_lookup_name,
         "operation": LOOKUP_TRANSFORMATION_PREFIX + "count",
         "requesting_operation_name": mocked_requesting_operation_name,

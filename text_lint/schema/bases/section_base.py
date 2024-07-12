@@ -19,6 +19,9 @@ class SchemaSectionBase(Generic[TypeOperation]):
   operation_classes: Dict[str, Type["TypeOperation"]]
   entity_name: "str"
 
+  msg_fmt_restricted_operation = _(
+      "{0} #{1} this operation is for internal use only"
+  )
   msg_fmt_unknown_operation = _("{0} #{1} unknown operation")
   msg_fmt_unknown_syntax = _("{0} #{1} unknown syntax")
   msg_fmt_invalid_regex = _("{0} #{1} invalid regex")
@@ -58,6 +61,16 @@ class SchemaSectionBase(Generic[TypeOperation]):
       linter_operation = operation_definition["operation"]
       try:
         operation_class = self.operation_classes[linter_operation]
+        if operation_class.internal_use_only:
+          raise self._schema.create_exception(
+              description=f(
+                  self.msg_fmt_restricted_operation,
+                  self.entity_name,
+                  operation_index + 1,
+                  nl=1,
+              ),
+              operation_definition=operation_definition,
+          )
         operation_definition = self.hook_create_operation_instance(
             operation_class,
             operation_definition,

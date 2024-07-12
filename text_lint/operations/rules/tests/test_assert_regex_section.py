@@ -29,6 +29,7 @@ class TestAssertRegexSection:
                 "sections must be separated and contain lines that match "
                 "this regex"
             ),
+        "internal_use_only": False,
         "matches": [],
         "name": "example assert regex section rule",
         "operation": "assert_regex_section",
@@ -55,6 +56,7 @@ class TestAssertRegexSection:
                 "sections must be separated and contain lines that match "
                 "this regex"
             ),
+        "internal_use_only": False,
         "matches": [],
         "name": "example assert regex section rule",
         "operation": "assert_regex_section",

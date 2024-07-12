@@ -20,6 +20,7 @@ class TestRuleRegexBase:
   ) -> None:
     attributes: AliasOperationAttributes = {
         "hint": "a concrete regex hint",
+        "internal_use_only": False,
         "matches": [],
         "name": "concrete name",
         "operation": concrete_rule_regex_base_class.operation,
@@ -42,6 +43,7 @@ class TestRuleRegexBase:
   ) -> None:
     attributes: AliasOperationAttributes = {
         "hint": "a concrete regex hint",
+        "internal_use_only": False,
         "matches": [],
         "name": "concrete name",
         "operation": concrete_rule_regex_base_class.operation,

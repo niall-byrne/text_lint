@@ -31,6 +31,9 @@ class TestSchemaSectionBase:
       concrete_schema_section_instance: SchemaSectionBase[mock.Mock],
   ) -> None:
     assert_is_translated(
+        concrete_schema_section_instance.msg_fmt_restricted_operation
+    )
+    assert_is_translated(
         concrete_schema_section_instance.msg_fmt_unknown_operation
     )
     assert_is_translated(
@@ -75,6 +78,28 @@ class TestSchemaSectionBase:
             cloned_schema[index],
         ) for index in range(0, len(cloned_schema))
     ]
+
+  def test_load__defined_section__internal_operation__raises_schema_exception(
+      self,
+      concrete_schema_section_instance: SchemaSectionBase[mock.Mock],
+      mocked_operation_classes: Dict[str, mock.Mock],
+      mocked_schema: mock.Mock,
+  ) -> None:
+    mocked_operation_classes["A"].internal_use_only = True
+
+    with pytest.raises(SchemaError) as exc:
+      concrete_schema_section_instance.load(deepcopy(schemas.one_simple_rule))
+
+    assert_is_schema_error(
+        exc=exc,
+        description_t=(
+            concrete_schema_section_instance.msg_fmt_restricted_operation,
+            concrete_schema_section_instance.entity_name,
+            1,
+        ),
+        rule_definition=schemas.one_simple_rule[0],
+        schema_path=mocked_schema.path,
+    )
 
   @pytest.mark.parametrize(
       "invalid_schema_rules",
