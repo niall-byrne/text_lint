@@ -24,6 +24,7 @@ class TestAssertRegex:
   def test_initialize__defaults__attributes(self) -> None:
     attributes: AliasOperationAttributes = {
         "hint": "this line must match the regex",
+        "internal_use_only": False,
         "name": "example assert regex assertion",
         "operation": "assert_regex",
         "regex": "^([a-z-]+):\\s.+$",
@@ -45,6 +46,7 @@ class TestAssertRegex:
   ) -> None:
     attributes: AliasOperationAttributes = {
         "hint": "this line must match the regex",
+        "internal_use_only": False,
         "name": "example assert regex assertion",
         "operation": "assert_regex",
         "regex": "^([a-z-]+):\\s.+$",

@@ -22,6 +22,7 @@ class TestAssertionRegexBase:
   ) -> None:
     attributes: AliasOperationAttributes = {
         "hint": "a concrete regex hint",
+        "internal_use_only": False,
         "name": "concrete name",
         "operation": concrete_assertion_regex_base_class.operation,
         "regex": r'(.*).py',
@@ -43,6 +44,7 @@ class TestAssertionRegexBase:
   ) -> None:
     attributes: AliasOperationAttributes = {
         "hint": "a concrete regex hint",
+        "internal_use_only": False,
         "name": "concrete name",
         "operation": concrete_assertion_regex_base_class.operation,
         "regex": r'[a-z]+',

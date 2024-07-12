@@ -18,6 +18,7 @@ class TestValidatorBase:
   ) -> None:
     attributes: AliasOperationAttributes = {
         "hint": "mocked_validator_base_hint",
+        "internal_use_only": False,
         "name": mocked_validator_name,
         "operation": "mocked_validator_base_operation",
         "yaml_example": "mocked_validator_base_yaml_example",
