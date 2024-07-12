@@ -29,6 +29,7 @@ class TestAssertSequenceBegins:
     attributes: AliasOperationAttributes = {
         "count": 2,
         "hint": "identify a repeating sequence of assertions",
+        "internal_use_only": False,
         "name": "example assert sequence begins assertion",
         "operation": "assert_sequence_begins",
         "assertions": mocked_nested_assertions,
