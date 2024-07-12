@@ -38,14 +38,17 @@ def mocked_operation_classes() -> Dict[str, mock.Mock]:
   class OperationA(mock.Mock):
     operation = "A"
     hint = "hint_a"
+    internal_use_only = False
 
   class OperationB(mock.Mock):
     operation = "B"
     hint = "hint_b"
+    internal_use_only = False
 
   class OperationC(mock.Mock):
     operation = "C"
     hint = "hint_c"
+    internal_use_only = False
 
   return {"A": OperationA(), "B": OperationB(), "C": OperationC()}
 

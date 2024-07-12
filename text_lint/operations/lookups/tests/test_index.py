@@ -27,6 +27,7 @@ class TestIndexLookup:
   ) -> None:
     attributes: AliasOperationAttributes = {
         "hint": "select a value from a save id by index",
+        "internal_use_only": False,
         "is_positional": False,
         "lookup_expression": mocked_lookup_expression,
         "lookup_name": "1",

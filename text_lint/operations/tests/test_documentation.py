@@ -5,7 +5,7 @@ from unittest import mock
 
 import pytest
 from text_lint.__helpers__.translations import assert_is_translated
-from text_lint.config import LOOKUP_SENTINEL, NEW_LINE
+from text_lint.config import NEW_LINE
 from text_lint.operations.assertions import AssertBlank, assertion_registry
 from text_lint.operations.lookups import LowerLookup, lookup_registry
 from text_lint.operations.validators import ValidateDebug, validator_registry
@@ -15,21 +15,31 @@ if TYPE_CHECKING:  # pragma: no cover
   from typing import Any
 
   from text_lint.operations.bases.operation_base import OperationBase
+  from ..documentation import AliasRegistry
 
 
 class TestOperationDocumentation:
   """Tests for the OperationDocumentation class."""
 
-  def test_initialize__attributes(self) -> None:
-    filtered_lookups_registry = dict(lookup_registry)
-    del filtered_lookups_registry[LOOKUP_SENTINEL]
+  def filter(
+      self,
+      registry: "AliasRegistry",
+  ) -> "AliasRegistry":
+    return {
+        operation_name: operation_class
+        for (operation_name, operation_class) in registry.items()
+        if not operation_class.internal_use_only
+    }
 
+  def test_initialize__attributes(self) -> None:
     instance = OperationDocumentation()
 
     assert instance.content == ""
-    assert instance.registries["Assertion"] == assertion_registry
-    assert instance.registries["Validator"] == validator_registry
-    assert instance.registries["Validator Lookup"] == filtered_lookups_registry
+    assert instance.registries["Assertion"] == self.filter(assertion_registry)
+    assert instance.registries["Validator"] == self.filter(validator_registry)
+    assert instance.registries["Validator Lookup"] == self.filter(
+        lookup_registry
+    )
 
   def test_initialize__translations(self) -> None:
     instance = OperationDocumentation()

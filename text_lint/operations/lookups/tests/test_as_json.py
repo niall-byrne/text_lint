@@ -29,6 +29,7 @@ class TestJsonLookup:
     attributes: AliasOperationAttributes = {
         "encoder_class": ResultTreeEncoder,
         "hint": "create a JSON representation of a save id",
+        "internal_use_only": False,
         "is_positional": True,
         "lookup_expression": mocked_lookup_expression,
         "lookup_name": mocked_lookup_name,

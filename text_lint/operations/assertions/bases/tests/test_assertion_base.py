@@ -26,6 +26,7 @@ class TestAssertionBase:
   ) -> None:
     attributes: AliasOperationAttributes = {
         "hint": "a concrete hint",
+        "internal_use_only": False,
         "name": "concrete name",
         "operation": concrete_assertion_base_class.operation,
         "save": None,
@@ -44,6 +45,7 @@ class TestAssertionBase:
   ) -> None:
     attributes: AliasOperationAttributes = {
         "hint": "a concrete hint",
+        "internal_use_only": False,
         "name": "concrete name",
         "operation": concrete_assertion_base_class.operation,
         "save": "save_id",

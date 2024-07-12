@@ -3,7 +3,7 @@
 import sys
 from typing import TYPE_CHECKING, List, Mapping, Tuple, Type
 
-from text_lint.config import LOOKUP_SENTINEL, NEW_LINE
+from text_lint.config import NEW_LINE
 from text_lint.operations.assertions import assertion_registry
 from text_lint.operations.lookups import lookup_registry
 from text_lint.operations.validators import validator_registry
@@ -36,13 +36,17 @@ class OperationDocumentation:
   msg_fmt_operation_unknown = _("Unknown operation '{0}' !")
 
   def __init__(self) -> None:
-    filtered_lookup_registry = dict(lookup_registry)
-    del filtered_lookup_registry[LOOKUP_SENTINEL]
-
     self.registries = {
-        "Assertion": assertion_registry,
-        "Validator": validator_registry,
-        "Validator Lookup": filtered_lookup_registry,
+        "Assertion": self._filter_registry(assertion_registry),
+        "Validator": self._filter_registry(validator_registry),
+        "Validator Lookup": self._filter_registry(lookup_registry),
+    }
+
+  def _filter_registry(self, registry: AliasRegistry) -> AliasRegistry:
+    return {
+        operation_name: operation_class
+        for (operation_name, operation_class) in registry.items()
+        if not operation_class.internal_use_only
     }
 
   def list(self) -> None:
