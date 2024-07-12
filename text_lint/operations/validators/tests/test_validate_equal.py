@@ -26,6 +26,7 @@ class TestValidateEqual:
   ) -> None:
     attributes: AliasOperationAttributes = {
         "hint": "validates equality between sets of values",
+        "internal_use_only": False,
         "name": mocked_validator_name,
         "operation": "validate_equal",
         "yaml_example": YAML_EXAMPLE,

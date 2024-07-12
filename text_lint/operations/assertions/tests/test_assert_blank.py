@@ -21,6 +21,7 @@ class TestAssertBlank:
   ) -> None:
     attributes: AliasOperationAttributes = {
         "hint": "the line contains no text",
+        "internal_use_only": False,
         "name": "example assert blank assertion",
         "operation": "assert_blank",
         "save": None,

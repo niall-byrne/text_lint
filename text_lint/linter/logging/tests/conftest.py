@@ -12,6 +12,7 @@ from text_lint.operations.validators.bases.validator_base import ValidatorBase
 @pytest.fixture
 def mocked_assertion() -> mock.Mock:
   instance = mock.Mock(spec=AssertionBase)
+  instance.internal_use_only = False
   instance.name = "mocked assertion name"
   instance.operation = "mocked assertion operation"
   return instance

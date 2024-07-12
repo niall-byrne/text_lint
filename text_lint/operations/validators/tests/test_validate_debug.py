@@ -27,6 +27,7 @@ class TestValidateDebug:
   ) -> None:
     attributes: AliasOperationAttributes = {
         "hint": "output save id lookups to the console",
+        "internal_use_only": False,
         "name": mocked_validator_name,
         "operation": "validate_debug",
         "yaml_example": YAML_EXAMPLE,

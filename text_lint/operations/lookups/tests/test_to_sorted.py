@@ -33,6 +33,7 @@ class TestSortedLookup:
     attributes: AliasOperationAttributes = {
         "encoder_class": SortedEncoder,
         "hint": "sort the values of a save id",
+        "internal_use_only": False,
         "is_positional": False,
         "lookup_expression": mocked_lookup_expression,
         "lookup_name": mocked_lookup_name,

@@ -107,6 +107,9 @@ class Logger:
       assertion: "AssertionBase",
       index: int,
   ) -> None:
+    if assertion.internal_use_only:
+      return
+
     if index >= self.linter.textfile.index - 1:
       line_identifier = "{0}".format(index + 1)
     else:

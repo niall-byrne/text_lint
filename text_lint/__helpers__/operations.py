@@ -7,7 +7,12 @@ from text_lint.operations.bases.operation_base import OperationBase
 
 AliasOperationAttributes = Dict[str, Any]
 
-REQUIRED_ATTRIBUTES = ["hint", "operation", "yaml_example"]
+REQUIRED_ATTRIBUTES = [
+    "internal_use_only",
+    "hint",
+    "operation",
+    "yaml_example",
+]
 
 
 def assert_operation_attributes(

@@ -23,6 +23,7 @@ class AssertSequenceEnds(AssertionBase):
   """Inform the linter to stop repeating assertions."""
 
   hint = _("reserved")
+  internal_use_only = True
   operation = "assert_sequence_ends"
   yaml_example = YAML_EXAMPLE
 
