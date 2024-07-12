@@ -68,6 +68,23 @@ class TestLogger:
     assert stdout == new_line(fmt_string.format(mocked_message))
     assert stderr == ""
 
+  def test_call__assertion__internal_use_only__correct_stdout(
+      self,
+      logger_instance: Logger,
+      mocked_assertion: mock.Mock,
+      mocked_linter: mock.Mock,
+      capfd: pytest.CaptureFixture[str],
+  ) -> None:
+    mocked_assertion.internal_use_only = True
+    text_file_start_index = 10
+    mocked_linter.textfile.index = text_file_start_index
+
+    logger_instance(mocked_assertion, index=text_file_start_index)
+
+    stdout, stderr = capfd.readouterr()
+    assert stdout == ""
+    assert stderr == ""
+
   def test_call__assertion__current_index__correct_stdout(
       self,
       logger_instance: Logger,

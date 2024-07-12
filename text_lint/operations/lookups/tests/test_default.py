@@ -38,6 +38,7 @@ class TestDefaultLookup:
                 "handler for unknown lookups which may be "
                 "static values or indexes"
             ),
+        "internal_use_only": True,
         "is_positional": False,
         "lookup_expression": mocked_lookup_expression,
         "lookup_name": lookup_name,

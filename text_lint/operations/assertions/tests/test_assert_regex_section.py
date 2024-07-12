@@ -29,6 +29,7 @@ class TestAssertRegexSection:
                 "one or more adjacent lines (the 'section') "
                 "must match this regex"
             ),
+        "internal_use_only": False,
         "name": "example assert regex section assertion",
         "operation": "assert_regex_section",
         "regex": "^([a-z-]+):\\s(.+)$",
@@ -54,6 +55,7 @@ class TestAssertRegexSection:
                 "one or more adjacent lines (the 'section') "
                 "must match this regex"
             ),
+        "internal_use_only": False,
         "name": "example assert regex section assertion",
         "operation": "assert_regex_section",
         "regex": "^([a-z-]+):\\s(.+)$",

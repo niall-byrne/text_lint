@@ -30,6 +30,7 @@ class DefaultLookup(LookupBase):
   hint = _(
       "handler for unknown lookups which may be static values or indexes"
   )
+  internal_use_only = True
   operation = "default"
   yaml_example = YAML_EXAMPLE
 

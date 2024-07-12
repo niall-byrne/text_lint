@@ -23,6 +23,7 @@ class TestLookupBase:
     attributes: AliasOperationAttributes = {
         "hint": "mocked_hint_lookup",
         "is_positional": False,
+        "internal_use_only": False,
         "lookup_expression": mocked_lookup_expression,
         "lookup_name": mocked_lookup_name,
         "operation": "mocked_operation_lookup",
