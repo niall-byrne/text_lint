@@ -33,6 +33,7 @@ class TestReversedLookup:
     attributes: AliasOperationAttributes = {
         "encoder_class": ReversedEncoder,
         "hint": "reverse the order of the saved results",
+        "internal_use_only": False,
         "lookup_name": mocked_lookup_name,
         "operation": LOOKUP_TRANSFORMATION_PREFIX + "reversed",
         "requesting_operation_name": mocked_requesting_operation_name,

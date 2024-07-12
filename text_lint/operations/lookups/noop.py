@@ -22,6 +22,7 @@ class NoopLookup(LookupBase):
   """NoopLookup operation for ResultForest instances."""
 
   hint = _("a simple no-operation")
+  internal_use_only = True
   operation = "noop"
   yaml_example = YAML_EXAMPLE
 

@@ -24,6 +24,7 @@ class TestAssertRegex:
   def test_initialize__defaults__attributes(self) -> None:
     attributes: AliasOperationAttributes = {
         "hint": "this line must match the regex",
+        "internal_use_only": False,
         "matches": [],
         "name": "example assert regex rule",
         "operation": "assert_regex",
@@ -46,6 +47,7 @@ class TestAssertRegex:
   ) -> None:
     attributes: AliasOperationAttributes = {
         "hint": "this line must match the regex",
+        "internal_use_only": False,
         "matches": [],
         "name": "example assert regex rule",
         "operation": "assert_regex",

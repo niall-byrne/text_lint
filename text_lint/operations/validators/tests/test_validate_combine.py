@@ -28,6 +28,7 @@ class TestValidateCombine:
   ) -> None:
     attributes: AliasOperationAttributes = {
         "hint": "combines a set of lookups into a new saved result",
+        "internal_use_only": False,
         "name": mocked_validator_name,
         "operation": "validate_combine",
         "yaml_example": YAML_EXAMPLE,

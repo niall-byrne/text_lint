@@ -23,6 +23,7 @@ class AssertSequenceEnds(RuleBase):
   """Inform the parser to stop repeating rules."""
 
   hint = _("reserved")
+  internal_use_only = True
   operation = "assert_sequence_ends"
   yaml_example = YAML_EXAMPLE
 

@@ -30,9 +30,10 @@ class TestValidationComparisonBase:
   ) -> None:
     attributes: AliasOperationAttributes = {
         "hint": "mocked_hint",
+        "internal_use_only": False,
         "name": mocked_validator_name,
         "operation": "mocked_operation",
-        "yaml_example": "mocked_yaml_example",
+        "yaml_example": "mocked_validator_comparison_base_yaml_example",
     }
 
     assert_operation_attributes(

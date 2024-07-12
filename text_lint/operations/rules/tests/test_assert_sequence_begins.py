@@ -29,6 +29,7 @@ class TestAssertSequenceBegins:
     attributes: AliasOperationAttributes = {
         "count": 2,
         "hint": "identify a repeating sequence of parser rules",
+        "internal_use_only": False,
         "matches": [],
         "name": "example assert sequence begins rule",
         "operation": "assert_sequence_begins",

@@ -26,6 +26,7 @@ class TestGroupLookup:
   ) -> None:
     attributes: AliasOperationAttributes = {
         "hint": "group the currently selected values of the saved result",
+        "internal_use_only": False,
         "lookup_name": mocked_lookup_name,
         "operation": "group",
         "requesting_operation_name": mocked_requesting_operation_name,

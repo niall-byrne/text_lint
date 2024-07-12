@@ -26,6 +26,7 @@ class TestUniqueFilterLookup:
   ) -> None:
     attributes: AliasOperationAttributes = {
         "hint": "filter unique values from the saved result",
+        "internal_use_only": False,
         "lookup_name": mocked_lookup_name,
         "operation": "unique",
         "requesting_operation_name": mocked_requesting_operation_name,

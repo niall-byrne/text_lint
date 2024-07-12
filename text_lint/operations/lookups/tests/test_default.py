@@ -38,6 +38,7 @@ class TestDefaultLookup:
                 "handler for unknown lookups which may be "
                 "result values or indexes"
             ),
+        "internal_use_only": True,
         "lookup_name": lookup_name,
         "operation": "default",
         "requesting_operation_name": mocked_requesting_operation_name,

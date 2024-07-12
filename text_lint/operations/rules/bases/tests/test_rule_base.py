@@ -20,6 +20,7 @@ class TestRuleBase:
   ) -> None:
     attributes: AliasOperationAttributes = {
         "hint": "a concrete hint",
+        "internal_use_only": False,
         "matches": [],
         "name": "concrete name",
         "operation": concrete_rule_base_class.operation,
@@ -39,6 +40,7 @@ class TestRuleBase:
   ) -> None:
     attributes: AliasOperationAttributes = {
         "hint": "a concrete hint",
+        "internal_use_only": False,
         "matches": [],
         "name": "concrete name",
         "operation": concrete_rule_base_class.operation,

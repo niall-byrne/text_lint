@@ -19,6 +19,7 @@ class TestAssertSequenceEnds:
   ) -> None:
     attributes: AliasOperationAttributes = {
         "hint": "reserved",
+        "internal_use_only": True,
         "matches": [],
         "name": "example assert sequence ends rule",
         "operation": "assert_sequence_ends",

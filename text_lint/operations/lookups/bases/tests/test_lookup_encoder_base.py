@@ -25,6 +25,7 @@ class TestLookupEncoderBase:
     attributes: AliasOperationAttributes = {
         "encoder_class": mocked_encoder_class,
         "hint": "mocked_hint_lookup_encoder",
+        "internal_use_only": False,
         "lookup_name": mocked_lookup_name,
         "operation": "mocked_operation_lookup_encoder",
         "requesting_operation_name": mocked_requesting_operation_name,
