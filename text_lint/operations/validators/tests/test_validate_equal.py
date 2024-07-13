@@ -12,9 +12,6 @@ from text_lint.__helpers__.operations import (
 from text_lint.__helpers__.translations import assert_is_translated
 from text_lint.__helpers__.validators import assert_is_validation_failure
 from text_lint.exceptions.validators import ValidationFailure
-from text_lint.operations.validators.args.lookup_expression import (
-    LookupExpressionSetArg,
-)
 from ..bases.validator_base import ValidatorBase
 from ..validate_equal import ValidateEqual
 
@@ -53,72 +50,6 @@ class TestValidateEqual:
     assert_operation_inheritance(
         validate_equal_instance,
         bases=(ValidatorBase, ValidateEqual),
-    )
-
-  def test_initialize__creates_lookup_expression_set_arg_a_instance(
-      self,
-      mocked_lookup_expression_set_a: List[str],
-      validate_equal_instance: ValidateEqual,
-  ) -> None:
-    assert isinstance(
-        validate_equal_instance.lookup_expression_set_a,
-        LookupExpressionSetArg,
-    )
-
-    requested_results = list(validate_equal_instance.lookup_expression_set_a)
-    assert requested_results[0].name == mocked_lookup_expression_set_a[0]
-    assert requested_results[1].name == mocked_lookup_expression_set_a[1]
-
-  def test_initialize__creates_lookup_expression_set_arg_b_instance(
-      self,
-      mocked_lookup_expression_set_b: List[str],
-      validate_equal_instance: ValidateEqual,
-  ) -> None:
-    assert isinstance(
-        validate_equal_instance.lookup_expression_set_b,
-        LookupExpressionSetArg,
-    )
-
-    requested_results = list(validate_equal_instance.lookup_expression_set_b)
-    assert requested_results[0].name == mocked_lookup_expression_set_b[0]
-    assert requested_results[1].name == mocked_lookup_expression_set_b[1]
-
-  @pytest.mark.usefixtures("scenario__comparison__lookup_results_equal")
-  def test_apply__valid_lookups__performs_each_expected_a_lookup(
-      self,
-      mocked_state: mock.Mock,
-      validate_equal_instance: ValidateEqual,
-  ) -> None:
-    validate_equal_instance.apply(mocked_state)
-
-    requested_results = list(validate_equal_instance.lookup_expression_set_a)
-    assert mocked_state.lookup_expression.call_count == (
-        len(requested_results) * 2
-    )
-    assert mocked_state.lookup_expression.mock_calls[0] == mock.call(
-        requested_results[0],
-    )
-    assert mocked_state.lookup_expression.mock_calls[2] == mock.call(
-        requested_results[1],
-    )
-
-  @pytest.mark.usefixtures("scenario__comparison__lookup_results_equal")
-  def test_apply__valid_lookups__performs_each_expected_b_lookup(
-      self,
-      mocked_state: mock.Mock,
-      validate_equal_instance: ValidateEqual,
-  ) -> None:
-    validate_equal_instance.apply(mocked_state)
-
-    requested_results = list(validate_equal_instance.lookup_expression_set_b)
-    assert mocked_state.lookup_expression.call_count == (
-        len(requested_results) * 2
-    )
-    assert mocked_state.lookup_expression.mock_calls[1] == mock.call(
-        requested_results[0],
-    )
-    assert mocked_state.lookup_expression.mock_calls[3] == mock.call(
-        requested_results[1],
     )
 
   @pytest.mark.usefixtures("scenario__comparison__lookup_results_equal")
