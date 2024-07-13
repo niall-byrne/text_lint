@@ -6,6 +6,7 @@ from unittest import mock
 
 import pytest
 from .. import lower, tree, unique, upper
+from ..sorted import SortedEncoder
 
 
 class AliasSetupEncoderMock(Protocol):
@@ -35,6 +36,11 @@ def concrete_lower_case_encoder_instance() -> lower.LowerCaseEncoder:
 @pytest.fixture
 def concrete_result_tree_encoder_instance() -> tree.ResultTreeEncoder:
   return tree.ResultTreeEncoder()
+
+
+@pytest.fixture
+def concrete_sorted_encoder_instance() -> SortedEncoder:
+  return SortedEncoder()
 
 
 @pytest.fixture
