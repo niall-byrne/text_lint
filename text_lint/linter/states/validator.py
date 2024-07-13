@@ -15,6 +15,7 @@ if TYPE_CHECKING:  # no cover
       ValidatorBase,
   )
   from text_lint.results.forest import AliasLookupResult
+  from text_lint.results.tree import ResultTree
 
 
 class ValidatorState(StateBase):
@@ -49,3 +50,8 @@ class ValidatorState(StateBase):
         self._linter,
         lookup_expression,
     )
+
+  def save(self, tree: "ResultTree") -> None:
+    """Save the given result tree."""
+
+    self._linter.forest.add(tree)
