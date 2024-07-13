@@ -16,6 +16,7 @@ from .. import (
     to_count,
     to_json,
     to_lower,
+    to_reversed,
     to_sorted,
     to_unique,
     to_upper,
@@ -232,6 +233,19 @@ def to_lower_lookup_instance(
 ) -> to_lower.LowerLookup:
   setup_encoder_lookup()
   return to_lower.LowerLookup(
+      mocked_lookup_name,
+      mocked_result_set,
+      mocked_requesting_operation_name,
+  )
+
+
+@pytest.fixture
+def to_reversed_lookup_instance(
+    mocked_lookup_name: str,
+    mocked_requesting_operation_name: str,
+    mocked_result_set: mock.Mock,
+) -> to_reversed.ReversedLookup:
+  return to_reversed.ReversedLookup(
       mocked_lookup_name,
       mocked_result_set,
       mocked_requesting_operation_name,

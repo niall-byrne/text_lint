@@ -12,6 +12,7 @@ from .noop import NoopLookup
 from .to_count import CountLookup
 from .to_json import JsonLookup
 from .to_lower import LowerLookup
+from .to_reversed import ReversedLookup
 from .to_sorted import SortedLookup
 from .to_unique import UniqueLookup
 from .to_upper import UpperLookup
@@ -26,6 +27,7 @@ lookup_registry: Dict[str, Type[LookupBase]] = defaultdict(
         JsonLookup.operation: JsonLookup,
         LowerLookup.operation: LowerLookup,
         NoopLookup.operation: NoopLookup,
+        ReversedLookup.operation: ReversedLookup,
         SortedLookup.operation: SortedLookup,
         UniqueFilterLookup.operation: UniqueFilterLookup,
         UniqueLookup.operation: UniqueLookup,
