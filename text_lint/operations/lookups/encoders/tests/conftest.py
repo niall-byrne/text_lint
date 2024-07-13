@@ -6,6 +6,7 @@ from unittest import mock
 
 import pytest
 from .. import lower
+from .. import reversed as reversed_module
 from .. import sorted as sorted_module
 from .. import tree, unique, upper
 
@@ -37,6 +38,11 @@ def lower_case_encoder_instance() -> lower.LowerCaseEncoder:
 @pytest.fixture
 def result_tree_encoder_instance() -> tree.ResultTreeEncoder:
   return tree.ResultTreeEncoder()
+
+
+@pytest.fixture
+def reversed_encoder_instance() -> reversed_module.ReversedEncoder:
+  return reversed_module.ReversedEncoder()
 
 
 @pytest.fixture
