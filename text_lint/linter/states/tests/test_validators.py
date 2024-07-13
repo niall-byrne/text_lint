@@ -70,3 +70,14 @@ class TestValidatorState:
         mocked_linter,
         mocked_lookup_expression,
     )
+
+  def test_save__calls_linter_methods(
+      self,
+      validator_state_instance: ValidatorState,
+      mocked_linter: mock.Mock,
+  ) -> None:
+    mocked_result_tree = mock.Mock()
+
+    validator_state_instance.save(mocked_result_tree)
+
+    mocked_linter.forest.add.assert_called_once_with(mocked_result_tree)

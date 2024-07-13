@@ -5,9 +5,14 @@ from typing import List
 from unittest import mock
 
 import pytest
-from .. import validate_debug, validate_equal
+from .. import validate_combine, validate_debug, validate_equal
 # pylint: disable=wildcard-import,unused-wildcard-import
 from .scenarios import *
+
+
+@pytest.fixture
+def mocked_combined_result_tree_name() -> str:
+  return "mocked_combined_result_name"
 
 
 @pytest.fixture
@@ -18,6 +23,19 @@ def mocked_state() -> mock.Mock:
 @pytest.fixture
 def mocked_validator_name() -> str:
   return "mocked_validator_name"
+
+
+@pytest.fixture
+def validate_combine_instance(
+    mocked_combined_result_tree_name: str,
+    mocked_lookup_expression_set_a: List[str],
+    mocked_validator_name: str,
+) -> validate_combine.ValidateCombine:
+  return validate_combine.ValidateCombine(
+      mocked_validator_name,
+      new_saved=mocked_combined_result_tree_name,
+      saved=mocked_lookup_expression_set_a,
+  )
 
 
 @pytest.fixture

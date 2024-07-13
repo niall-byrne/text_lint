@@ -1,7 +1,12 @@
 """Test the validator_registry dictionary."""
 
 import pytest
-from .. import ValidateDebug, ValidateEqual, validator_registry
+from .. import (
+    ValidateCombine,
+    ValidateDebug,
+    ValidateEqual,
+    validator_registry,
+)
 
 
 class TestValidatorRegistry:
@@ -13,6 +18,7 @@ class TestValidatorRegistry:
       index: int,
   ) -> None:
     expected_operations = [
+        ValidateCombine.operation,
         ValidateDebug.operation,
         ValidateEqual.operation,
     ]
