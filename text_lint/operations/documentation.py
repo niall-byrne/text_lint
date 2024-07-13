@@ -3,14 +3,20 @@
 import sys
 from typing import TYPE_CHECKING, List, Mapping, Tuple, Type
 
-from text_lint.config import NEW_LINE
-from text_lint.operations.lookups import lookup_registry
+from text_lint.config import LOOKUP_STATIC_VALUE_MARKER, NEW_LINE
+from text_lint.operations.lookups import (
+    IndexLookup,
+    NameLookup,
+    lookup_registry,
+)
 from text_lint.operations.rules import rule_registry
 from text_lint.operations.validators import validator_registry
 from text_lint.utilities.translations import _, f
 
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.operations.bases.operation_base import OperationBase
+
+REGISTRY_NAMES = ["Parser Rule", "Validator", "Validator Lookup"]
 
 AliasRegistry = Mapping[str, Type["OperationBase"]]
 
@@ -35,9 +41,9 @@ class OperationDocumentation:
 
   def __init__(self) -> None:
     self.registries = {
-        "Parser Rule": self._filter_registry(rule_registry),
-        "Validator": self._filter_registry(validator_registry),
-        "Validator Lookup": self._filter_registry(lookup_registry),
+        REGISTRY_NAMES[0]: self._filter_registry(rule_registry),
+        REGISTRY_NAMES[1]: self._filter_registry(validator_registry),
+        REGISTRY_NAMES[2]: self._filter_registry(lookup_registry),
     }
 
   def _filter_registry(self, registry: AliasRegistry) -> AliasRegistry:
@@ -77,18 +83,50 @@ class OperationDocumentation:
     """Search the documentation for the specified operation name."""
 
     for registry_type, registry in self.registries.items():
-      current_registry = dict(registry)
-      if operation_name in current_registry:
+      try:
+        operation_class = self._registry_search(
+            registry_type, dict(registry), operation_name
+        )
         self._create_operation_documentation_content(
-            current_registry[operation_name],
+            operation_class,
             registry_type,
         )
         break
+      except KeyError:
+        continue
     else:
       self.content += f(
           self.msg_fmt_operation_unknown,
           operation_name,
       )
+
+  def _registry_search(
+      self,
+      registry_type: str,
+      registry: AliasRegistry,
+      key: str,
+  ) -> Type["OperationBase"]:
+    if registry_type == REGISTRY_NAMES[2]:
+      return self._registry_lookup_extended_search(registry, key)
+    return self._registry_standard_search(registry, key)
+
+  def _registry_standard_search(
+      self,
+      registry: AliasRegistry,
+      key: str,
+  ) -> Type["OperationBase"]:
+    return registry[key]
+
+  def _registry_lookup_extended_search(
+      self,
+      registry: AliasRegistry,
+      key: str,
+  ) -> Type["OperationBase"]:
+    if key.startswith(LOOKUP_STATIC_VALUE_MARKER):
+      return NameLookup
+    if key.isdigit():
+      return IndexLookup
+    return self._registry_standard_search(registry, key)
 
   def _create_operation_documentation_content(
       self,
