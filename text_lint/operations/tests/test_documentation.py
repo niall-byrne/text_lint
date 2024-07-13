@@ -1,15 +1,21 @@
 """Tests for the OperationDocumentation class."""
 
+import random
 from typing import TYPE_CHECKING, List, Tuple, Type
 from unittest import mock
 
 import pytest
 from text_lint.__helpers__.translations import assert_is_translated
-from text_lint.config import NEW_LINE
+from text_lint.config import LOOKUP_STATIC_VALUE_MARKER, NEW_LINE
 from text_lint.operations.assertions import AssertBlank, assertion_registry
-from text_lint.operations.lookups import LowerLookup, lookup_registry
+from text_lint.operations.lookups import (
+    IndexLookup,
+    LowerLookup,
+    NameLookup,
+    lookup_registry,
+)
 from text_lint.operations.validators import ValidateDebug, validator_registry
-from ..documentation import OperationDocumentation
+from ..documentation import REGISTRY_NAMES, OperationDocumentation
 
 if TYPE_CHECKING:  # pragma: no cover
   from typing import Any
@@ -35,11 +41,12 @@ class TestOperationDocumentation:
     instance = OperationDocumentation()
 
     assert instance.content == ""
-    assert instance.registries["Assertion"] == self.filter(assertion_registry)
-    assert instance.registries["Validator"] == self.filter(validator_registry)
-    assert instance.registries["Validator Lookup"] == self.filter(
-        lookup_registry
-    )
+    assert instance.registries[REGISTRY_NAMES[0]] == \
+        self.filter(assertion_registry)
+    assert instance.registries[REGISTRY_NAMES[1]] == \
+        self.filter(validator_registry)
+    assert instance.registries[REGISTRY_NAMES[2]] == \
+        self.filter(lookup_registry)
 
   def test_initialize__translations(self) -> None:
     instance = OperationDocumentation()
@@ -66,10 +73,7 @@ class TestOperationDocumentation:
         ]
     )
 
-  @pytest.mark.parametrize(
-      "registry",
-      ["Assertion", "Validator", "Validator Lookup"],
-  )
+  @pytest.mark.parametrize("registry", REGISTRY_NAMES)
   def test_list__vary_registry__generates_correct_content(
       self,
       registry: str,
@@ -93,16 +97,26 @@ class TestOperationDocumentation:
       )
 
   @pytest.mark.parametrize(
-      "operation_class,registry_type",
+      "operation_class,operation_name,registry_type",
       [
-          (AssertBlank, "Assertion"),
-          (ValidateDebug, "Validator"),
-          (LowerLookup, "Validator Lookup"),
+          (AssertBlank, AssertBlank.operation, REGISTRY_NAMES[0]),
+          (ValidateDebug, ValidateDebug.operation, REGISTRY_NAMES[1]),
+          (LowerLookup, LowerLookup.operation, REGISTRY_NAMES[2]),
+          (
+              NameLookup, LOOKUP_STATIC_VALUE_MARKER + "named_value",
+              REGISTRY_NAMES[2]
+          ),
+          (
+              IndexLookup,
+              str(round(random.SystemRandom().random() * 100)),
+              REGISTRY_NAMES[2],
+          ),
       ],
   )
   def test_search__vary_valid_operation__generates_correct_content(
       self,
       operation_class: Type["OperationBase[Any]"],
+      operation_name: str,
       registry_type: str,
   ) -> None:
     instance = OperationDocumentation()
@@ -120,7 +134,7 @@ class TestOperationDocumentation:
         ]
     )
 
-    instance.search(operation_class.operation)
+    instance.search(operation_name)
 
     assert instance.content == expected_content
 
