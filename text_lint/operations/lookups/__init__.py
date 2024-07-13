@@ -8,6 +8,8 @@ from .bases.lookup_base import LookupBase
 from .capture import CaptureLookup
 from .default import DefaultLookup
 from .group import GroupLookup
+from .index import IndexLookup
+from .name import NameLookup
 from .noop import NoopLookup
 from .to_count import CountLookup
 from .to_json import JsonLookup
