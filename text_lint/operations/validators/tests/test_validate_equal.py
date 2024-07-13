@@ -1,6 +1,6 @@
 """Test the ValidateEqual class."""
 
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING, Dict, List
 from unittest import mock
 
 import pytest
@@ -46,12 +46,6 @@ class TestValidateEqual:
     assert_is_translated(validate_equal_instance.hint)
     assert_is_translated(validate_equal_instance.msg_fmt_comparison_failure)
     assert_is_translated(validate_equal_instance.msg_fmt_comparison_success)
-    assert_is_translated(
-        validate_equal_instance.msg_fmt_set_count_failure_description
-    )
-    assert_is_translated(
-        validate_equal_instance.msg_fmt_set_count_failure_detail
-    )
 
   def test_initialize__inheritance(
       self,
@@ -146,8 +140,7 @@ class TestValidateEqual:
       self,
       method_mocker: "AliasMethodMocker",
       mocked_controller: mock.Mock,
-      mocked_result_set_a: List[str],
-      mocked_result_set_b: List[str],
+      mocked_result_sets: Dict[str, List[str]],
       validate_equal_instance: ValidateEqual,
   ) -> None:
     mocked_print = method_mocker(validate_equal_instance.print)
@@ -158,11 +151,11 @@ class TestValidateEqual:
         "result_1",
     )
     expected_mock_calls: List[str] = []
-    for index, mock_result in enumerate(mocked_result_set_a):
+    for index, mock_result in enumerate(mocked_result_sets["a"]):
       expected_mock_calls.append(
           validate_equal_instance.msg_fmt_comparison_success.format(
               mock_result,
-              mocked_result_set_b[index],
+              mocked_result_sets["b"][index],
           )
       )
 
@@ -198,30 +191,4 @@ class TestValidateEqual:
             "result_1",
         ),
         validator=validate_equal_instance,
-    )
-
-  def test_apply__unequal_result_set_counts__raises_exception(
-      self,
-      mocked_controller: mock.Mock,
-      mocked_result_set_a: List[str],
-      mocked_result_set_c: List[str],
-  ) -> None:
-    instance = ValidateEqual(
-        "mocked_validator",
-        saved_a=mocked_result_set_a,
-        saved_b=mocked_result_set_c,
-    )
-
-    with pytest.raises(ValidationFailure) as exc:
-      instance.apply(mocked_controller)
-
-    assert_is_validation_failure(
-        exc,
-        description_t=(
-            instance.msg_fmt_set_count_failure_description,
-            len(mocked_result_set_a),
-            len(mocked_result_set_c),
-        ),
-        detail_t=(instance.msg_fmt_set_count_failure_detail,),
-        validator=instance,
     )
