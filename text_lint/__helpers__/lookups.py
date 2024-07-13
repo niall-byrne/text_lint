@@ -138,3 +138,51 @@ generated_valid_default_lookup_test_cases = pytest.mark.parametrize(
         LOOKUP_STATIC_VALUE_MARKER + generate_static_name()
     ]
 )
+
+result_sorting_test_cases = pytest.mark.parametrize(
+    "result,expected", [
+        [
+            ["one", "two", "three"],
+            ["one", "three", "two"],
+        ],
+        [
+            ("3", "2", "1"),
+            ["1", "2", "3"],
+        ],
+        [
+            {
+                "one": "one",
+                "two": "two",
+                "three": "three"
+            },
+            {
+                "one": "one",
+                "three": "three",
+                "two": "two"
+            },
+        ],
+        [
+            {
+                "nested_list": [["one"], ["two", "three"]],
+                "nested_tuple": (("3", "2"), "1"),
+                "nested_dict": {
+                    "one": "one",
+                    "two": "two",
+                    "three": "three"
+                },
+                "nested_digit": 1,
+            },
+            {
+                "nested_digit": 1,
+                "nested_tuple": ["1", ["2", "3"]],
+                "nested_list": [["one"], ["three", "two"]],
+                "nested_dict": {
+                    "one": "one",
+                    "three": "three",
+                    "two": "two",
+                },
+            },
+        ],
+    ],
+    ids=["list", "tuple", "dict", "nested"]
+)

@@ -10,6 +10,7 @@ from .. import (
     JsonLookup,
     LowerLookup,
     NoopLookup,
+    SortedLookup,
     UniqueLookup,
     UpperLookup,
     lookup_registry,
@@ -44,6 +45,7 @@ class TestLookupRegistry:
         JsonLookup.operation,
         LowerLookup.operation,
         NoopLookup.operation,
+        SortedLookup.operation,
         UniqueLookup.operation,
         UpperLookup.operation,
     ]
