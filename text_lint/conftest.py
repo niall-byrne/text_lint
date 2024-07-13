@@ -10,6 +10,7 @@ import pytest
 TRANSLATION_MARKER = "gettext > "
 
 pytest_plugins = [
+    "text_lint.__fixtures__.lookup_expressions",
     "text_lint.__fixtures__.mocks",
 ]
 

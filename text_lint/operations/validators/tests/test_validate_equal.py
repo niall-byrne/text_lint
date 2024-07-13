@@ -1,6 +1,6 @@
 """Test the ValidateEqual class."""
 
-from typing import List
+from typing import Dict, List
 from unittest import mock
 
 import pytest
@@ -45,12 +45,6 @@ class TestValidateEqual:
     assert_is_translated(validate_equal_instance.hint)
     assert_is_translated(validate_equal_instance.msg_fmt_comparison_failure)
     assert_is_translated(validate_equal_instance.msg_fmt_comparison_success)
-    assert_is_translated(
-        validate_equal_instance.msg_fmt_set_count_failure_description
-    )
-    assert_is_translated(
-        validate_equal_instance.msg_fmt_set_count_failure_detail
-    )
 
   def test_initialize__inheritance(
       self,
@@ -139,8 +133,7 @@ class TestValidateEqual:
   def test_apply__equal_lookup_results__logs_expected_lookup_results(
       self,
       mocked_state: mock.Mock,
-      mocked_lookup_expression_set_a: List[str],
-      mocked_lookup_expression_set_b: List[str],
+      mocked_lookup_expression_sets: Dict[str, List[str]],
       validate_equal_instance: ValidateEqual,
   ) -> None:
     validate_equal_instance.apply(mocked_state)
@@ -149,10 +142,11 @@ class TestValidateEqual:
         mock.call(
             ValidateEqual.msg_fmt_comparison_success.format(
                 mock_result,
-                mocked_lookup_expression_set_b[index],
+                mocked_lookup_expression_sets["b"][index],
             ),
             indent=True,
-        ) for index, mock_result in enumerate(mocked_lookup_expression_set_a)
+        )
+        for index, mock_result in enumerate(mocked_lookup_expression_sets["a"])
     ]
 
   @pytest.mark.usefixtures("scenario__comparison__lookup_results_not_equal")
@@ -177,31 +171,4 @@ class TestValidateEqual:
             "result_1",
         ),
         validator=validate_equal_instance,
-    )
-
-  @pytest.mark.usefixtures("scenario__comparison__lookup_results_not_equal")
-  def test_apply__not_equal_result_set_counts__raises_exception(
-      self,
-      mocked_state: mock.Mock,
-      mocked_lookup_expression_set_a: List[str],
-      mocked_lookup_expression_set_c: List[str],
-  ) -> None:
-    instance = ValidateEqual(
-        "mocked_validator",
-        saved_a=mocked_lookup_expression_set_a,
-        saved_b=mocked_lookup_expression_set_c,
-    )
-
-    with pytest.raises(ValidationFailure) as exc:
-      instance.apply(mocked_state)
-
-    assert_is_validation_failure(
-        exc,
-        description_t=(
-            instance.msg_fmt_set_count_failure_description,
-            len(mocked_lookup_expression_set_a),
-            len(mocked_lookup_expression_set_c),
-        ),
-        detail_t=(instance.msg_fmt_set_count_failure_detail,),
-        validator=instance,
     )
