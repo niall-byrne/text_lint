@@ -5,7 +5,9 @@ from typing import Any, Protocol
 from unittest import mock
 
 import pytest
-from .. import lower, tree, unique, upper
+from .. import lower
+from .. import sorted as sorted_module
+from .. import tree, unique, upper
 
 
 class AliasSetupEncoderMock(Protocol):
@@ -35,6 +37,11 @@ def lower_case_encoder_instance() -> lower.LowerCaseEncoder:
 @pytest.fixture
 def result_tree_encoder_instance() -> tree.ResultTreeEncoder:
   return tree.ResultTreeEncoder()
+
+
+@pytest.fixture
+def sorted_encoder_instance() -> sorted_module.SortedEncoder:
+  return sorted_module.SortedEncoder()
 
 
 @pytest.fixture
