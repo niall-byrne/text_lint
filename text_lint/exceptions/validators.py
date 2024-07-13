@@ -6,7 +6,7 @@ from text_lint.utilities.whitespace import make_visible
 
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.operations.validators.bases.validator_base import (
-      ValidationBase,
+      ValidatorBase,
   )
 
 
@@ -26,7 +26,7 @@ class ValidationFailure(ValidationExceptionBase):
       self,
       description: str,
       detail: str,
-      validator: "ValidationBase",
+      validator: "ValidatorBase",
   ) -> None:
     message = description
     message += f(
