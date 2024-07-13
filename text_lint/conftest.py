@@ -11,6 +11,7 @@ TRANSLATION_MARKER = "gettext > "
 
 pytest_plugins = [
     "text_lint.__fixtures__.mocks",
+    "text_lint.__fixtures__.result_sets",
 ]
 
 mocked_t = mock.Mock(side_effect=lambda text: TRANSLATION_MARKER + text)
