@@ -1,2 +1,5 @@
-lookups
+(L|l)ookups
 text_lint
+to_json
+to_sorted
+to_unique
