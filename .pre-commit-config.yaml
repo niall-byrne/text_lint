@@ -21,6 +21,29 @@ repos:
           - "-ci"
           - "-sr"
       - id: format-toml
+      - id: gettext-translations-add
+        args:
+          - "-p"
+          - "text_lint/locales"
+      - id: gettext-translations-compile
+        args:
+          - "-p"
+          - "text_lint/locales"
+      - id: gettext-translations-missing
+        args:
+          - "-p"
+          - "text_lint/locales"
+          - "-s"
+          - "en"
+      - id: gettext-translations-update
+        args:
+          - "-p"
+          - "text_lint/locales"
+          - "-c"
+          - "text_lint"
+          - "-e"
+          - "niall@niallbyrne.ca"
+          - "-u"
       - id: git-conflict-markers
       - id: lint-github-workflow
       - id: lint-github-workflow-header
