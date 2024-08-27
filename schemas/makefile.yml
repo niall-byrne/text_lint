@@ -102,3 +102,9 @@ validators:
     saved_b:
       - helps.capture(1)
       - expected_phonies.capture(1)
+
+  - name: debug sub_headers
+    operation: validate_debug
+    saved:
+      - expected_phonies.capture(1)
+      - helps.capture(1)
