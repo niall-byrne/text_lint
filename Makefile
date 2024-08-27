@@ -1,28 +1,32 @@
 #!/usr/bin/make -f
 
-.PHONY: help clean fmt lint security spelling test types clean-git clean-pycache coverage format-python format-shell format-toml lint-make lint-markdown lint-python lint-shell lint-workflows lint-yaml security-audit security-leaks spelling-add spelling-markdown spelling-sync test-python types-python
+.PHONY: help clean fmt lint security spelling test types clean-git clean-pycache coverage format-python format-shell format-toml lint-make lint-markdown lint-python lint-shell lint-workflows lint-yaml security-audit security-leaks spelling-add spelling-markdown spelling-sync test-python translations-add translations-check translations-compile translations-update types-python
 
 help:
 	@echo "Please use 'make <target>' where <target> is one of:"
-	@echo "  clean-git         to run git clean"
-	@echo "  clean-pycache     to clean Python cache files."
-	@echo "  coverage          to generate a code coverage report."
-	@echo "  format-python     to format Python scripts"
-	@echo "  format-shell      to format shell scripts"
-	@echo "  format-toml       to format TOML files"
-	@echo "  lint-make         to lint Makefiles"
-	@echo "  lint-markdown     to lint Markdown files"
-	@echo "  lint-python       to lint Python scripts"
-	@echo "  lint-shell        to lint shell scripts"
-	@echo "  lint-workflows    to lint GitHub workflows"
-	@echo "  lint-yaml         to lint YAML files"
-	@echo "  security-audit    to scan for dependency vulnerabilities"
-	@echo "  security-leaks    to check for credential leaks"
-	@echo "  spelling-add      to add a regex to the ignore patterns"
-	@echo "  spelling-markdown to spellcheck markdown files"
-	@echo "  spelling-sync     to synchronize vale packages"
-	@echo "  test-python       to test the Python scripts"
-	@echo "  types-python      to check the Python typing"
+	@echo "  clean-git              to run git clean"
+	@echo "  clean-pycache          to clean Python cache files."
+	@echo "  coverage               to generate a code coverage report."
+	@echo "  format-python          to format Python scripts"
+	@echo "  format-shell           to format shell scripts"
+	@echo "  format-toml            to format TOML files"
+	@echo "  lint-make              to lint Makefiles"
+	@echo "  lint-markdown          to lint Markdown files"
+	@echo "  lint-python            to lint Python scripts"
+	@echo "  lint-shell             to lint shell scripts"
+	@echo "  lint-workflows         to lint GitHub workflows"
+	@echo "  lint-yaml              to lint YAML files"
+	@echo "  security-audit         to scan for dependency vulnerabilities"
+	@echo "  security-leaks         to check for credential leaks"
+	@echo "  spelling-add           to add a regex to the ignore patterns"
+	@echo "  spelling-markdown      to spellcheck markdown files"
+	@echo "  spelling-sync          to synchronize vale packages"
+	@echo "  test-python            to test the Python scripts"
+	@echo "  translations-add       to add a new language"
+	@echo "  translations-check     to check for missing entries"
+	@echo "  translations-compile   to compile '.mo' files for distribution"
+	@echo "  translations-update	to regenerate '.pot' files from code"
+	@echo "  types-python           to check the Python typing"
 
 clean: clean-git clean-pycache
 fmt: format-shell format-toml format-python
@@ -123,6 +127,22 @@ spelling-sync:
 test-python:
 	@echo "Testing Python scripts ..."
 	@poetry run pytest text_lint/ -xvv
+
+translations-add:
+	@echo "Adding a new language ..."
+	@poetry run bash -c 'export GETTEXT_TRANSLATIONS_LANGUAGES; read -rp "Enter 2 character language code: " GETTEXT_TRANSLATIONS_LANGUAGES && poetry run pre-commit run --hook-stage=manual gettext-translations-add'
+
+translations-check:
+	@echo "Searching for missing translations ..."
+	@poetry run bash -c "poetry run pre-commit run gettext-translations-missing --all-files"
+
+translations-compile:
+	@echo "Compiling translations into '.mo' files ..."
+	@poetry run bash -c "poetry run pre-commit run --hook-stage=manual gettext-translations-compile --all-files"
+
+translations-update:
+	@echo "Updating translation '.pot' files ..."
+	@poetry run bash -c "poetry run pre-commit run gettext-translations-update --all-files"
 
 types-python:
 	@echo "Checking Python types ..."
