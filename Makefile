@@ -6,6 +6,7 @@ help:
 	@echo "Please use 'make <target>' where <target> is one of:"
 	@echo "  clean-git         to run git clean"
 	@echo "  clean-pycache     to clean Python cache files."
+	@echo "  coverage          to generate a code coverage report."
 	@echo "  format-python     to format Python scripts"
 	@echo "  format-shell      to format shell scripts"
 	@echo "  format-toml       to format TOML files"
@@ -25,7 +26,7 @@ help:
 
 clean: clean-git clean-pycache
 fmt: format-shell format-toml format-python
-lint: lint-markdown lint-python lint-shell lint-workflows lint-yaml
+lint: lint-make lint-markdown lint-python lint-shell lint-workflows lint-yaml
 security: security-audit security-leaks
 spelling: spelling-markdown
 test: test-python
@@ -46,6 +47,12 @@ coverage:
 	@poetry run bash -c "coverage run -m pytest text_lint && coverage html || (coverage report; exit 127)"
 	@echo "Done."
 
+format-python:
+	@echo "Formatting all Python files ..."
+	@poetry run bash -c "pre-commit run yapf --verbose --all-files"
+	@poetry run bash -c "pre-commit run isort --verbose --all-files"
+	@echo "Done."
+
 format-shell:
 	@echo "Checking shell scripts ..."
 	@poetry run bash -c "pre-commit run format-shell --all-files --verbose"
@@ -54,12 +61,6 @@ format-shell:
 format-toml:
 	@echo "Checking TOML files ..."
 	@poetry run bash -c "pre-commit run format-toml --all-files --verbose"
-	@echo "Done."
-
-format-python:
-	@echo "Formatting all Python files ..."
-	@poetry run bash -c "pre-commit run yapf --verbose --all-files"
-	@poetry run bash -c "pre-commit run isort --verbose --all-files"
 	@echo "Done."
 
 lint-make:
@@ -72,15 +73,15 @@ lint-markdown:
 	@poetry run bash -c "pre-commit run lint-markdown --all-files --verbose"
 	@echo "Done."
 
-lint-shell:
-	@echo "Checking shell scripts ..."
-	@poetry run bash -c "pre-commit run lint-shell --all-files --verbose"
-	@echo "Done."
-
 lint-python:
 	@echo "Checking Python files ..."
 	@poetry run bash -c "pre-commit run isort --verbose --all-files"
 	@poetry run bash -c "pre-commit run poetry-lint-python --verbose --all-files"
+	@echo "Done."
+
+lint-shell:
+	@echo "Checking shell scripts ..."
+	@poetry run bash -c "pre-commit run lint-shell --all-files --verbose"
 	@echo "Done."
 
 # 22
