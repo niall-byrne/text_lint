@@ -43,11 +43,10 @@ rules:
     splits:
       - group: 2
 
-  - name: read commands until eof
+  - name: read until eof
     operation: assert_sequence_begins
     count: -1
     rules:
-
       - name: read command entry
         operation: assert_regex
         regex: "^([a-z-]+):\n"
@@ -58,7 +57,41 @@ rules:
         regex: "^\t@.+\n"
 
 validators:
-  - name: print some variables
-    operation: validate_debug
+  - name: create expected phonies
+    operation: validate_combine
     saved:
-      - aliases.capture.capture.unique
+      - ~help
+      - aliases.capture
+      - commands.capture
+    new_saved: expected_phonies
+
+  - name: test alphabetical order
+    operation: validate_equal
+    saved_a:
+      - aliases.capture.0
+      - helps.capture.0
+      - commands.capture.0
+    saved_b:
+      - aliases.capture.0.to_sorted
+      - helps.capture.0.to_sorted
+      - commands.capture.0.to_sorted
+
+  - name: test for repeated entries
+    operation: validate_equal
+    saved_a:
+      - aliases.capture.0
+      - helps.capture.0
+      - commands.capture.0
+    saved_b:
+      - aliases.capture.0.to_unique
+      - helps.capture.0.to_unique
+      - commands.capture.0.to_unique
+
+  - name: test expected phonies and helps
+    operation: validate_equal
+    saved_a:
+      - commands.capture
+      - phonies.capture
+    saved_b:
+      - helps.capture
+      - expected_phonies.capture

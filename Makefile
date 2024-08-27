@@ -1,11 +1,12 @@
 #!/usr/bin/make -f
 
-.PHONY: help clean fmt lint security spelling test clean-git format-python format-shell format-toml lint-make lint-markdown lint-python lint-shell lint-workflows lint-yaml security-leaks spelling-add spelling-markdown spelling-sync test-python
+.PHONY: help clean fmt lint security spelling test clean-git clean-pycache coverage format-python format-shell format-toml lint-make lint-markdown lint-python lint-shell lint-workflows lint-yaml security-leaks spelling-add spelling-markdown spelling-sync test-python types-python
 
 help:
 	@echo "Please use 'make <target>' where <target> is one of:"
 	@echo "  clean-git         to run git clean"
 	@echo "  clean-pycache     to clean Python cache files."
+	@echo "  coverage          to generate a code coverage report."
 	@echo "  format-python     to format Python scripts"
 	@echo "  format-shell      to format shell scripts"
 	@echo "  format-toml       to format TOML files"
@@ -20,11 +21,11 @@ help:
 	@echo "  spelling-markdown to spellcheck markdown files"
 	@echo "  spelling-sync     to synchronize vale packages"
 	@echo "  test-python       to test the Python scripts"
+	@echo "  types-python      to check the Python typing"
 
 clean: clean-git clean-pycache
 fmt: format-shell format-toml format-python
 lint: lint-make lint-markdown lint-python lint-shell lint-workflows lint-yaml
-security: security-leaks
 security: security-leaks
 spelling: spelling-markdown security-leaks
 test: test-python
@@ -44,6 +45,12 @@ coverage:
 	@poetry run bash -c "coverage run -m pytest text_lint && coverage html || (coverage report; exit 127)"
 	@echo "Done."
 
+format-python:
+	@echo "Formatting all Python files ..."
+	@poetry run bash -c "pre-commit run yapf --verbose --all-files"
+	@poetry run bash -c "pre-commit run isort --verbose --all-files"
+	@echo "Done."
+
 format-shell:
 	@echo "Checking shell scripts ..."
 	@poetry run bash -c "pre-commit run format-shell --all-files --verbose"
@@ -52,12 +59,6 @@ format-shell:
 format-toml:
 	@echo "Checking TOML files ..."
 	@poetry run bash -c "pre-commit run format-toml --all-files --verbose"
-	@echo "Done."
-
-format-python:
-	@echo "Formatting all Python files ..."
-	@poetry run bash -c "pre-commit run yapf --verbose --all-files"
-	@poetry run bash -c "pre-commit run isort --verbose --all-files"
 	@echo "Done."
 
 lint-make:
@@ -70,15 +71,15 @@ lint-markdown:
 	@poetry run bash -c "pre-commit run lint-markdown --all-files --verbose"
 	@echo "Done."
 
-lint-shell:
-	@echo "Checking shell scripts ..."
-	@poetry run bash -c "pre-commit run lint-shell --all-files --verbose"
-	@echo "Done."
-
 lint-python:
 	@echo "Checking Python files ..."
 	@poetry run bash -c "pre-commit run isort --verbose --all-files"
 	@poetry run bash -c "pre-commit run poetry-lint-python --verbose --all-files"
+	@echo "Done."
+
+lint-shell:
+	@echo "Checking shell scripts ..."
+	@poetry run bash -c "pre-commit run lint-shell --all-files --verbose"
 	@echo "Done."
 
 # 22
@@ -93,15 +94,15 @@ lint-yaml:
 	@poetry run bash -c "pre-commit run yamllint --all-files --verbose"
 	@echo "Done."
 
-spelling-add:
-	@echo "Adding word ..."
-	@echo "${MAKE_ARGS}" >> ".vale/Vocab/${PROJECT_NAME}/accept.txt"
-	@sort -u -o ".vale/Vocab/${PROJECT_NAME}/accept.txt" ".vale/Vocab/${PROJECT_NAME}/accept.txt"
-
 security-leaks:
 	@echo "Checking security ..."
 	@poetry run bash -c "pre-commit run security-credentials --all-files --verbose"
 	@echo "Done."
+
+spelling-add:
+	@echo "Adding word ..."
+	@echo "${MAKE_ARGS}" >> ".vale/Vocab/${PROJECT_NAME}/accept.txt"
+	@sort -u -o ".vale/Vocab/${PROJECT_NAME}/accept.txt" ".vale/Vocab/${PROJECT_NAME}/accept.txt"
 
 spelling-markdown:
 	@echo "Checking spelling ..."

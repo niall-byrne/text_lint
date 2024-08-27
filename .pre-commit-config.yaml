@@ -76,3 +76,12 @@ repos:
         files: "^.+\\.pyi?$"
         stages: [pre-commit]
         require_serial: true
+  - repo: local
+    hooks:
+      - id: lint-makefile
+        name: lint-makefile
+        entry: ./testing_shim check -s schemas/makefile.yml
+        language: system
+        files: "^(.+/)*Makefile$"
+        pass_filenames: true
+        stages: [pre-commit]
