@@ -82,3 +82,12 @@ repos:
         require_serial: true
         stages: [commit]
         types: []
+  - repo: local
+    hooks:
+      - id: lint-makefile
+        name: lint-makefile
+        entry: poetry run text_lint check -s schemas/makefile.yml
+        files: "^(.+/)*Makefile$"
+        language: system
+        pass_filenames: true
+        stages: [commit]
