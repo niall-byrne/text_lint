@@ -1,8 +1,11 @@
 """Translation utilities."""
 
-from gettext import gettext
+import gettext
+import locale
+import os
 from typing import Any
 
+import text_lint
 from text_lint.config import NEW_LINE
 
 
@@ -18,5 +21,21 @@ def f_string(string: str, *args: Any, nl: int = 0, **kwargs: Any) -> str:
   return string.format(*args, **kwargs) + (NEW_LINE * nl)
 
 
+def initialize() -> gettext.NullTranslations:
+  """Initialize localization support."""
+
+  if os.getenv('LANG') is None:
+    default_locale = locale.getdefaultlocale()
+    os.environ['LANG'] = str(default_locale[0])
+
+  translations = gettext.translation(
+      "base",
+      os.path.join(os.path.dirname(text_lint.__file__), "locales"),
+      fallback=True,
+  )
+
+  return translations
+
+
 f = f_string
-_ = gettext
+_ = initialize().gettext
