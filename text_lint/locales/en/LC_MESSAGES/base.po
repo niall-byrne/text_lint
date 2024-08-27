@@ -1,0 +1,430 @@
+# Translation Support For text_lint
+# Copyright (C) 2024
+# This file is distributed under the same license as the text_lint package.
+# Niall Byrne AUTHOR <niall@niallbyrne.ca>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: text_lint\n"
+"Report-Msgid-Bugs-To: niall@niallbyrne.ca\n"
+"POT-Creation-Date: 2024-08-27 15:49+0000\n"
+"PO-Revision-Date: 2024-07-17 13:54-0400\n"
+"Last-Translator: Niall Byrne <nialL@niallbyrne.ca>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: text_lint/cli/commands/check_command.py:14
+msgid "lint a text file"
+msgstr ""
+
+#: text_lint/cli/commands/check_command.py:15
+msgid "check"
+msgstr ""
+
+#: text_lint/cli/commands/check_command.py:17
+msgid "the text file(s) to lint"
+msgstr ""
+
+#: text_lint/cli/commands/check_command.py:18
+msgid "the schema to apply"
+msgstr ""
+
+#: text_lint/cli/commands/documentation_command.py:12
+msgid "document the available operations"
+msgstr ""
+
+#: text_lint/cli/commands/documentation_command.py:13
+msgid "doc"
+msgstr ""
+
+#: text_lint/cli/commands/documentation_command.py:15
+msgid "the operation(s) to document"
+msgstr ""
+
+#: text_lint/cli/commands/list_command.py:12
+msgid "list all available operations"
+msgstr ""
+
+#: text_lint/cli/commands/list_command.py:13
+msgid "list"
+msgstr ""
+
+#: text_lint/cli/interface.py:12
+msgid "Generic text file linter."
+msgstr ""
+
+#: text_lint/cli/interface.py:13
+msgid "commands"
+msgstr ""
+
+#: text_lint/cli/interface.py:14
+msgid "text_lint"
+msgstr ""
+
+#: text_lint/controller.py:17
+msgid "The entire file was read before all schema rules were run."
+msgstr ""
+
+#: text_lint/controller.py:20
+msgid "The entire file was not read after all schema rules were run."
+msgstr ""
+
+#: text_lint/exceptions/lookups.py:18 text_lint/exceptions/lookups.py:76
+#, python-brace-format
+msgid "  LOOKUP OPERATION: {0}"
+msgstr ""
+
+#: text_lint/exceptions/lookups.py:19 text_lint/exceptions/lookups.py:77
+#: text_lint/exceptions/results.py:20 text_lint/exceptions/validators.py:21
+#, python-brace-format
+msgid "  SCHEMA OPERATION NAME: {0}"
+msgstr ""
+
+#: text_lint/exceptions/lookups.py:20 text_lint/exceptions/lookups.py:78
+#: text_lint/exceptions/results.py:21
+msgid "  LOOKUP DEFINITION:"
+msgstr ""
+
+#: text_lint/exceptions/lookups.py:21 text_lint/exceptions/lookups.py:79
+#: text_lint/exceptions/results.py:22
+#, python-brace-format
+msgid "    RESULT SOURCE: '{0}'"
+msgstr ""
+
+#: text_lint/exceptions/lookups.py:22 text_lint/exceptions/lookups.py:80
+#: text_lint/exceptions/results.py:23
+#, python-brace-format
+msgid "    LOOKUPS: {0}"
+msgstr ""
+
+#: text_lint/exceptions/lookups.py:23 text_lint/exceptions/lookups.py:81
+#, python-brace-format
+msgid "    FAILED LOOKUP: '{0}'"
+msgstr ""
+
+#: text_lint/exceptions/lookups.py:24 text_lint/exceptions/lookups.py:82
+#: text_lint/exceptions/results.py:24
+#, python-brace-format
+msgid "    HINT: '{0}'"
+msgstr ""
+
+#: text_lint/exceptions/lookups.py:74
+msgid "Could not process this unknown lookup."
+msgstr ""
+
+#: text_lint/exceptions/lookups.py:84
+#, python-brace-format
+msgid "to lookup a specific value, prefix the name with '{0}'"
+msgstr ""
+
+#: text_lint/exceptions/results.py:18
+msgid "The result you've requested does not exist."
+msgstr ""
+
+#: text_lint/exceptions/results.py:19
+#, python-brace-format
+msgid "  RESULT SOURCE: '{0}'"
+msgstr ""
+
+#: text_lint/exceptions/results.py:26 text_lint/results/forest.py:28
+msgid "results are created when applying the \"rules\" section of the schema"
+msgstr ""
+
+#: text_lint/exceptions/rules.py:21
+#, python-brace-format
+msgid "RULE VIOLATION: {0}"
+msgstr ""
+
+#: text_lint/exceptions/rules.py:22
+#, python-brace-format
+msgid "  SOURCE FILE: {0}"
+msgstr ""
+
+#: text_lint/exceptions/rules.py:23
+#, python-brace-format
+msgid "  RULE: '{0}'"
+msgstr ""
+
+#: text_lint/exceptions/rules.py:24
+#, python-brace-format
+msgid "  EXPECTED: '{0}'"
+msgstr ""
+
+#: text_lint/exceptions/rules.py:25
+#, python-brace-format
+msgid "  FILE LINE: '{0}'"
+msgstr ""
+
+#: text_lint/exceptions/rules.py:26
+#, python-brace-format
+msgid "  FILE LINE NUMBER: {0}"
+msgstr ""
+
+#: text_lint/exceptions/rules.py:27 text_lint/exceptions/validators.py:23
+#, python-brace-format
+msgid "  HINT: '{0}'"
+msgstr ""
+
+#: text_lint/exceptions/schema.py:19
+#, python-brace-format
+msgid "  SCHEMA FILE: {0}"
+msgstr ""
+
+#: text_lint/exceptions/schema.py:20
+msgid "  OPERATION DEFINITION:"
+msgstr ""
+
+#: text_lint/exceptions/validators.py:20
+#, python-brace-format
+msgid "  VALIDATION OPERATION: {0}"
+msgstr ""
+
+#: text_lint/exceptions/validators.py:22
+#, python-brace-format
+msgid "  DETAIL: {0}"
+msgstr ""
+
+#: text_lint/operations/documentation.py:31
+msgid "Schema Operation List"
+msgstr ""
+
+#: text_lint/operations/documentation.py:32
+#, python-brace-format
+msgid "Type: '{0}'"
+msgstr ""
+
+#: text_lint/operations/documentation.py:35
+#, python-brace-format
+msgid "Operation: '{0}'"
+msgstr ""
+
+#: text_lint/operations/documentation.py:36
+#, python-brace-format
+msgid "Type:      '{0}'"
+msgstr ""
+
+#: text_lint/operations/documentation.py:37
+#, python-brace-format
+msgid "Purpose:   '{0}'"
+msgstr ""
+
+#: text_lint/operations/documentation.py:38
+#, python-brace-format
+msgid "Example: {0}"
+msgstr ""
+
+#: text_lint/operations/documentation.py:40
+#, python-brace-format
+msgid "Unknown operation '{0}' !"
+msgstr ""
+
+#: text_lint/operations/lookups/bases/tests/conftest.py:45
+msgid "mocked_hint_lookup"
+msgstr ""
+
+#: text_lint/operations/lookups/bases/tests/conftest.py:70
+msgid "mocked_hint_lookup_encoder"
+msgstr ""
+
+#: text_lint/operations/lookups/capture.py:35
+msgid "select the next capture group of the saved result"
+msgstr ""
+
+#: text_lint/operations/lookups/default.py:29
+msgid "handler for unknown lookups which may be result values or indexes"
+msgstr ""
+
+#: text_lint/operations/lookups/group.py:25
+msgid "group the currently selected values of the saved result"
+msgstr ""
+
+#: text_lint/operations/lookups/index.py:25
+msgid "select an entry from the saved results by index"
+msgstr ""
+
+#: text_lint/operations/lookups/index.py:29
+#, python-brace-format
+msgid "No value at index '{0}' !"
+msgstr ""
+
+#: text_lint/operations/lookups/name.py:27
+msgid "select a named entry from the saved result"
+msgstr ""
+
+#: text_lint/operations/lookups/name.py:31
+msgid "Could not find the specified entry."
+msgstr ""
+
+#: text_lint/operations/lookups/noop.py:24
+msgid "a simple no-operation"
+msgstr ""
+
+#: text_lint/operations/lookups/to_count.py:25
+msgid "convert the saved result to a counted value"
+msgstr ""
+
+#: text_lint/operations/lookups/to_json.py:27
+msgid "create a JSON representation of the saved result"
+msgstr ""
+
+#: text_lint/operations/lookups/to_lower.py:27
+msgid "convert the saved result's values to lowercase"
+msgstr ""
+
+#: text_lint/operations/lookups/to_reversed.py:27
+msgid "reverse the order of the saved results"
+msgstr ""
+
+#: text_lint/operations/lookups/to_sorted.py:27
+msgid "sort the saved results"
+msgstr ""
+
+#: text_lint/operations/lookups/to_unique.py:27
+msgid "select only unique values from the saved result"
+msgstr ""
+
+#: text_lint/operations/lookups/to_upper.py:27
+msgid "convert the saved result's values to uppercase"
+msgstr ""
+
+#: text_lint/operations/lookups/unique.py:25
+msgid "filter unique values from the saved result"
+msgstr ""
+
+#: text_lint/operations/rules/assert_blank.py:24
+msgid "sections must be separated by blank lines"
+msgstr ""
+
+#: text_lint/operations/rules/assert_equal.py:35
+msgid "this line must match the expected value"
+msgstr ""
+
+#: text_lint/operations/rules/assert_regex.py:31
+msgid "this line must match the regex"
+msgstr ""
+
+#: text_lint/operations/rules/assert_regex_section.py:34
+msgid "sections must be separated and contain lines that match this regex"
+msgstr ""
+
+#: text_lint/operations/rules/assert_sequence_begins.py:39
+msgid "identify a repeating sequence of parser rules"
+msgstr ""
+
+#: text_lint/operations/rules/assert_sequence_begins.py:44
+#, python-brace-format
+msgid ""
+"rule #{0} there are unexpected additional rules following this 'to eof' "
+"sequence declaration"
+msgstr ""
+
+#: text_lint/operations/rules/assert_sequence_ends.py:25
+msgid "reserved"
+msgstr ""
+
+#: text_lint/operations/rules/bases/tests/conftest.py:40
+msgid "a concrete hint"
+msgstr ""
+
+#: text_lint/operations/rules/bases/tests/conftest.py:77
+msgid "a concrete regex hint"
+msgstr ""
+
+#: text_lint/operations/validators/bases/tests/conftest.py:37
+#: text_lint/operations/validators/bases/tests/conftest.py:63
+msgid "mocked_hint"
+msgstr ""
+
+#: text_lint/operations/validators/bases/tests/conftest.py:67
+#, python-brace-format
+msgid "'{0}' comparison '{1}'"
+msgstr ""
+
+#: text_lint/operations/validators/bases/tests/conftest.py:68
+#, python-brace-format
+msgid "MOCKED: '{0}' and '{1}'"
+msgstr ""
+
+#: text_lint/operations/validators/bases/validator_comparison_base.py:25
+#: text_lint/operations/validators/validate_equal.py:32
+#, python-brace-format
+msgid "'{0}' != '{1}'"
+msgstr ""
+
+#: text_lint/operations/validators/bases/validator_comparison_base.py:27
+msgid "Mismatched result set counts are being compared."
+msgstr ""
+
+#: text_lint/operations/validators/validate_combine.py:31
+msgid "combines a set of lookups into a new saved result"
+msgstr ""
+
+#: text_lint/operations/validators/validate_combine.py:35
+#, python-brace-format
+msgid "COMBINE: '{0}' into '{1}'"
+msgstr ""
+
+#: text_lint/operations/validators/validate_debug.py:28
+msgid "outputs result values to the console"
+msgstr ""
+
+#: text_lint/operations/validators/validate_debug.py:32
+#, python-brace-format
+msgid "DEBUG: '{0}'"
+msgstr ""
+
+#: text_lint/operations/validators/validate_equal.py:28
+msgid "validates equality between sets of values"
+msgstr ""
+
+#: text_lint/operations/validators/validate_equal.py:33
+#, python-brace-format
+msgid "EQUAL: '{0}' == '{1}'"
+msgstr ""
+
+#: text_lint/schema/__init__.py:24
+msgid "no rules found in schema"
+msgstr ""
+
+#: text_lint/schema/__init__.py:25
+msgid "no validators found in schema"
+msgstr ""
+
+#: text_lint/schema/__init__.py:26
+msgid "invalid schema settings"
+msgstr ""
+
+#: text_lint/schema/__init__.py:27
+msgid "invalid regex in schema settings"
+msgstr ""
+
+#: text_lint/schema/__init__.py:28
+msgid "invalid schema version"
+msgstr ""
+
+#: text_lint/schema/bases/section_base.py:23
+#, python-brace-format
+msgid "{0} #{1} this operation is for internal use only"
+msgstr ""
+
+#: text_lint/schema/bases/section_base.py:25
+#, python-brace-format
+msgid "{0} #{1} unknown operation"
+msgstr ""
+
+#: text_lint/schema/bases/section_base.py:26
+#, python-brace-format
+msgid "{0} #{1} unknown syntax"
+msgstr ""
+
+#: text_lint/schema/bases/section_base.py:27
+#, python-brace-format
+msgid "{0} #{1} invalid regex"
+msgstr ""
+
+#: text_lint/schema/rules.py:23
+msgid "Automated End of Section"
+msgstr ""
