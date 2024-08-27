@@ -41,18 +41,38 @@ readme = 'README.md'
 version = '0.1.0'
 
 [tool.poetry.dependencies]
-python = '^3.9'
+python = '^3.6'
 
 [tool.poetry.group]
 [tool.poetry.group.dev]
 [tool.poetry.group.dev.dependencies]
-commitizen = '^3.20.0'
-coverage = '^7.0.0'
-mypy = '^1.9.0'
-pre-commit = '^3.6.2'
-pylint = '^3.1.0'
-pytest = '^8.1.1'
-types-pyyaml = '^6.0.12.20240311'
+[tool.poetry.group.dev.dependencies.commitizen]
+python = '^3.9'
+version = '^3.20.0'
+
+[tool.poetry.group.dev.dependencies.coverage]
+python = '^3.9'
+version = '^7.0.0'
+
+[tool.poetry.group.dev.dependencies.mypy]
+python = '^3.9'
+version = '^1.9.0'
+
+[tool.poetry.group.dev.dependencies.pre-commit]
+python = '^3.9'
+version = '^3.6.2'
+
+[tool.poetry.group.dev.dependencies.pylint]
+python = '^3.9'
+version = '^3.1.0'
+
+[tool.poetry.group.dev.dependencies.pytest]
+python = '^3.9'
+version = '^8.1.1'
+
+[tool.poetry.group.dev.dependencies.types-pyyaml]
+python = '^3.9'
+version = '^6.0.12.20240311'
 
 [tool.poetry.scripts]
 text_lint = 'text_lint.__main__:cli'
