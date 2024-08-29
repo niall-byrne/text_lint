@@ -6,9 +6,11 @@ from typing import Any, Dict, Type
 from unittest import mock
 
 import pytest
+from text_lint import config
 from text_lint.__helpers__.schema import assert_is_schema_error
 from text_lint.__helpers__.translations import assert_is_translated
-from text_lint.exceptions.schema import SchemaError
+from text_lint.exceptions.schema import SchemaError, UnsupportedSchemaVersion
+from text_lint.version import version_tuple_to_string
 from .. import Schema
 from ..settings import SchemaSettings
 from .fixtures import schemas
@@ -29,7 +31,7 @@ class TestSchema:
     instance = schema_class(mocked_schema_file)
 
     assert instance.path == mocked_schema_file
-    assert instance.version == (0, 1, 0)
+    assert instance.version == (0, 5, 0)
 
   def test_initialize__translations(
       self,
@@ -85,6 +87,45 @@ class TestSchema:
         description_t=(Schema.msg_fmt_invalid_schema_version,),
         schema_path=mocked_schema_file,
     )
+
+  @pytest.mark.parametrize("supported_version", ["0.5.0", "0.7.0"])
+  def test_initialize__supported_version__raises_no_exception(
+      self,
+      schema_class: Type[Schema],
+      mocked_file_handle: StringIO,
+      mocked_schema_file: str,
+      supported_version: str,
+  ) -> None:
+    schema = dict(schemas.one_simple_assertion)
+    schema["version"] = supported_version
+    mocked_file_handle.write(json.dumps(schema))
+    mocked_file_handle.seek(0)
+
+    schema_class(mocked_schema_file)
+
+  @pytest.mark.parametrize("unsupported_version", ["0.0.1", "1.0.0"])
+  def test_initialize__unsupported_version__raises_exception(
+      self,
+      schema_class: Type[Schema],
+      mocked_file_handle: StringIO,
+      mocked_schema_file: str,
+      unsupported_version: str,
+  ) -> None:
+    schema = dict(schemas.one_simple_assertion)
+    schema["version"] = unsupported_version
+    mocked_file_handle.write(json.dumps(schema))
+    mocked_file_handle.seek(0)
+
+    with pytest.raises(UnsupportedSchemaVersion) as exc:
+      schema_class(mocked_schema_file)
+
+    assert str(
+        exc.value
+    ) == UnsupportedSchemaVersion.msg_fmt_unsupported.format(
+        version_tuple_to_string(config.MINIMUM_SUPPORTED_SCHEMA_VERSION),
+        version_tuple_to_string(config.MAXIMUM_SUPPORTED_SCHEMA_VERSION),
+    )
+    assert_is_translated(UnsupportedSchemaVersion.msg_fmt_unsupported)
 
   @pytest.mark.parametrize(
       "invalid_schema",

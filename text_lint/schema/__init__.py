@@ -1,14 +1,16 @@
 """Schema class."""
 
 import re
-from typing import TYPE_CHECKING, List, Optional, Tuple
+from typing import TYPE_CHECKING, List, Optional
 
 import yaml
-from text_lint.exceptions.schema import SchemaError
+from text_lint import config
+from text_lint.exceptions.schema import SchemaError, UnsupportedSchemaVersion
 from text_lint.schema.assertions import SchemaAssertions
 from text_lint.schema.settings import SchemaSettings
 from text_lint.schema.validators import SchemaValidators
 from text_lint.utilities.translations import _, f
+from text_lint.version import string_to_version_tuple
 
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.operations.assertions.bases.assertion_base import (
@@ -18,6 +20,7 @@ if TYPE_CHECKING:  # pragma: no cover
       ValidatorBase,
   )
   from text_lint.schema.bases.section_base import AliasYamlOperation
+  from text_lint.version import AliasVersionTuple
 
 
 class Schema:
@@ -33,7 +36,7 @@ class Schema:
     self.path = schema_path
     with open(self.path, 'r', encoding="utf-8") as file_handle:
       self._content = yaml.safe_load(file_handle)
-    self.version: Tuple[int, ...] = self._parse_schema_version()
+    self.version: "AliasVersionTuple" = self._parse_schema_version()
     self.settings = self._parse_schema_settings()
     self._assertions = SchemaAssertions(self)
     self._validators = SchemaValidators(self)
@@ -81,13 +84,22 @@ class Schema:
         ) from exc
     return SchemaSettings(comment_regex=None)
 
-  def _parse_schema_version(self) -> Tuple[int, ...]:
+  def _parse_schema_version(self) -> "AliasVersionTuple":
     try:
-      return tuple(map(int, (self._content["version"].split("."))))
+      version = string_to_version_tuple(self._content["version"])
     except (KeyError, ValueError) as exc:
       raise self.create_exception(
           description=f(self.msg_fmt_invalid_schema_version, nl=1)
       ) from exc
+    self._validate_schema_version(version)
+    return version
+
+  def _validate_schema_version(self, version: "AliasVersionTuple") -> None:
+    if (
+        version < config.MINIMUM_SUPPORTED_SCHEMA_VERSION
+        or version > config.MAXIMUM_SUPPORTED_SCHEMA_VERSION
+    ):
+      raise UnsupportedSchemaVersion()
 
   def create_exception(
       self,
