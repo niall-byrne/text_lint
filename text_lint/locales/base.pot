@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: text_lint\n"
 "Report-Msgid-Bugs-To: niall@niallbyrne.ca\n"
-"POT-Creation-Date: 2024-10-09 16:51+0000\n"
+"POT-Creation-Date: 2024-10-09 16:52+0000\n"
 "Last-Translator: Niall Byrne <nialL@niallbyrne.ca>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -184,13 +184,19 @@ msgid ""
 "save ids are created when applying the \"assertions\" section of the schema"
 msgstr ""
 
-#: text_lint/exceptions/schema.py:19
+#: text_lint/exceptions/schema.py:21
 #, python-brace-format
 msgid "  SCHEMA FILE: {0}"
 msgstr ""
 
-#: text_lint/exceptions/schema.py:20
+#: text_lint/exceptions/schema.py:22
 msgid "  OPERATION DEFINITION:"
+msgstr ""
+
+#: text_lint/exceptions/schema.py:61
+#, python-brace-format
+msgid ""
+"This version of text_lint only supports schema versions {0} through {1} !"
 msgstr ""
 
 #: text_lint/exceptions/validators.py:20
@@ -201,6 +207,11 @@ msgstr ""
 #: text_lint/exceptions/validators.py:22
 #, python-brace-format
 msgid "  DETAIL: {0}"
+msgstr ""
+
+#: text_lint/exceptions/version.py:15
+#, python-brace-format
+msgid "The value '{0}' is not a valid version!"
 msgstr ""
 
 #: text_lint/linter/__init__.py:25
@@ -449,23 +460,23 @@ msgstr ""
 msgid "EQUAL: '{0}' == '{1}'"
 msgstr ""
 
-#: text_lint/schema/__init__.py:26
+#: text_lint/schema/__init__.py:29
 msgid "No assertions found in schema"
 msgstr ""
 
-#: text_lint/schema/__init__.py:27
+#: text_lint/schema/__init__.py:30
 msgid "No validators found in schema"
 msgstr ""
 
-#: text_lint/schema/__init__.py:28
+#: text_lint/schema/__init__.py:31
 msgid "Invalid schema settings"
 msgstr ""
 
-#: text_lint/schema/__init__.py:29
+#: text_lint/schema/__init__.py:32
 msgid "Invalid regex in schema settings"
 msgstr ""
 
-#: text_lint/schema/__init__.py:30
+#: text_lint/schema/__init__.py:33
 msgid "Invalid schema version"
 msgstr ""
 

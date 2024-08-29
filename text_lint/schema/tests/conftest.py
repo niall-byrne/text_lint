@@ -2,14 +2,17 @@
 # pylint: disable=redefined-outer-name
 
 from io import StringIO
-from typing import TYPE_CHECKING, List, Type
+from typing import TYPE_CHECKING, Callable, List, Type
 from unittest import mock
 
 import pytest
-from text_lint import schema
+from text_lint import config, schema
 
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.schema import AliasYamlOperation
+  from text_lint.version import AliasVersionTuple
+
+AliasVersionMocker = Callable[["AliasVersionTuple", "AliasVersionTuple"], None]
 
 
 @pytest.fixture
@@ -53,13 +56,36 @@ def mocked_schema_validators_section() -> mock.Mock:
 
 
 @pytest.fixture
+def setup_version_mocks(monkeypatch: pytest.MonkeyPatch) -> AliasVersionMocker:
+
+  def setup(
+      min_version: "AliasVersionTuple",
+      max_version: "AliasVersionTuple",
+  ) -> None:
+    monkeypatch.setattr(
+        config,
+        "MINIMUM_SUPPORTED_SCHEMA_VERSION",
+        min_version,
+    )
+    monkeypatch.setattr(
+        config,
+        "MAXIMUM_SUPPORTED_SCHEMA_VERSION",
+        max_version,
+    )
+
+  return setup
+
+
+@pytest.fixture
 def schema_class(
     mocked_file_handle: StringIO,
     mocked_open: mock.MagicMock,
     mocked_schema_assertions_section: mock.Mock,
     mocked_schema_validators_section: mock.Mock,
     monkeypatch: pytest.MonkeyPatch,
+    setup_version_mocks: AliasVersionMocker,
 ) -> Type[schema.Schema]:
+  setup_version_mocks((0, 1, 0), (0, 9, 0))
   monkeypatch.setattr(
       schema,
       "SchemaAssertions",
