@@ -2,8 +2,10 @@
 import os.path
 from typing import TYPE_CHECKING, Any, Dict, Optional
 
+from text_lint import config
 from text_lint.utilities.translations import _, f
 from text_lint.utilities.whitespace import make_visible
+from text_lint.version import version_tuple_to_string
 
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.schema import Schema
@@ -50,3 +52,20 @@ class SequenceInvalid(SchemaExceptionBase):
 
 class SplitGroupInvalid(SchemaExceptionBase):
   """Raised when a misconfigured split group is found in the schema."""
+
+
+class UnsupportedSchemaVersion(SchemaExceptionBase):
+  """Raised when a schema with an unsupported version is read."""
+
+  msg_fmt_unsupported = _(
+      "This version of text_lint only supports schema "
+      "versions {0} through {1} !"
+  )
+
+  def __init__(self) -> None:
+    super().__init__(
+        self.msg_fmt_unsupported.format(
+            version_tuple_to_string(config.MINIMUM_SUPPORTED_SCHEMA_VERSION),
+            version_tuple_to_string(config.MAXIMUM_SUPPORTED_SCHEMA_VERSION),
+        ),
+    )
