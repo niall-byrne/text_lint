@@ -460,6 +460,20 @@ msgstr ""
 msgid "EQUAL: '{0}' == '{1}'"
 msgstr ""
 
+#: text_lint/operations/validators/validate_membership.py:31
+msgid "validates membership of values inside other values"
+msgstr ""
+
+#: text_lint/operations/validators/validate_membership.py:35
+#, python-brace-format
+msgid "'{1}' not in '{0}'"
+msgstr ""
+
+#: text_lint/operations/validators/validate_membership.py:36
+#, python-brace-format
+msgid "MEMBERSHIP: '{1}' in '{0}'"
+msgstr ""
+
 #: text_lint/schema/__init__.py:29
 msgid "No assertions found in schema"
 msgstr ""
