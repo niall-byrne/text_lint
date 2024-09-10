@@ -1,4 +1,4 @@
-"""Test the lookup_registry default dictionary."""
+"""Test the lookup module registry."""
 
 import pytest
 from .. import (

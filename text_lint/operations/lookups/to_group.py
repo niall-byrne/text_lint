@@ -15,7 +15,7 @@ YAML_EXAMPLE = """
 - name: group lookup example
   operation: validate_debug
   saved:
-    - example.capture.to_group
+    - example.capture().to_group()
 
 """
 

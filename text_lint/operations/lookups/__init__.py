@@ -5,7 +5,7 @@ from typing import Dict, Type
 
 from text_lint.config import LOOKUP_SENTINEL
 from .as_json import JsonLookup
-from .bases.lookup_base import LookupBase
+from .bases.lookup_base import AliasLookupParams, LookupBase
 from .capture import CaptureLookup
 from .default import DefaultLookup
 from .index import IndexLookup

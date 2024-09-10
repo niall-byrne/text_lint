@@ -21,9 +21,10 @@ class LookupsSequencer(OperatorBase["LookupBase"]):
       requesting_operation_name: str,
   ) -> None:
     instances = [
-        lookup_registry[lookup](
-            lookup,
+        lookup_registry[lookup.name](
+            lookup.name,
             lookup_expression,
+            lookup.params,
             requesting_operation_name,
         ) for lookup in lookup_expression.lookups
     ]

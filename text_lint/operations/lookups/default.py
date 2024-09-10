@@ -17,8 +17,8 @@ YAML_EXAMPLE = """
 - name: default result lookup examples
   operation: validate_debug
   saved:
-    - example1.capture.to_group.~specified_name
-    - example2.capture.1
+    - example1.capture().to_group.~specified_name
+    - example2.capture().1
     - ~specified_name
 
 """
@@ -52,6 +52,7 @@ class DefaultLookup(LookupBase):
     lookup_instance = lookup_class(
         self.lookup_name,
         self.lookup_expression,
+        self.lookup_params,
         self.requesting_operation_name,
     )
     lookup_instance.apply(state)

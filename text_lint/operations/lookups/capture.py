@@ -15,11 +15,11 @@ YAML_EXAMPLE = """
 - name: capture group lookup example
   operation: validate_debug
   saved:
-    - example.capture
+    - example.capture()
 
 note: To access other regex capture groups, simply chain this operation:
-    - example.capture.capture             # 2nd regex capture group
-    - example.capture.capture.capture     # 3rd regex capture group
+    - example.capture().capture()             # 2nd regex capture group
+    - example.capture().capture().capture()   # 3rd regex capture group
 
 """
 

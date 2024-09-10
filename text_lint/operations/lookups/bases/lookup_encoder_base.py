@@ -3,7 +3,7 @@ import abc
 import json
 from typing import TYPE_CHECKING, Any, Dict, Type
 
-from .lookup_base import LookupBase
+from .lookup_base import AliasLookupParams, LookupBase
 
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.operations.validators.args.lookup_expression import (
@@ -21,11 +21,13 @@ class LookupEncoderBase(LookupBase, abc.ABC):
       self,
       lookup_name: str,
       lookup_expression: "LookupExpression",
+      lookup_params: "AliasLookupParams",
       requesting_operation_name: str,
   ) -> None:
     super().__init__(
         lookup_name,
         lookup_expression,
+        lookup_params,
         requesting_operation_name,
     )
     self.encoder_params = {}

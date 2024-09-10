@@ -30,6 +30,7 @@ class TestCaptureLookup:
         "is_positional": True,
         "lookup_expression": mocked_lookup_expression,
         "lookup_name": mocked_lookup_name,
+        "lookup_params": [],
         "operation": "capture",
         "requesting_operation_name": mocked_requesting_operation_name,
         "yaml_example": YAML_EXAMPLE,

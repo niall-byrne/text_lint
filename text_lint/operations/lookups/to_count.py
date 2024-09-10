@@ -14,7 +14,7 @@ YAML_EXAMPLE = """
 - name: count transformation lookup example
   operation: validate_debug
   saved:
-    - example.capture.to_count
+    - example.capture().to_count()
 
 """
 

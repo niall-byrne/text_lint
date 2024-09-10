@@ -21,6 +21,7 @@ from .. import (
     to_unique,
     to_upper,
 )
+from ..bases.lookup_base import AliasLookupParams
 from ..bases.lookup_encoder_base import LookupEncoderBase
 # pylint: disable=wildcard-import,unused-wildcard-import
 from .scenarios import *
@@ -78,7 +79,9 @@ def mocked_requesting_operation_name() -> str:
 
 @pytest.fixture
 def mocked_lookup_expression() -> mock.Mock:
-  return mock.Mock()
+  instance = mock.Mock()
+  instance.lookups = [mock.Mock(), mock.Mock()]
+  return instance
 
 
 @pytest.fixture
@@ -131,6 +134,7 @@ def setup_encoder_lookup(
 def as_json_lookup_instance(
     mocked_lookup_expression: mock.Mock,
     mocked_lookup_name: str,
+    mocked_lookup_params: "AliasLookupParams",
     mocked_requesting_operation_name: str,
     setup_encoder_lookup: Callable[[], None],
 ) -> as_json.JsonLookup:
@@ -138,6 +142,7 @@ def as_json_lookup_instance(
   return as_json.JsonLookup(
       mocked_lookup_name,
       mocked_lookup_expression,
+      mocked_lookup_params,
       mocked_requesting_operation_name,
   )
 
@@ -146,23 +151,27 @@ def as_json_lookup_instance(
 def capture_lookup_instance(
     mocked_lookup_expression: mock.Mock,
     mocked_lookup_name: str,
+    mocked_lookup_params: "AliasLookupParams",
     mocked_requesting_operation_name: str,
 ) -> capture.CaptureLookup:
   return capture.CaptureLookup(
       mocked_lookup_name,
       mocked_lookup_expression,
+      mocked_lookup_params,
       mocked_requesting_operation_name,
   )
 
 
 @pytest.fixture
 def index_lookup_instance(
-    mocked_requesting_operation_name: str,
     mocked_lookup_expression: mock.Mock,
+    mocked_lookup_params: "AliasLookupParams",
+    mocked_requesting_operation_name: str,
 ) -> index.IndexLookup:
   return index.IndexLookup(
       "1",
       mocked_lookup_expression,
+      mocked_lookup_params,
       mocked_requesting_operation_name,
   )
 
@@ -171,11 +180,13 @@ def index_lookup_instance(
 def name_lookup_instance(
     mocked_lookup_expression: mock.Mock,
     mocked_lookup_name: str,
+    mocked_lookup_params: "AliasLookupParams",
     mocked_requesting_operation_name: str,
 ) -> name.NameLookup:
   return name.NameLookup(
       mocked_lookup_name,
       mocked_lookup_expression,
+      mocked_lookup_params,
       mocked_requesting_operation_name,
   )
 
@@ -184,11 +195,13 @@ def name_lookup_instance(
 def noop_lookup_instance(
     mocked_lookup_expression: mock.Mock,
     mocked_lookup_name: str,
+    mocked_lookup_params: "AliasLookupParams",
     mocked_requesting_operation_name: str,
 ) -> noop.NoopLookup:
   return noop.NoopLookup(
       mocked_lookup_name,
       mocked_lookup_expression,
+      mocked_lookup_params,
       mocked_requesting_operation_name,
   )
 
@@ -197,11 +210,13 @@ def noop_lookup_instance(
 def to_count_lookup_instance(
     mocked_lookup_expression: mock.Mock,
     mocked_lookup_name: str,
+    mocked_lookup_params: "AliasLookupParams",
     mocked_requesting_operation_name: str,
 ) -> to_count.CountLookup:
   return to_count.CountLookup(
       mocked_lookup_name,
       mocked_lookup_expression,
+      mocked_lookup_params,
       mocked_requesting_operation_name,
   )
 
@@ -210,11 +225,13 @@ def to_count_lookup_instance(
 def to_group_lookup_instance(
     mocked_lookup_expression: mock.Mock,
     mocked_lookup_name: str,
+    mocked_lookup_params: "AliasLookupParams",
     mocked_requesting_operation_name: str,
 ) -> to_group.GroupLookup:
   return to_group.GroupLookup(
       mocked_lookup_name,
       mocked_lookup_expression,
+      mocked_lookup_params,
       mocked_requesting_operation_name,
   )
 
@@ -223,6 +240,7 @@ def to_group_lookup_instance(
 def to_lower_lookup_instance(
     mocked_lookup_expression: mock.Mock,
     mocked_lookup_name: str,
+    mocked_lookup_params: "AliasLookupParams",
     mocked_requesting_operation_name: str,
     setup_encoder_lookup: Callable[[], None],
 ) -> to_lower.LowerLookup:
@@ -230,6 +248,7 @@ def to_lower_lookup_instance(
   return to_lower.LowerLookup(
       mocked_lookup_name,
       mocked_lookup_expression,
+      mocked_lookup_params,
       mocked_requesting_operation_name,
   )
 
@@ -238,11 +257,13 @@ def to_lower_lookup_instance(
 def to_reversed_lookup_instance(
     mocked_lookup_expression: mock.Mock,
     mocked_lookup_name: str,
+    mocked_lookup_params: "AliasLookupParams",
     mocked_requesting_operation_name: str,
 ) -> to_reversed.ReversedLookup:
   return to_reversed.ReversedLookup(
       mocked_lookup_name,
       mocked_lookup_expression,
+      mocked_lookup_params,
       mocked_requesting_operation_name,
   )
 
@@ -251,11 +272,13 @@ def to_reversed_lookup_instance(
 def to_sorted_lookup_instance(
     mocked_lookup_expression: mock.Mock,
     mocked_lookup_name: str,
+    mocked_lookup_params: "AliasLookupParams",
     mocked_requesting_operation_name: str,
 ) -> to_sorted.SortedLookup:
   return to_sorted.SortedLookup(
       mocked_lookup_name,
       mocked_lookup_expression,
+      mocked_lookup_params,
       mocked_requesting_operation_name,
   )
 
@@ -264,6 +287,7 @@ def to_sorted_lookup_instance(
 def to_unique_lookup_instance(
     mocked_lookup_expression: mock.Mock,
     mocked_lookup_name: str,
+    mocked_lookup_params: "AliasLookupParams",
     mocked_requesting_operation_name: str,
     setup_encoder_lookup: Callable[[], None],
 ) -> to_unique.UniqueLookup:
@@ -271,6 +295,7 @@ def to_unique_lookup_instance(
   return to_unique.UniqueLookup(
       mocked_lookup_name,
       mocked_lookup_expression,
+      mocked_lookup_params,
       mocked_requesting_operation_name,
   )
 
@@ -279,6 +304,7 @@ def to_unique_lookup_instance(
 def to_upper_lookup_instance(
     mocked_lookup_expression: mock.Mock,
     mocked_lookup_name: str,
+    mocked_lookup_params: "AliasLookupParams",
     mocked_requesting_operation_name: str,
     setup_encoder_lookup: Callable[[], None],
 ) -> to_upper.UpperLookup:
@@ -286,5 +312,6 @@ def to_upper_lookup_instance(
   return to_upper.UpperLookup(
       mocked_lookup_name,
       mocked_lookup_expression,
+      mocked_lookup_params,
       mocked_requesting_operation_name,
   )

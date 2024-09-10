@@ -15,7 +15,7 @@ YAML_EXAMPLE = """
 - name: sorted transformation lookup example
   operation: validate_debug
   saved:
-    - example.capture.0.to_sorted
+    - example.capture().0.to_sorted()
 
 """
 
