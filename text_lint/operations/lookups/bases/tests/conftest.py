@@ -34,7 +34,7 @@ def mocked_requesting_operation_name() -> str:
 
 @pytest.fixture
 def mocked_lookup_expression() -> mock.Mock:
-  return mock.Mock()
+  return mock.Mock(**{"lookups": [mock.Mock(), mock.Mock()]})
 
 
 @pytest.fixture
@@ -81,6 +81,7 @@ def concrete_lookup_encoder_base_class(
 def concrete_lookup_base_instance(
     concrete_lookup_base_class: Type[lookup_base.LookupBase],
     mocked_lookup_name: str,
+    mocked_lookup_params: "lookup_base.AliasLookupParams",
     mocked_requesting_operation_name: str,
     mocked_lookup_expression: mock.Mock,
 ) -> lookup_base.LookupBase:
@@ -88,15 +89,17 @@ def concrete_lookup_base_instance(
   return concrete_lookup_base_class(
       mocked_lookup_name,
       mocked_lookup_expression,
+      mocked_lookup_params,
       mocked_requesting_operation_name,
   )
 
 
 @pytest.fixture
 def concrete_lookup_encoder_base_instance(
-    concrete_lookup_encoder_base_class: Type[
-        lookup_encoder_base.LookupEncoderBase],
+    concrete_lookup_encoder_base_class: \
+    Type[lookup_encoder_base.LookupEncoderBase],
     mocked_lookup_name: str,
+    mocked_lookup_params: "lookup_base.AliasLookupParams",
     mocked_requesting_operation_name: str,
     mocked_lookup_expression: mock.Mock,
 ) -> lookup_encoder_base.LookupEncoderBase:
@@ -104,5 +107,6 @@ def concrete_lookup_encoder_base_instance(
   return concrete_lookup_encoder_base_class(
       mocked_lookup_name,
       mocked_lookup_expression,
+      mocked_lookup_params,
       mocked_requesting_operation_name,
   )

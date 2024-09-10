@@ -1,6 +1,7 @@
 """"Temporary config file."""
 
 import os
+import re
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:  # pragma: no cover
@@ -13,6 +14,7 @@ LOOKUP_SENTINEL = ""
 LOOKUP_SEPERATOR = "."
 LOOKUP_STATIC_VALUE_MARKER = "~"
 LOOKUP_TRANSFORMATION_PREFIX = "to_"
+LOOKUP_NAME_REGEX = re.compile(r'^([A-Za-z_]+)\((.*)\)$')
 LOOP_COUNT = -1
 MAXIMUM_SUPPORTED_SCHEMA_VERSION: "AliasVersionTuple" = (0, 2, 0)
 MINIMUM_SUPPORTED_SCHEMA_VERSION: "AliasVersionTuple" = (0, 0, 1)

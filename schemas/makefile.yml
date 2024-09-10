@@ -68,37 +68,37 @@ validators:
     operation: validate_combine
     saved:
       - ~help
-      - aliases.capture
-      - commands.capture
+      - aliases.capture()
+      - commands.capture()
     new_saved: expected_phonies
 
   - name: test alphabetical order
     operation: validate_equal
     saved_a:
-      - aliases.capture.0
-      - helps.capture.0
-      - commands.capture.0
+      - aliases.capture().0
+      - helps.capture().0
+      - commands.capture().0
     saved_b:
-      - aliases.capture.0.to_sorted
-      - helps.capture.0.to_sorted
-      - commands.capture.0.to_sorted
+      - aliases.capture().0.to_sorted()
+      - helps.capture().0.to_sorted()
+      - commands.capture().0.to_sorted()
 
   - name: test for repeated entries
     operation: validate_equal
     saved_a:
-      - aliases.capture.0
-      - helps.capture.0
-      - commands.capture.0
+      - aliases.capture().0
+      - helps.capture().0
+      - commands.capture().0
     saved_b:
-      - aliases.capture.0.to_unique
-      - helps.capture.0.to_unique
-      - commands.capture.0.to_unique
+      - aliases.capture().0.to_unique()
+      - helps.capture().0.to_unique()
+      - commands.capture().0.to_unique()
 
   - name: test expected phonies and helps
     operation: validate_equal
     saved_a:
-      - commands.capture
-      - phonies.capture.0
+      - commands.capture()
+      - phonies.capture().0
     saved_b:
-      - helps.capture
-      - expected_phonies.capture
+      - helps.capture()
+      - expected_phonies.capture()

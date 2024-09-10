@@ -47,6 +47,7 @@ class TestLookupState:
       lookup_state_instance: LookupState,
   ) -> None:
     mocked_operation = mock.Mock()
+    mocked_operation.lookup_expression.lookups = [mock.Mock()]
     mocked_translated_text = _("mocked_translated_text")
 
     with pytest.raises(LookupFailure) as exc:
