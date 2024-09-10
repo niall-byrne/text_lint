@@ -2,13 +2,16 @@
 
 import random
 import string
-from typing import Any, Tuple
+from typing import Any, List, Tuple
 
 import pytest
 from text_lint.__helpers__.translations import assert_all_translated
 from text_lint.config import LOOKUP_STATIC_VALUE_MARKER
 from text_lint.exceptions.lookups import LookupFailure, LookupUnknown
-from text_lint.operations.lookups.bases.lookup_base import LookupBase
+from text_lint.operations.lookups.bases.lookup_base import (
+    AliasLookupParams,
+    LookupBase,
+)
 from text_lint.utilities.translations import f as translation_f
 from text_lint.utilities.whitespace import make_visible
 
@@ -246,3 +249,14 @@ result_sorting_test_cases = pytest.mark.parametrize(
     ],
     ids=["list", "tuple", "dict", "nested"]
 )
+
+
+def set_lookup_params(
+    params_test_inputs: List["AliasLookupParams"]
+) -> pytest.MarkDecorator:
+  return pytest.mark.parametrize(
+      'mocked_lookup_params',
+      params_test_inputs,
+      ids=lambda passed_params: f"params:{passed_params}",
+      indirect=True,
+  )

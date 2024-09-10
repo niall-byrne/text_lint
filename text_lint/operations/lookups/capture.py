@@ -2,12 +2,17 @@
 
 from typing import TYPE_CHECKING, List, Union
 
+from text_lint.exceptions.lookups import LookupFailure
 from text_lint.results.tree import ResultTree
-from text_lint.utilities.translations import _
+from text_lint.utilities.translations import _, f
 from .bases.lookup_base import LookupBase
 
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.linter.states import LookupState
+  from text_lint.operations.lookups.bases.lookup_base import AliasLookupParams
+  from text_lint.operations.validators.args.lookup_expression import (
+      LookupExpression,
+  )
   from text_lint.results.forest import AliasLookupResult
 
 YAML_EXAMPLE = """
@@ -15,11 +20,11 @@ YAML_EXAMPLE = """
 - name: capture group lookup example
   operation: validate_debug
   saved:
-    - example.capture()
+    - example.capture(1)                      # 1st regex capture group
 
-note: To access other regex capture groups, simply chain this operation:
-    - example.capture().capture()             # 2nd regex capture group
-    - example.capture().capture().capture()   # 3rd regex capture group
+note: capture groups are indexed and need a parameter:
+    - example.capture(2)                      # 2nd regex capture group
+    - example.capture(3)                      # 3rd regex capture group
 
 """
 
@@ -32,25 +37,77 @@ AliasRecursiveForestLocation = Union[
 class CaptureLookup(LookupBase):
   """CaptureLookup operation for ResultForest instances."""
 
+  index: int
+
   hint = _("select the next capture group of a save id")
   is_positional = True
   operation = "capture"
   yaml_example = YAML_EXAMPLE
 
+  msg_fmg_invalid_capture_group = _("Invalid capture group '{0}' !")
+  msg_fmg_invalid_parameters = _("Invalid lookup parameters!")
+
+  def __init__(
+      self,
+      lookup_name: str,
+      lookup_expression: "LookupExpression",
+      lookup_params: "AliasLookupParams",
+      requesting_operation_name: str,
+  ) -> None:
+    super().__init__(
+        lookup_name,
+        lookup_expression,
+        lookup_params,
+        requesting_operation_name,
+    )
+    self.index = self._parse_capture_group()
+
+  def validate_params(self) -> None:
+    if len(self.lookup_params) != 1:
+      raise LookupFailure(
+          translated_description=f(
+              self.msg_fmg_invalid_parameters,
+              [],
+              nl=1,
+          ),
+          lookup=self,
+      )
+
+  def _parse_capture_group(self) -> int:
+    try:
+      assert isinstance(self.lookup_params[0], int)
+      index = self.lookup_params[0]
+      assert index > 0
+      return index
+    except AssertionError as exc:
+      raise LookupFailure(
+          translated_description=f(
+              self.msg_fmg_invalid_capture_group,
+              self.lookup_params[0],
+              nl=1,
+          ),
+          lookup=self,
+      ) from exc
+
   def apply(
       self,
       state: "LookupState",
   ) -> None:
-    """Select all next capture group from the current ResultForest location."""
+    """Select a capture group from the current ResultForest location."""
 
     state.results = []
+
+    while self.index > 0:
+      self.index -= 1
+      self._update_location(state)
 
     self._update_results(
         state.cursor.location,
         state.results,
     )
 
-    self._update_location(state)
+    if not state.results:
+      raise self._create_lookup_failure()
 
   def _update_location(
       self,
@@ -64,7 +121,17 @@ class CaptureLookup(LookupBase):
       thicket: List["AliasLookupResult"],
   ) -> None:
     if isinstance(forest_location, ResultTree):
-      thicket.append([tree.value for tree in forest_location.children])
+      thicket += [forest_location.value]
     if isinstance(forest_location, list):
       for grove in forest_location:
         self._update_results(grove, thicket)
+
+  def _create_lookup_failure(self) -> LookupFailure:
+    return LookupFailure(
+        translated_description=f(
+            self.msg_fmg_invalid_capture_group,
+            self.lookup_params[0],
+            nl=1,
+        ),
+        lookup=self,
+    )

@@ -50,6 +50,10 @@ class LookupExpressionInvalid(SchemaExceptionBase):
   """Raised when a malformed lookup expression is found in the schema."""
 
 
+class LookupExpressionInvalidDuplicatePositional(SchemaExceptionBase):
+  """Raised when a positional lookup is used twice in an expression."""
+
+
 class LookupExpressionInvalidSequence(SchemaExceptionBase):
   """Raised when a positional lookup is used after a transformation lookup."""
 
