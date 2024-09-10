@@ -124,50 +124,50 @@ msgstr ""
 msgid "ASSERTION LOGIC ERROR: {0}"
 msgstr ""
 
-#: text_lint/exceptions/lookups.py:19 text_lint/exceptions/lookups.py:77
+#: text_lint/exceptions/lookups.py:19 text_lint/exceptions/lookups.py:86
 #, python-brace-format
 msgid "  LOOKUP OPERATION: {0}"
 msgstr ""
 
-#: text_lint/exceptions/lookups.py:20 text_lint/exceptions/lookups.py:78
+#: text_lint/exceptions/lookups.py:20 text_lint/exceptions/lookups.py:87
 #: text_lint/exceptions/results.py:24 text_lint/exceptions/validators.py:21
 #, python-brace-format
 msgid "  SCHEMA OPERATION NAME: {0}"
 msgstr ""
 
-#: text_lint/exceptions/lookups.py:21 text_lint/exceptions/lookups.py:79
+#: text_lint/exceptions/lookups.py:21 text_lint/exceptions/lookups.py:88
 #: text_lint/exceptions/results.py:25
 msgid "  LOOKUP DEFINITION:"
 msgstr ""
 
-#: text_lint/exceptions/lookups.py:22 text_lint/exceptions/lookups.py:80
+#: text_lint/exceptions/lookups.py:22 text_lint/exceptions/lookups.py:89
 #: text_lint/exceptions/results.py:26
 #, python-brace-format
 msgid "    SAVE ID: '{0}'"
 msgstr ""
 
-#: text_lint/exceptions/lookups.py:23 text_lint/exceptions/lookups.py:81
+#: text_lint/exceptions/lookups.py:23 text_lint/exceptions/lookups.py:90
 #: text_lint/exceptions/results.py:27
 #, python-brace-format
 msgid "    LOOKUPS: {0}"
 msgstr ""
 
-#: text_lint/exceptions/lookups.py:24 text_lint/exceptions/lookups.py:82
+#: text_lint/exceptions/lookups.py:24 text_lint/exceptions/lookups.py:91
 #, python-brace-format
 msgid "    FAILED LOOKUP: '{0}'"
 msgstr ""
 
-#: text_lint/exceptions/lookups.py:25 text_lint/exceptions/lookups.py:83
+#: text_lint/exceptions/lookups.py:25 text_lint/exceptions/lookups.py:92
 #: text_lint/exceptions/results.py:28
 #, python-brace-format
 msgid "    HINT: '{0}'"
 msgstr ""
 
-#: text_lint/exceptions/lookups.py:75
+#: text_lint/exceptions/lookups.py:84
 msgid "Could not process this unknown lookup."
 msgstr ""
 
-#: text_lint/exceptions/lookups.py:85
+#: text_lint/exceptions/lookups.py:94
 #, python-brace-format
 msgid "to lookup a specific value, prefix the name with '{0}'"
 msgstr ""
@@ -195,7 +195,7 @@ msgstr ""
 msgid "  OPERATION DEFINITION:"
 msgstr ""
 
-#: text_lint/exceptions/schema.py:61
+#: text_lint/exceptions/schema.py:69
 #, python-brace-format
 msgid ""
 "This version of text_lint only supports schema versions {0} through {1} !"
@@ -261,7 +261,7 @@ msgstr ""
 msgid "An assertion may not rewind the text file twice."
 msgstr ""
 
-#: text_lint/linter/states/tests/test_lookup.py:50
+#: text_lint/linter/states/tests/test_lookup.py:51
 msgid "mocked_translated_text"
 msgstr ""
 
@@ -342,11 +342,16 @@ msgstr ""
 msgid "create a JSON representation of a save id"
 msgstr ""
 
-#: text_lint/operations/lookups/bases/tests/conftest.py:45
+#: text_lint/operations/lookups/bases/lookup_base.py:24
+#, python-brace-format
+msgid "Received unexpected parameters: '{0}' !"
+msgstr ""
+
+#: text_lint/operations/lookups/bases/tests/conftest.py:47
 msgid "mocked_hint_lookup"
 msgstr ""
 
-#: text_lint/operations/lookups/bases/tests/conftest.py:70
+#: text_lint/operations/lookups/bases/tests/conftest.py:72
 msgid "mocked_hint_lookup_encoder"
 msgstr ""
 
@@ -504,27 +509,37 @@ msgstr ""
 msgid "No assertions found"
 msgstr ""
 
-#: text_lint/schema/bases/section_base.py:23
+#: text_lint/schema/bases/section_base.py:27
 #, python-brace-format
 msgid "{0} #{1} Invalid regex"
 msgstr ""
 
-#: text_lint/schema/bases/section_base.py:24
+#: text_lint/schema/bases/section_base.py:28
 #, python-brace-format
 msgid "{0} #{1} Invalid split group"
 msgstr ""
 
-#: text_lint/schema/bases/section_base.py:26
+#: text_lint/schema/bases/section_base.py:30
+#, python-brace-format
+msgid "{0} #{1} Invalid lookup expression: '{2}'"
+msgstr ""
+
+#: text_lint/schema/bases/section_base.py:33
+#, python-brace-format
+msgid "{0} #{1} Transformation lookup in wrong sequence: '{2}'"
+msgstr ""
+
+#: text_lint/schema/bases/section_base.py:36
 #, python-brace-format
 msgid "{0} #{1} This operation is for internal use only"
 msgstr ""
 
-#: text_lint/schema/bases/section_base.py:28
+#: text_lint/schema/bases/section_base.py:38
 #, python-brace-format
 msgid "{0} #{1} Unknown operation"
 msgstr ""
 
-#: text_lint/schema/bases/section_base.py:29
+#: text_lint/schema/bases/section_base.py:39
 #, python-brace-format
 msgid "{0} #{1} Unknown syntax"
 msgstr ""

@@ -18,9 +18,9 @@ YAML_EXAMPLE = """
 - name: membership validator example
   operation: validate_membership
   saved_container:
-    - source1.capture
+    - source1.capture()
   saved_value:
-    - source2.capture
+    - source2.capture()
 
 """
 

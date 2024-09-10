@@ -31,6 +31,7 @@ class TestIndexLookup:
         "is_positional": False,
         "lookup_expression": mocked_lookup_expression,
         "lookup_name": "1",
+        "lookup_params": [],
         "operation": "index",
         "requesting_operation_name": mocked_requesting_operation_name,
         "yaml_example": YAML_EXAMPLE,
@@ -107,6 +108,7 @@ class TestIndexLookup:
     instance = IndexLookup(
         "1",
         mocked_lookup_expression,
+        [],
         mocked_requesting_operation_name,
     )
     mocked_state.cursor.location = [[]]
@@ -127,6 +129,7 @@ class TestIndexLookup:
     instance = IndexLookup(
         "1",
         mocked_lookup_expression,
+        [],
         mocked_requesting_operation_name,
     )
     mocked_state.cursor.location = [[]]

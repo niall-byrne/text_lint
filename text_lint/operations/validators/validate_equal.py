@@ -15,9 +15,9 @@ YAML_EXAMPLE = """
 - name: equality validator example
   operation: validate_equal
   saved_a:
-    - source1.capture
+    - source1.capture()
   saved_b:
-    - source2.capture
+    - source2.capture()
 
 """
 

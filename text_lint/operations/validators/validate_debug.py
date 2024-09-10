@@ -20,8 +20,8 @@ YAML_EXAMPLE = """
 - name: debug validator example
   operation: validate_debug
   saved:
-    - source1.capture
-    - source2.capture
+    - source1.capture()
+    - source2.capture()
 
 """
 

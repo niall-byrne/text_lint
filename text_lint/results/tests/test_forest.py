@@ -159,6 +159,7 @@ class TestResultForest:
       mocked_existing_tree: mock.Mock,
   ) -> None:
     mocked_lookup_expression = mock.Mock()
+    mocked_lookup_expression.lookups = [mock.Mock()]
     mocked_lookup_expression.source = mocked_existing_tree.value
 
     lookup_results = result_forest_instance.lookup_expression(
@@ -174,6 +175,7 @@ class TestResultForest:
       mocked_linter: mock.Mock,
   ) -> None:
     mocked_lookup_expression = mock.Mock()
+    mocked_lookup_expression.lookups = [mock.Mock()]
     mocked_lookup_expression.source = "non_existing_source"
 
     with pytest.raises(ResultDoesNotExist) as exc:

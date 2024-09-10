@@ -61,7 +61,9 @@ class ResultDoesNotExist(ResultExceptionBase):
     )
     message += f(
         self.msg_fmt_lookups,
-        make_visible(lookup_expression.lookups),
+        make_visible(
+            [parsed_lookup.name for parsed_lookup in lookup_expression.lookups]
+        ),
         nl=1,
     )
     message += f(
