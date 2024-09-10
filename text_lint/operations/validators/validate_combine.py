@@ -21,8 +21,8 @@ YAML_EXAMPLE = """
 - name: combine validator example
   operation: validate_combine
   saved:
-    - source1.capture()
-    - source2.capture()
+    - source1.capture(1)
+    - source2.capture(1)
     - ~source3_name
   new_saved: new_source
 

@@ -14,7 +14,7 @@ YAML_EXAMPLE = """
 - name: save id as json representation example
   operation: validate_debug
   saved:
-    - example.capture().to_json()
+    - example.capture(1).to_json()
 
 note: This lookup is intended to help debug capture groups in complex loops.
 

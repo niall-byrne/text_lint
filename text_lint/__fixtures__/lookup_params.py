@@ -14,8 +14,11 @@ class MockedLookupParamsContainer:
 
 @pytest.fixture
 def mocked_lookup_params(
+    request: pytest.FixtureRequest,
     mocked_lookup_params_container: MockedLookupParamsContainer,
 ) -> "AliasLookupParams":
+  if hasattr(request, "param"):
+    mocked_lookup_params_container.value = getattr(request, "param")
   return mocked_lookup_params_container.value
 
 

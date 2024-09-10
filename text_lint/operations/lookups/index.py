@@ -14,7 +14,7 @@ YAML_EXAMPLE = """
 - name: index save id lookup example
   operation: validate_debug
   saved:
-    - example.capture().1
+    - example.capture(1).1
 
 """
 
