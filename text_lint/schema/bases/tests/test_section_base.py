@@ -8,7 +8,12 @@ from unittest import mock
 import pytest
 from text_lint.__helpers__.schema import assert_is_schema_error
 from text_lint.__helpers__.translations import assert_is_translated
-from text_lint.exceptions.schema import SchemaError, SplitGroupInvalid
+from text_lint.exceptions.schema import (
+    LookupExpressionInvalid,
+    LookupExpressionInvalidSequence,
+    SchemaError,
+    SplitGroupInvalid,
+)
 from ..section_base import SchemaSectionBase
 from .fixtures import schemas
 
@@ -30,6 +35,12 @@ class TestSchemaSectionBase:
       self,
       concrete_schema_section_instance: SchemaSectionBase[mock.Mock],
   ) -> None:
+    assert_is_translated(
+        concrete_schema_section_instance.msg_fmt_invalid_lookup_expression
+    )
+    assert_is_translated(
+        concrete_schema_section_instance.msg_fmt_invalid_lookup_sequence
+    )
     assert_is_translated(concrete_schema_section_instance.msg_fmt_invalid_regex)
     assert_is_translated(
         concrete_schema_section_instance.msg_fmt_invalid_split_group
@@ -153,6 +164,60 @@ class TestSchemaSectionBase:
             concrete_schema_section_instance.msg_fmt_unknown_syntax,
             concrete_schema_section_instance.entity_name,
             1,
+        ),
+        assertion_definition=cloned_schema[0],
+        schema_path=mocked_schema.path,
+    )
+
+  @pytest.mark.parametrize("exception", [LookupExpressionInvalid])
+  def test_load__defined_section__invalid_lookup_expr__raises_schema_exception(
+      self,
+      concrete_schema_section_instance: SchemaSectionBase[mock.Mock],
+      mocked_operation_classes: Dict[str, Type[mock.Mock]],
+      mocked_schema: mock.Mock,
+      exception: Type[Exception],
+  ) -> None:
+    raised_exception = exception("invalid lookup expression")
+    mocked_operation_classes["A"].side_effect = raised_exception
+    cloned_schema = deepcopy(schemas.one_simple_assertion)
+
+    with pytest.raises(SchemaError) as exc:
+      concrete_schema_section_instance.load(cloned_schema)
+
+    assert_is_schema_error(
+        exc=exc,
+        description_t=(
+            concrete_schema_section_instance.msg_fmt_invalid_lookup_expression,
+            concrete_schema_section_instance.entity_name,
+            1,
+            raised_exception.args[0],
+        ),
+        assertion_definition=cloned_schema[0],
+        schema_path=mocked_schema.path,
+    )
+
+  @pytest.mark.parametrize("exception", [LookupExpressionInvalidSequence])
+  def test_load__defined_section__invalid_lookup_seq__raises_schema_exception(
+      self,
+      concrete_schema_section_instance: SchemaSectionBase[mock.Mock],
+      mocked_operation_classes: Dict[str, Type[mock.Mock]],
+      mocked_schema: mock.Mock,
+      exception: Type[Exception],
+  ) -> None:
+    raised_exception = exception("invalid lookup sequence")
+    mocked_operation_classes["A"].side_effect = raised_exception
+    cloned_schema = deepcopy(schemas.one_simple_assertion)
+
+    with pytest.raises(SchemaError) as exc:
+      concrete_schema_section_instance.load(cloned_schema)
+
+    assert_is_schema_error(
+        exc=exc,
+        description_t=(
+            concrete_schema_section_instance.msg_fmt_invalid_lookup_sequence,
+            concrete_schema_section_instance.entity_name,
+            1,
+            raised_exception.args[0],
         ),
         assertion_definition=cloned_schema[0],
         schema_path=mocked_schema.path,

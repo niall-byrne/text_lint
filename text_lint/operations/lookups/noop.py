@@ -13,7 +13,7 @@ YAML_EXAMPLE = """
 - name: noop lookup example
   operation: validate_debug
   saved:
-    - example.noop
+    - example.noop()
 
 """
 

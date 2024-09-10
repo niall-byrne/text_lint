@@ -1,115 +1,34 @@
 """Test the LookupExpression class."""
+from typing import List
+from unittest import mock
+
 import pytest
-from text_lint.config import (
-    LOOKUP_SENTINEL,
-    LOOKUP_SEPERATOR,
-    LOOKUP_STATIC_VALUE_MARKER,
-)
-from text_lint.operations.lookups import CaptureLookup, NoopLookup, UpperLookup
 from ..lookup_expression import LookupExpression
 
 
 class TestLookupExpression:
   """Test the LookupExpression class."""
 
-  def test_initialize__source_only__attributes(self) -> None:
-    mock_lookup = "source_name"
+  @pytest.mark.usefixtures("mocked_parse_lookup_expression")
+  def test_initialize__attributes(
+      self,
+      mocked_source: str,
+      mocked_parsed_lookups: List[mock.Mock],
+  ) -> None:
+    mocked_lookup = "source_name.lookup_operation_a().lookup_operation_b()"
 
-    instance = LookupExpression(mock_lookup)
+    instance = LookupExpression(mocked_lookup)
 
-    assert instance.name == mock_lookup
-    assert instance.source == "source_name"
-    assert instance.lookups == [LOOKUP_SENTINEL]
+    assert instance.name == mocked_lookup
+    assert instance.source == mocked_source
+    assert instance.lookups == mocked_parsed_lookups
 
-  def test_initialize__valid_lookup__attributes(self) -> None:
-    mock_lookup = LOOKUP_SEPERATOR.join(
-        [
-            "source_name",
-            NoopLookup.operation,
-            UpperLookup.operation,
-        ]
-    )
+  def test_initialize__calls_parse_lookup_expression(
+      self,
+      mocked_parse_lookup_expression: mock.Mock,
+  ) -> None:
+    mocked_lookup = "source_name.lookup_operation_a().lookup_operation_b()"
 
-    instance = LookupExpression(mock_lookup)
+    _ = LookupExpression(mocked_lookup)
 
-    assert instance.name == mock_lookup
-    assert instance.source == "source_name"
-    assert instance.lookups == [
-        NoopLookup.operation,
-        UpperLookup.operation,
-    ]
-
-  def test_initialize__valid_lookup_with_index__attributes(self) -> None:
-    mock_lookup = LOOKUP_SEPERATOR.join(
-        [
-            "source_name",
-            NoopLookup.operation,
-            UpperLookup.operation,
-            "1",
-        ]
-    )
-
-    instance = LookupExpression(mock_lookup)
-
-    assert instance.name == mock_lookup
-    assert instance.source == "source_name"
-    assert instance.lookups == [
-        NoopLookup.operation,
-        UpperLookup.operation,
-        "1",
-    ]
-
-  def test_initialize__valid_lookup_with_name_marker__attributes(self) -> None:
-    mock_lookup = LOOKUP_SEPERATOR.join(
-        [
-            "source_name",
-            NoopLookup.operation,
-            UpperLookup.operation,
-            LOOKUP_STATIC_VALUE_MARKER + "mock_value",
-        ]
-    )
-
-    instance = LookupExpression(mock_lookup)
-
-    assert instance.name == mock_lookup
-    assert instance.source == "source_name"
-    assert instance.lookups == [
-        NoopLookup.operation,
-        UpperLookup.operation,
-        LOOKUP_STATIC_VALUE_MARKER + "mock_value",
-    ]
-
-  def test_initialize__unknown_lookup__attributes(self) -> None:
-    mock_lookup = LOOKUP_SEPERATOR.join(
-        [
-            "source_name",
-            NoopLookup.operation,
-            UpperLookup.operation,
-            "unknown_lookup",
-        ]
-    )
-
-    instance = LookupExpression(mock_lookup)
-
-    assert instance.name == mock_lookup
-    assert instance.source == "source_name"
-    assert instance.lookups == [
-        NoopLookup.operation,
-        UpperLookup.operation,
-        "unknown_lookup",
-    ]
-
-  def test_initialize__invalid_lookup_sequence__raises_exception(self) -> None:
-    mock_lookup = LOOKUP_SEPERATOR.join(
-        [
-            "source_name",
-            UpperLookup.operation,
-            CaptureLookup.operation,
-        ]
-    )
-
-    with pytest.raises(ValueError) as exc:
-      LookupExpression(mock_lookup)
-
-    assert str(exc.value) == \
-        "Transformations belong at the end of a lookup expression."
+    mocked_parse_lookup_expression.assert_called_once_with(mocked_lookup)
