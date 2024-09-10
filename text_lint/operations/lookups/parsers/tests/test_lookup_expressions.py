@@ -6,6 +6,7 @@ import pytest
 from text_lint.config import LOOKUP_SENTINEL
 from text_lint.exceptions.schema import (
     LookupExpressionInvalid,
+    LookupExpressionInvalidDuplicatePositional,
     LookupExpressionInvalidSequence,
 )
 from text_lint.operations.lookups.bases.lookup_base import AliasLookupParams
@@ -155,7 +156,7 @@ class TestParseLookupExpression:
 
   @pytest.mark.parametrize(
       "expression,expected_exception", [
-          ("source8.to_upper().capture()", LookupExpressionInvalidSequence),
+          ("source8.to_upper().capture(1)", LookupExpressionInvalidSequence),
       ]
   )
   def test__invalid_sequence__vary_input__raises_exception(
@@ -173,10 +174,10 @@ class TestParseLookupExpression:
           ("source9.capture(.capture()", LookupExpressionInvalid),
           ("source9.capture(.capture(", LookupExpressionInvalid),
           ("source10.capture.capture()", LookupExpressionInvalid),
-          ("source11.capture(1).to_json()leftovers", LookupExpressionInvalid),
+          ("source11.to_json()leftovers", LookupExpressionInvalid),
       ]
   )
-  def test__invalid_expression__vary_input__raises_exception(
+  def test__malformed_expression__vary_input__raises_exception(
       self,
       expression: str,
       expected_exception: Type[Exception],
@@ -185,3 +186,33 @@ class TestParseLookupExpression:
       _ = parse_lookup_expression(expression)
 
     assert str(exc.value) == expression
+
+  @pytest.mark.parametrize(
+      "expression,duplicate_positional_lookup,expected_exception", [
+          (
+              "source12.capture(1).capture(1)",
+              "capture",
+              LookupExpressionInvalidDuplicatePositional,
+          ),
+          (
+              "source13.as_json().as_json()",
+              "as_json",
+              LookupExpressionInvalidDuplicatePositional,
+          ),
+          (
+              "source14.capture(1).as_json().as_json()",
+              "as_json",
+              LookupExpressionInvalidDuplicatePositional,
+          ),
+      ]
+  )
+  def test__duplicate_positional__vary_input__raises_exception(
+      self,
+      expression: str,
+      duplicate_positional_lookup: str,
+      expected_exception: Type[Exception],
+  ) -> None:
+    with pytest.raises(expected_exception) as exc:
+      _ = parse_lookup_expression(expression)
+
+    assert str(exc.value) == duplicate_positional_lookup

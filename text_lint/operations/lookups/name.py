@@ -17,7 +17,7 @@ YAML_EXAMPLE = """
 - name: static value lookup example
   operation: validate_debug
   saved:
-    - example.capture().to_group().~static_value
+    - example.capture(1).to_group().~static_value
     - ~static_value
 
 note: A static value can be used in the source position of a lookup expression.
