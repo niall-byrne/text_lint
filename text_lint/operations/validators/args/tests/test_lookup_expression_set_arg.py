@@ -1,10 +1,16 @@
 """Test the LookupExpressionSetArgSetArg class."""
 
-from typing import Any, List
+from typing import Any, Dict, List, Union
 
 from text_lint.config import LOOKUP_SENTINEL, LOOKUP_SEPERATOR
 from text_lint.operations.lookups import CaptureLookup, JsonLookup, UpperLookup
+from text_lint.operations.lookups.bases.lookup_base import AliasLookupParams
+from text_lint.operations.lookups.parsers.lookup_expressions import (
+    ParsedLookup,
+)
 from ..lookup_expression import LookupExpression, LookupExpressionSetArg
+
+AliasParsedLookupDefinition = Dict[str, Union[str, AliasLookupParams]]
 
 
 class TestLookupExpressionSetArgSetArg:
@@ -15,12 +21,16 @@ class TestLookupExpressionSetArgSetArg:
       instance: Any,
       name: str,
       source: str,
-      lookups: List[str],
+      lookups: List["AliasParsedLookupDefinition"],
   ) -> None:
     assert isinstance(instance, LookupExpression)
     assert instance.name == name
     assert instance.source == source
-    assert instance.lookups == lookups
+    assert len(instance.lookups) == len(lookups)
+    for lookup, definition in zip(instance.lookups, lookups):
+      assert isinstance(lookup, ParsedLookup)
+      assert lookup.name == definition["name"]
+      assert lookup.params == definition["params"]
 
   def test_intialize__attributes(
       self,
@@ -31,24 +41,37 @@ class TestLookupExpressionSetArgSetArg:
     )
 
     results = list(instance)
-    assert len(results) == len(lookup_expression_set_instances)
     self.assert_is_lookup_expression_set(
         results[0],
         name=LOOKUP_SEPERATOR.join(
             [
                 "source1",
-                CaptureLookup.operation,
-                JsonLookup.operation,
+                CaptureLookup.operation + "()",
+                JsonLookup.operation + "()",
             ]
         ),
         source="source1",
-        lookups=[CaptureLookup.operation, JsonLookup.operation]
+        lookups=[
+            {
+                "name": CaptureLookup.operation,
+                "params": [],
+            },
+            {
+                "name": JsonLookup.operation,
+                "params": [],
+            },
+        ]
     )
     self.assert_is_lookup_expression_set(
         results[1],
-        name=LOOKUP_SEPERATOR.join(["source2", UpperLookup.operation]),
+        name=LOOKUP_SEPERATOR.join(["source2", UpperLookup.operation + "()"]),
         source="source2",
-        lookups=[UpperLookup.operation]
+        lookups=[
+            {
+                "name": UpperLookup.operation,
+                "params": [],
+            },
+        ]
     )
 
   def test_create__no_yaml_definition__does_not_create_instances(self) -> None:
@@ -72,8 +95,8 @@ class TestLookupExpressionSetArgSetArg:
             LOOKUP_SEPERATOR.join(
                 [
                     "source1",
-                    CaptureLookup.operation,
-                    JsonLookup.operation,
+                    CaptureLookup.operation + "()",
+                    JsonLookup.operation + "()",
                 ]
             )
         ]
@@ -86,12 +109,21 @@ class TestLookupExpressionSetArgSetArg:
         name=LOOKUP_SEPERATOR.join(
             [
                 "source1",
-                CaptureLookup.operation,
-                JsonLookup.operation,
+                CaptureLookup.operation + "()",
+                JsonLookup.operation + "()",
             ]
         ),
         source="source1",
-        lookups=[CaptureLookup.operation, JsonLookup.operation]
+        lookups=[
+            {
+                "name": CaptureLookup.operation,
+                "params": [],
+            },
+            {
+                "name": JsonLookup.operation,
+                "params": [],
+            },
+        ]
     )
 
   def test_create__multiple_yaml_definitions__creates_instances(self) -> None:
@@ -100,15 +132,15 @@ class TestLookupExpressionSetArgSetArg:
             LOOKUP_SEPERATOR.join(
                 [
                     "source1",
-                    CaptureLookup.operation,
-                    JsonLookup.operation,
+                    CaptureLookup.operation + "()",
+                    JsonLookup.operation + "()",
                 ]
             ),
             LOOKUP_SEPERATOR.join(
                 [
                     "source2",
-                    CaptureLookup.operation,
-                    UpperLookup.operation,
+                    CaptureLookup.operation + "()",
+                    UpperLookup.operation + "()",
                 ]
             ),
             "source3",
@@ -122,28 +154,49 @@ class TestLookupExpressionSetArgSetArg:
         name=LOOKUP_SEPERATOR.join(
             [
                 "source1",
-                CaptureLookup.operation,
-                JsonLookup.operation,
+                CaptureLookup.operation + "()",
+                JsonLookup.operation + "()",
             ]
         ),
         source="source1",
-        lookups=[CaptureLookup.operation, JsonLookup.operation]
+        lookups=[
+            {
+                "name": CaptureLookup.operation,
+                "params": [],
+            },
+            {
+                "name": JsonLookup.operation,
+                "params": [],
+            },
+        ]
     )
     self.assert_is_lookup_expression_set(
         results[1],
         name=LOOKUP_SEPERATOR.join(
             [
                 "source2",
-                CaptureLookup.operation,
-                UpperLookup.operation,
+                CaptureLookup.operation + "()",
+                UpperLookup.operation + "()",
             ]
         ),
         source="source2",
-        lookups=[CaptureLookup.operation, UpperLookup.operation]
+        lookups=[
+            {
+                "name": CaptureLookup.operation,
+                "params": [],
+            },
+            {
+                "name": UpperLookup.operation,
+                "params": [],
+            },
+        ]
     )
     self.assert_is_lookup_expression_set(
         results[2],
         name="source3",
         source="source3",
-        lookups=[LOOKUP_SENTINEL],
+        lookups=[{
+            "name": LOOKUP_SENTINEL,
+            "params": [],
+        }],
     )

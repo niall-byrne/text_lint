@@ -37,7 +37,7 @@ class TestLookupsSequencer:
     assert isinstance(instance, OperatorBase)
     assert isinstance(instance, SequencerBase)
 
-  def test_initialize__creates_correct_lookup_instances(
+  def test_initialize__vary_parameters__creates_correct_lookup_instances(
       self,
       lookups_sequencer_class: Type[LookupsSequencer],
       mocked_lookup_registry: Dict[str, mock.Mock],
@@ -48,10 +48,11 @@ class TestLookupsSequencer:
         "mocked_requesting_operation_name",
     )
 
-    for lookup in mocked_lookup_registry.keys():
+    for index, lookup in enumerate(mocked_lookup_registry.keys()):
       mocked_lookup_registry[lookup].assert_called_once_with(
           lookup,
           mocked_lookup_expression,
+          [1] * index,
           "mocked_requesting_operation_name",
       )
 

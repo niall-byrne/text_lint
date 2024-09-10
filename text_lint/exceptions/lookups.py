@@ -51,7 +51,12 @@ class LookupFailure(LookupExceptionBase):
     )
     message += f(
         self.msg_fmt_lookups,
-        make_visible(lookup.lookup_expression.lookups),
+        make_visible(
+            [
+                parsed_lookup.name
+                for parsed_lookup in lookup.lookup_expression.lookups
+            ]
+        ),
         nl=1,
     )
     message += f(
@@ -66,6 +71,10 @@ class LookupFailure(LookupExceptionBase):
     )
 
     super().__init__(message)
+
+
+class LookupSyntaxInvalid(LookupExceptionBase):
+  """Raised when a malformed lookup is parsed."""
 
 
 class LookupUnknown(LookupExceptionBase):
@@ -114,7 +123,12 @@ class LookupUnknown(LookupExceptionBase):
     )
     message += f(
         self.msg_fmt_lookups,
-        make_visible(lookup.lookup_expression.lookups),
+        make_visible(
+            [
+                parsed_lookup.name
+                for parsed_lookup in lookup.lookup_expression.lookups
+            ]
+        ),
         nl=1,
     )
     message += f(

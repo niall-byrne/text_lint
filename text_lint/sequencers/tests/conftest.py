@@ -40,7 +40,12 @@ def mocked_lookup_expression(
 ) -> mock.Mock:
   instance = mock.Mock()
   instance.source = "mocked_lookup_expression_source"
-  instance.lookups = list(mocked_lookup_registry.keys())
+  instance.lookups = []
+  for index, key in enumerate(mocked_lookup_registry.keys()):
+    mocked_parsed_lookup = mock.Mock()
+    mocked_parsed_lookup.name = key
+    mocked_parsed_lookup.params = [1] * index
+    instance.lookups.append(mocked_parsed_lookup)
   return instance
 
 

@@ -46,6 +46,14 @@ class SchemaError(SchemaExceptionBase):
     super().__init__(message)
 
 
+class LookupExpressionInvalid(SchemaExceptionBase):
+  """Raised when a malformed lookup expression is found in the schema."""
+
+
+class LookupExpressionInvalidSequence(SchemaExceptionBase):
+  """Raised when a positional lookup is used after a transformation lookup."""
+
+
 class SequenceInvalid(SchemaExceptionBase):
   """Raised when a misconfigured sequence control is found in the schema."""
 
