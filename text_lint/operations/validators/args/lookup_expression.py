@@ -1,8 +1,11 @@
 """Lookup expression YAML argument definitions."""
+
 from typing import Dict, Iterator, List, Optional
 
-from text_lint.config import LOOKUP_SENTINEL, LOOKUP_SEPERATOR
-from text_lint.operations.lookups import lookup_registry
+from text_lint.operations.lookups.parsers.lookup_expressions import (
+    ParsedLookup,
+    parse_lookup_expression,
+)
 from text_lint.utilities.translations import _
 
 AliasYamlLookupExpressionSet = List[str]
@@ -46,7 +49,7 @@ class LookupExpressionSetArg:
 class LookupExpression:
   """A lookup expression definition."""
 
-  lookups: List[str]
+  lookups: List[ParsedLookup]
   name: str
   source: str
 
@@ -55,25 +58,4 @@ class LookupExpression:
       lookup_expression: str,
   ) -> None:
     self.name = lookup_expression
-    self._parsing_container: List[str] = lookup_expression.split(
-        LOOKUP_SEPERATOR
-    )
-    self.source = self._parsing_container[0]
-    self.lookups = self._parsing_container[1:]
-    if len(self.lookups) == 0:
-      self.lookups = [LOOKUP_SENTINEL]
-    self.validate_lookups()
-
-  def validate_lookups(self) -> None:
-    found_non_positional_lookup = False
-    for lookup in self.lookups:
-
-      if lookup not in lookup_registry:
-        continue
-
-      if not lookup_registry[lookup].is_positional:
-        found_non_positional_lookup = True
-      elif found_non_positional_lookup:
-        raise ValueError(
-            "Transformations belong at the end of a lookup expression."
-        )
+    self.source, self.lookups = parse_lookup_expression(lookup_expression)

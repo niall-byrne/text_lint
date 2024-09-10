@@ -34,6 +34,7 @@ class TestCountLookup:
         "is_positional": False,
         "lookup_expression": mocked_lookup_expression,
         "lookup_name": mocked_lookup_name,
+        "lookup_params": [],
         "operation": LOOKUP_TRANSFORMATION_PREFIX + "count",
         "requesting_operation_name": mocked_requesting_operation_name,
         "yaml_example": YAML_EXAMPLE,

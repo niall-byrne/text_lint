@@ -18,15 +18,15 @@ def mocked_lookup_expression_set_a() -> List[str]:
       LOOKUP_SEPERATOR.join(
           [
               "source1",
-              CaptureLookup.operation,
-              UpperLookup.operation,
+              CaptureLookup.operation + "()",
+              UpperLookup.operation + "()",
           ]
       ),
       LOOKUP_SEPERATOR.join(
           [
               "source2",
-              CaptureLookup.operation,
-              GroupLookup.operation,
+              CaptureLookup.operation + "()",
+              GroupLookup.operation + "()",
           ]
       ),
   ]
@@ -38,15 +38,15 @@ def mocked_lookup_expression_set_b() -> List[str]:
       LOOKUP_SEPERATOR.join(
           [
               "source3",
-              CaptureLookup.operation,
-              UpperLookup.operation,
+              CaptureLookup.operation + "()",
+              UpperLookup.operation + "()",
           ]
       ),
       LOOKUP_SEPERATOR.join(
           [
               "source4",
-              CaptureLookup.operation,
-              GroupLookup.operation,
+              CaptureLookup.operation + "()",
+              GroupLookup.operation + "()",
           ]
       ),
   ]
@@ -58,22 +58,22 @@ def mocked_lookup_expression_set_c() -> List[str]:
       LOOKUP_SEPERATOR.join(
           [
               "source5",
-              CaptureLookup.operation,
-              UpperLookup.operation,
+              CaptureLookup.operation + "()",
+              UpperLookup.operation + "()",
           ]
       ),
       LOOKUP_SEPERATOR.join(
           [
               "source6",
-              CaptureLookup.operation,
-              GroupLookup.operation,
+              CaptureLookup.operation + "()",
+              GroupLookup.operation + "()",
           ]
       ),
       LOOKUP_SEPERATOR.join(
           [
               "source7",
-              CaptureLookup.operation,
-              GroupLookup.operation,
+              CaptureLookup.operation + "()",
+              GroupLookup.operation + "()",
           ]
       ),
   ]

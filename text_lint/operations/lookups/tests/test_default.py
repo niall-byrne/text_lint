@@ -42,6 +42,7 @@ class TestDefaultLookup:
         "is_positional": False,
         "lookup_expression": mocked_lookup_expression,
         "lookup_name": lookup_name,
+        "lookup_params": [],
         "operation": "default",
         "requesting_operation_name": mocked_requesting_operation_name,
         "yaml_example": YAML_EXAMPLE,
@@ -50,6 +51,7 @@ class TestDefaultLookup:
     instance = DefaultLookup(
         lookup_name,
         mocked_lookup_expression,
+        [],
         mocked_requesting_operation_name,
     )
 
@@ -65,6 +67,7 @@ class TestDefaultLookup:
     instance = DefaultLookup(
         lookup_name,
         mocked_lookup_expression,
+        [],
         mocked_requesting_operation_name,
     )
 
@@ -80,6 +83,7 @@ class TestDefaultLookup:
     instance = DefaultLookup(
         lookup_name,
         mocked_lookup_expression,
+        [],
         mocked_requesting_operation_name,
     )
 
@@ -100,6 +104,7 @@ class TestDefaultLookup:
     instance = DefaultLookup(
         index,
         mocked_lookup_expression,
+        [],
         mocked_requesting_operation_name,
     )
 
@@ -108,6 +113,7 @@ class TestDefaultLookup:
     mocked_default_subclasses["IndexLookup"].assert_called_once_with(
         index,
         mocked_lookup_expression,
+        [],
         mocked_requesting_operation_name,
     )
     mocked_default_subclasses["IndexLookup"].\
@@ -125,6 +131,7 @@ class TestDefaultLookup:
     instance = DefaultLookup(
         index,
         mocked_lookup_expression,
+        [],
         mocked_requesting_operation_name,
     )
 
@@ -144,6 +151,7 @@ class TestDefaultLookup:
     instance = DefaultLookup(
         LOOKUP_STATIC_VALUE_MARKER + mock_name,
         mocked_lookup_expression,
+        [],
         mocked_requesting_operation_name,
     )
 
@@ -152,6 +160,7 @@ class TestDefaultLookup:
     mocked_default_subclasses["NameLookup"].assert_called_once_with(
         LOOKUP_STATIC_VALUE_MARKER + mock_name,
         mocked_lookup_expression,
+        [],
         mocked_requesting_operation_name,
     )
     mocked_default_subclasses["NameLookup"].\
@@ -169,6 +178,7 @@ class TestDefaultLookup:
     instance = DefaultLookup(
         LOOKUP_STATIC_VALUE_MARKER + mock_name,
         mocked_lookup_expression,
+        [],
         mocked_requesting_operation_name,
     )
 
@@ -188,6 +198,7 @@ class TestDefaultLookup:
     instance = DefaultLookup(
         mock_name,
         mocked_lookup_expression,
+        [],
         mocked_requesting_operation_name,
     )
 
@@ -208,6 +219,7 @@ class TestDefaultLookup:
     instance = DefaultLookup(
         mock_name,
         mocked_lookup_expression,
+        [],
         mocked_requesting_operation_name,
     )
 
@@ -227,6 +239,7 @@ class TestDefaultLookup:
     instance = DefaultLookup(
         mock_name,
         mocked_lookup_expression,
+        [],
         mocked_requesting_operation_name,
     )
 
