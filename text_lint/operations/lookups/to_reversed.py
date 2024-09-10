@@ -15,7 +15,7 @@ YAML_EXAMPLE = """
 - name: reversed transformation lookup example
   operation: validate_debug
   saved:
-    - example.capture().0.to_reversed()
+    - example.capture(1).0.to_reversed()
 
 """
 
