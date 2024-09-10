@@ -15,7 +15,7 @@ YAML_EXAMPLE = """
 - name: lowercase save id transformation lookup example
   operation: validate_debug
   saved:
-    - example.capture().to_lower()
+    - example.capture(1).to_lower()
 
 """
 

@@ -15,7 +15,7 @@ YAML_EXAMPLE = """
 - name: uppercase save id transformation lookup example
   operation: validate_debug
   saved:
-    - example.capture().to_upper()
+    - example.capture(1).to_upper()
 
 """
 

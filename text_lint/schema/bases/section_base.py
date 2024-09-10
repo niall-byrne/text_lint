@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING, Any, Dict, Generic, List, Type, TypeVar
 
 from text_lint.exceptions.schema import (
     LookupExpressionInvalid,
+    LookupExpressionInvalidDuplicatePositional,
     LookupExpressionInvalidSequence,
     SplitGroupInvalid,
 )
@@ -29,7 +30,10 @@ class SchemaSectionBase(Generic[TypeOperation]):
   msg_fmt_invalid_lookup_expression = _(
       "{0} #{1} Invalid lookup expression: '{2}'"
   )
-  msg_fmt_invalid_lookup_sequence = _(
+  msg_fmt_invalid_lookup_expression_duplicate_positional = _(
+      "{0} #{1} Invalid lookup expression: duplicate use of '{2}'"
+  )
+  msg_fmt_invalid_lookup_expression_sequence = _(
       "{0} #{1} Transformation lookup in wrong sequence: '{2}'"
   )
   msg_fmt_restricted_operation = _(
@@ -120,10 +124,21 @@ class SchemaSectionBase(Generic[TypeOperation]):
           ),
           operation_definition=operation_definition,
       ) from exc
+    except LookupExpressionInvalidDuplicatePositional as exc:
+      raise self._schema.create_exception(
+          description=f(
+              self.msg_fmt_invalid_lookup_expression_duplicate_positional,
+              self.entity_name,
+              operation_index + 1,
+              exc.args[0],
+              nl=1,
+          ),
+          operation_definition=operation_definition,
+      ) from exc
     except LookupExpressionInvalidSequence as exc:
       raise self._schema.create_exception(
           description=f(
-              self.msg_fmt_invalid_lookup_sequence,
+              self.msg_fmt_invalid_lookup_expression_sequence,
               self.entity_name,
               operation_index + 1,
               exc.args[0],

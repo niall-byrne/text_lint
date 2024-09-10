@@ -17,8 +17,8 @@ YAML_EXAMPLE = """
 - name: default result lookup examples
   operation: validate_debug
   saved:
-    - example1.capture().to_group.~specified_name
-    - example2.capture().1
+    - example1.capture(1).to_group.~specified_name
+    - example2.capture(1).1
     - ~specified_name
 
 """

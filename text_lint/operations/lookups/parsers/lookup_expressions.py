@@ -10,6 +10,7 @@ from text_lint.config import (
 from text_lint.exceptions.lookups import LookupSyntaxInvalid
 from text_lint.exceptions.schema import (
     LookupExpressionInvalid,
+    LookupExpressionInvalidDuplicatePositional,
     LookupExpressionInvalidSequence,
 )
 from text_lint.operations.lookups import lookup_registry
@@ -59,16 +60,20 @@ def parse_lookup_expression(value: str) -> Tuple[str, List["ParsedLookup"]]:
 
     try:
       name, params = parse_lookup(current_segment)
+
+      if name in lookup_registry:
+        registry_reference = lookup_registry[name]
+
+        if not registry_reference.is_positional:
+          found_non_positional_lookup = True
+        else:
+          if found_non_positional_lookup:
+            raise LookupExpressionInvalidSequence(value)
+          if name in [previously_added.name for previously_added in lookups]:
+            raise LookupExpressionInvalidDuplicatePositional(name)
+
       lookups.append(ParsedLookup(name=name, params=params))
       current_segment = ""
-
-      if name not in lookup_registry:
-        continue
-
-      if not lookup_registry[name].is_positional:
-        found_non_positional_lookup = True
-      elif found_non_positional_lookup:
-        raise LookupExpressionInvalidSequence(value)
 
     except LookupSyntaxInvalid:
       pass

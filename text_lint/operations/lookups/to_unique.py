@@ -15,7 +15,7 @@ YAML_EXAMPLE = """
 - name: unique save id transformation lookup example
   operation: validate_debug
   saved:
-    - example.capture().to_unique()
+    - example.capture(1).to_unique()
 
 """
 
