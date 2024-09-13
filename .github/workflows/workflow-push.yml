@@ -63,6 +63,18 @@ jobs:
       PYTHON_VERSIONS: ${{ toJSON(fromJSON(needs.configuration.outputs.JSON_FILE_DATA).ci_python_versions) }}
       VERBOSE_NOTIFICATIONS: ${{ fromJSON(needs.configuration.outputs.JSON_FILE_DATA).ci_verbose_notifications }}
 
+  build:
+    needs:
+      - configuration
+    secrets:
+      SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+    uses: cicd-tools-org/cicd-tools/.github/workflows/job-95-generic-build_artifact.yml@main
+    with:
+      ARTIFACT_NAME: TEXT_LINT_WHEEL
+      ARTIFACT_FOLDERS: dist
+      BUILD_COMMAND: poetry build
+      REQUIRES_POETRY: true
+
   commit_lint:
     needs:
       - configuration
@@ -108,6 +120,51 @@ jobs:
       PRECOMMIT_HOOK_NAME: "Git conflict markers"
       PYTHON_VERSIONS: ${{ toJSON(fromJSON(needs.configuration.outputs.JSON_FILE_DATA).ci_python_versions) }}
       VERBOSE_NOTIFICATIONS: ${{ fromJSON(needs.configuration.outputs.JSON_FILE_DATA).ci_verbose_notifications }}
+
+  install_test:
+    needs:
+      - build
+      - configuration
+    secrets:
+      SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+    strategy:
+      fail-fast: true
+      matrix:
+        install:
+          - version: "3.6"
+            platform: "ubuntu-20.04"
+            constraint: true
+          - version: "3.7"
+            platform: "ubuntu-latest"
+            constraint: true
+          - version: "3.8"
+            platform: "ubuntu-latest"
+            constraint: false
+          - version: "3.9"
+            platform: "ubuntu-latest"
+            constraint: false
+          - version: "3.10"
+            platform: "ubuntu-latest"
+            constraint: false
+          - version: "3.11"
+            platform: "ubuntu-latest"
+            constraint: false
+          - version: "3.12"
+            platform: "ubuntu-latest"
+            constraint: false
+      max-parallel: ${{ fromJSON(needs.configuration.outputs.JSON_FILE_DATA).ci_concurrency_limit }}
+    uses: cicd-tools-org/cicd-tools/.github/workflows/job-97-poetry-verify_artifact.yml@main
+    with:
+      ARTIFACT_NAME_PATTERN: TEXT_LINT_WHEEL
+      CONCURRENCY: ${{ fromJSON(needs.configuration.outputs.JSON_FILE_DATA).ci_concurrency_limit }}
+      COMMANDS: |
+        python -m venv venv
+        source venv/bin/activate
+        [[ -n "${{ matrix.install.constraint }}" ]] && echo "cython<3" > /tmp/constraint.txt && export PIP_CONSTRAINT=/tmp/constraint.txt
+        pip install ./dist/text_lint-*-py3-none-any.whl
+        text_lint check -s schemas/makefile.yml Makefile
+      PLATFORM: ${{ matrix.install.platform }}
+      PYTHON_VERSIONS: '["${{ matrix.install.version }}"]'
 
   json_schema_lint:
     needs:
@@ -305,6 +362,7 @@ jobs:
       - commit_spell_check
       - configuration
       - git_conflict_markers
+      - install_test
       - json_schema_lint
       - makefile_lint
       - markdown_links
