@@ -9,11 +9,14 @@ from text_lint.__helpers__.operations import (
     assert_operation_attributes,
     assert_operation_inheritance,
 )
-from text_lint.__helpers__.translations import assert_is_translated
+from text_lint.__helpers__.translations import (
+    assert_is_translated,
+    assert_is_translated_yaml_example,
+)
 from text_lint.config import LOOKUP_STATIC_VALUE_MARKER
 from text_lint.utilities.translations import f
 from ..bases.lookup_base import LookupBase
-from ..name import YAML_EXAMPLE, NameLookup
+from ..name import YAML_EXAMPLE, YAML_EXAMPLE_COMPONENTS, NameLookup
 
 if TYPE_CHECKING:  # no cover
   from text_lint.results.forest import AliasLookupResult
@@ -49,6 +52,11 @@ class TestNameLookup:
   ) -> None:
     assert_is_translated(name_lookup_instance.hint)
     assert_is_translated(name_lookup_instance.msg_fmt_failure_description)
+    assert_is_translated_yaml_example(
+        name_lookup_instance.yaml_example,
+        YAML_EXAMPLE_COMPONENTS,
+        notes=True,
+    )
 
   def test_initialize__inheritance(
       self,

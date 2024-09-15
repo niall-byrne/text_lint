@@ -3,6 +3,7 @@
 from typing import TYPE_CHECKING, List, Union
 
 from text_lint.exceptions.lookups import LookupFailure
+from text_lint.operations.bases.operation_base import YAML_EXAMPLE_SECTIONS
 from text_lint.results.tree import ResultTree
 from text_lint.utilities.translations import _, f
 from .bases.lookup_base import LookupBase
@@ -15,18 +16,26 @@ if TYPE_CHECKING:  # pragma: no cover
   )
   from text_lint.results.forest import AliasLookupResult
 
+YAML_EXAMPLE_COMPONENTS = (
+    _("capture group lookup example"),
+    _("Capture groups are indexed and need a parameter"),
+    _("1st regex capture group"),
+    _("2nd regex capture group"),
+    _("3rd regex capture group"),
+)
 YAML_EXAMPLE = """
 
-- name: capture group lookup example
+- name: {0}
   operation: validate_debug
   saved:
-    - example.capture(1)                      # 1st regex capture group
+    - example.capture(1)                      # {2}
 
-note: capture groups are indexed and need a parameter:
-    - example.capture(2)                      # 2nd regex capture group
-    - example.capture(3)                      # 3rd regex capture group
+{notes_section}:
+  - {1}:
+    - example.capture(2)                      # {3}
+    - example.capture(3)                      # {4}
 
-"""
+""".format(*YAML_EXAMPLE_COMPONENTS, **YAML_EXAMPLE_SECTIONS)
 
 AliasRecursiveForestLocation = Union[
     ResultTree,

@@ -15,11 +15,14 @@ from text_lint.__helpers__.operations import (
     assert_operation_attributes,
     assert_operation_inheritance,
 )
-from text_lint.__helpers__.translations import assert_is_translated
+from text_lint.__helpers__.translations import (
+    assert_is_translated,
+    assert_is_translated_yaml_example,
+)
 from text_lint.config import LOOKUP_STATIC_VALUE_MARKER
 from text_lint.exceptions.lookups import LookupUnknown
 from ..bases.lookup_base import LookupBase
-from ..default import YAML_EXAMPLE, DefaultLookup
+from ..default import YAML_EXAMPLE, YAML_EXAMPLE_COMPONENTS, DefaultLookup
 
 
 class TestDefaultLookup:
@@ -72,6 +75,10 @@ class TestDefaultLookup:
     )
 
     assert_is_translated(instance.hint)
+    assert_is_translated_yaml_example(
+        instance.yaml_example,
+        YAML_EXAMPLE_COMPONENTS,
+    )
 
   @generated_valid_default_lookup_test_cases
   def test_initialize__vary_lookup_name__inheritance(
