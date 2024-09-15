@@ -16,9 +16,12 @@ if TYPE_CHECKING:  # pragma: no cover
   )
   from text_lint.results.forest import AliasLookupResult
 
+YAML_EXAMPLE_COMPONENTS = (
+    _("combine validator example"),
+)
 YAML_EXAMPLE = """
 
-- name: combine validator example
+- name: {0}
   operation: validate_combine
   saved:
     - source1.capture(1)
@@ -26,7 +29,7 @@ YAML_EXAMPLE = """
     - ~source3_name
   new_saved: new_source
 
-"""
+""".format(*YAML_EXAMPLE_COMPONENTS)
 
 
 class ValidateCombine(ValidatorBase):

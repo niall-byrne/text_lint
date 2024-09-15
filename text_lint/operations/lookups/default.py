@@ -12,16 +12,19 @@ from .name import NameLookup
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.linter.states import LookupState
 
+YAML_EXAMPLE_COMPONENTS = (
+    _("default result lookup examples"),
+)
 YAML_EXAMPLE = """
 
-- name: default result lookup examples
+- name: {0}
   operation: validate_debug
   saved:
     - example1.capture(1).to_group.~specified_name
     - example2.capture(1).1
     - ~specified_name
 
-"""
+""".format(*YAML_EXAMPLE_COMPONENTS)
 
 
 class DefaultLookup(LookupBase):

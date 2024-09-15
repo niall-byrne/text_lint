@@ -79,7 +79,7 @@ class TestParseLookupExpression:
               }],
           ),
           (
-              "source5.capture(1,2).to_json()",
+              "source5.capture(1,2).as_json()",
               "source5",
               [
                   {
@@ -87,7 +87,7 @@ class TestParseLookupExpression:
                       "params": [1, 2]
                   },
                   {
-                      "name": "to_json",
+                      "name": "as_json",
                       "params": []
                   },
               ],
@@ -111,7 +111,7 @@ class TestParseLookupExpression:
   @pytest.mark.parametrize(
       "expression,expected_source,expected_lookups", [
           (
-              "source6.capture(1,'A','.',')','#').to_json()",
+              "source6.capture(1,'A','.',')','#').as_json()",
               "source6",
               [
                   {
@@ -119,21 +119,21 @@ class TestParseLookupExpression:
                       "params": [1, "A", ".", ")", "#"]
                   },
                   {
-                      "name": "to_json",
+                      "name": "as_json",
                       "params": []
                   },
               ],
           ),
           (
-              "source7.capture('source7.capture(\"A\").to_json()').to_json()",
+              "source7.capture('source7.capture(\"A\").as_json()').as_json()",
               "source7",
               [
                   {
                       "name": "capture",
-                      "params": ["source7.capture(\"A\").to_json()"]
+                      "params": ["source7.capture(\"A\").as_json()"]
                   },
                   {
-                      "name": "to_json",
+                      "name": "as_json",
                       "params": []
                   },
               ],
@@ -174,7 +174,7 @@ class TestParseLookupExpression:
           ("source9.capture(.capture()", LookupExpressionInvalid),
           ("source9.capture(.capture(", LookupExpressionInvalid),
           ("source10.capture.capture()", LookupExpressionInvalid),
-          ("source11.to_json()leftovers", LookupExpressionInvalid),
+          ("source11.as_json()leftovers", LookupExpressionInvalid),
       ]
   )
   def test__malformed_expression__vary_input__raises_exception(

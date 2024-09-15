@@ -9,10 +9,17 @@ from text_lint.__helpers__.operations import (
     AliasOperationAttributes,
     assert_operation_inheritance,
 )
-from text_lint.__helpers__.translations import assert_is_translated
+from text_lint.__helpers__.translations import (
+    assert_is_translated,
+    assert_is_translated_yaml_example,
+)
 from text_lint.config import LOOP_COUNT, NEW_LINE
 from text_lint.operations.assertions.bases.assertion_base import AssertionBase
-from ..assert_sequence_begins import YAML_EXAMPLE, AssertSequenceBegins
+from ..assert_sequence_begins import (
+    YAML_EXAMPLE,
+    YAML_EXAMPLE_COMPONENTS,
+    AssertSequenceBegins,
+)
 
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.schema import AliasYamlOperation
@@ -35,7 +42,7 @@ class TestAssertSequenceBegins:
         "assertions": mocked_nested_assertions,
         "save": None,
         "splits": {},
-        "yaml_example": YAML_EXAMPLE,
+        "yaml_example": YAML_EXAMPLE.format(LOOP_COUNT=LOOP_COUNT),
     }
 
     assert_assertion_attributes(assert_sequence_begins_instance, attributes)
@@ -48,6 +55,11 @@ class TestAssertSequenceBegins:
     assert_is_translated(
         assert_sequence_begins_instance.
         msg_fmt_unexpected_assertions_after_eof_sequence
+    )
+    assert_is_translated_yaml_example(
+        YAML_EXAMPLE,
+        YAML_EXAMPLE_COMPONENTS,
+        notes=True,
     )
 
   def test_initialize__inheritance(
