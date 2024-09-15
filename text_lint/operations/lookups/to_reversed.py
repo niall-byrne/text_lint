@@ -10,14 +10,17 @@ from .encoders.reversed import ReversedEncoder
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.linter.states import LookupState
 
+YAML_EXAMPLE_COMPONENTS = (
+    _("reversed transformation lookup example"),
+)
 YAML_EXAMPLE = """
 
-- name: reversed transformation lookup example
+- name: {0}
   operation: validate_debug
   saved:
     - example.capture(1).0.to_reversed()
 
-"""
+""".format(*YAML_EXAMPLE_COMPONENTS)
 
 
 class ReversedLookup(LookupEncoderBase):

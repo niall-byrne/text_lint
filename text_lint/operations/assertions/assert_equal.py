@@ -4,15 +4,21 @@ import re
 from typing import TYPE_CHECKING, Optional
 
 from text_lint.operations.assertions.bases import assertion_regex_base
+from text_lint.operations.bases.operation_base import YAML_EXAMPLE_SECTIONS
 from text_lint.utilities.translations import _
 
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.linter.states.assertion import AssertionState
   from text_lint.operations.assertions.args.split import AliasYamlSplit
 
+YAML_EXAMPLE_COMPONENTS = (
+    _("example assert blank assertion"),
+    _("'case_insensitive' will match strings with differing cases."),
+    _("(This defaults to false.)"),
+)
 YAML_EXAMPLE = """
 
-- name: example assert equal assertion
+- name: {0}
   operation: assert_equal
   expected: "simple-string-MATCHING"
   case_insensitive: False
@@ -21,11 +27,16 @@ YAML_EXAMPLE = """
     - group: 1
     - separator: "-"
 
+{options_section}:
+  - {1}
+    {2}
 {options}
-optional: 'case_insensitive' will match strings with differing cases.
-          (This defaults to false.)
 
-""".format(options=assertion_regex_base.YAML_OPTIONS)
+""".format(
+    *YAML_EXAMPLE_COMPONENTS,
+    **YAML_EXAMPLE_SECTIONS,
+    options=assertion_regex_base.YAML_ASSERTION_REGEX_EXAMPLE_OPTIONS,
+)
 
 
 class AssertEqual(assertion_regex_base.AssertionRegexBase):

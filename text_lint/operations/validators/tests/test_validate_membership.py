@@ -9,11 +9,18 @@ from text_lint.__helpers__.operations import (
     assert_operation_attributes,
     assert_operation_inheritance,
 )
-from text_lint.__helpers__.translations import assert_is_translated
+from text_lint.__helpers__.translations import (
+    assert_is_translated,
+    assert_is_translated_yaml_example,
+)
 from text_lint.__helpers__.validators import assert_is_validation_failure
 from text_lint.exceptions.validators import ValidationFailure
 from ..bases.validator_base import ValidatorBase
-from ..validate_membership import YAML_EXAMPLE, ValidateMembership
+from ..validate_membership import (
+    YAML_EXAMPLE,
+    YAML_EXAMPLE_COMPONENTS,
+    ValidateMembership,
+)
 
 
 class TestValidateMembership:
@@ -56,6 +63,10 @@ class TestValidateMembership:
     assert_operation_inheritance(
         validate_membership_instance,
         bases=(ValidatorBase, ValidateMembership),
+    )
+    assert_is_translated_yaml_example(
+        validate_membership_instance.yaml_example,
+        YAML_EXAMPLE_COMPONENTS,
     )
 
   @pytest.mark.usefixtures("scenario__comparison__lookup_results_membership")

@@ -8,9 +8,12 @@ from text_lint.__helpers__.operations import (
     assert_operation_attributes,
     assert_operation_inheritance,
 )
-from text_lint.__helpers__.translations import assert_is_translated
+from text_lint.__helpers__.translations import (
+    assert_is_translated,
+    assert_is_translated_yaml_example,
+)
 from ..bases.lookup_base import LookupBase
-from ..noop import YAML_EXAMPLE, NoopLookup
+from ..noop import YAML_EXAMPLE, YAML_EXAMPLE_COMPONENTS, NoopLookup
 
 
 class TestNoopLookup:
@@ -42,6 +45,10 @@ class TestNoopLookup:
       noop_lookup_instance: NoopLookup,
   ) -> None:
     assert_is_translated(noop_lookup_instance.hint)
+    assert_is_translated_yaml_example(
+        noop_lookup_instance.yaml_example,
+        YAML_EXAMPLE_COMPONENTS,
+    )
 
   def test_initialize__inheritance(
       self,

@@ -13,16 +13,19 @@ if TYPE_CHECKING:  # pragma: no cover
   )
   from text_lint.results.forest import AliasLookupResult
 
+YAML_EXAMPLE_COMPONENTS = (
+    _("membership validator example"),
+)
 YAML_EXAMPLE = """
 
-- name: membership validator example
+- name: {0}
   operation: validate_membership
   saved_container:
     - source1.capture(1)
   saved_value:
     - source2.capture(1)
 
-"""
+""".format(*YAML_EXAMPLE_COMPONENTS)
 
 
 class ValidateMembership(ValidationComparisonBase):

@@ -9,10 +9,13 @@ from text_lint.__helpers__.operations import (
     assert_operation_attributes,
     assert_operation_inheritance,
 )
-from text_lint.__helpers__.translations import assert_is_translated
+from text_lint.__helpers__.translations import (
+    assert_is_translated,
+    assert_is_translated_yaml_example,
+)
 from text_lint.config import LOOKUP_TRANSFORMATION_PREFIX
 from ..bases.lookup_base import LookupBase
-from ..to_count import YAML_EXAMPLE, CountLookup
+from ..to_count import YAML_EXAMPLE, YAML_EXAMPLE_COMPONENTS, CountLookup
 
 if TYPE_CHECKING:  # pragma: no-cover
   from text_lint.results.forest import AliasLookupResult
@@ -47,6 +50,10 @@ class TestCountLookup:
       to_count_lookup_instance: CountLookup,
   ) -> None:
     assert_is_translated(to_count_lookup_instance.hint)
+    assert_is_translated_yaml_example(
+        to_count_lookup_instance.yaml_example,
+        YAML_EXAMPLE_COMPONENTS,
+    )
 
   def test_initialize__inheritance(
       self,

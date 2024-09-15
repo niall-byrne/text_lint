@@ -9,14 +9,17 @@ from .bases.lookup_encoder_base import LookupBase
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.linter.states import LookupState
 
+YAML_EXAMPLE_COMPONENTS = (
+    _("count transformation lookup example"),
+)
 YAML_EXAMPLE = """
 
-- name: count transformation lookup example
+- name: {0}
   operation: validate_debug
   saved:
     - example.capture(1).to_count()
 
-"""
+""".format(*YAML_EXAMPLE_COMPONENTS)
 
 
 class CountLookup(LookupBase):

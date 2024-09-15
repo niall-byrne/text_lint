@@ -9,11 +9,18 @@ from text_lint.__helpers__.operations import (
     assert_operation_attributes,
     assert_operation_inheritance,
 )
-from text_lint.__helpers__.translations import assert_is_translated
+from text_lint.__helpers__.translations import (
+    assert_is_translated,
+    assert_is_translated_yaml_example,
+)
 from text_lint.__helpers__.validators import assert_is_validation_failure
 from text_lint.exceptions.validators import ValidationFailure
 from ..bases.validator_base import ValidatorBase
-from ..validate_equal import YAML_EXAMPLE, ValidateEqual
+from ..validate_equal import (
+    YAML_EXAMPLE,
+    YAML_EXAMPLE_COMPONENTS,
+    ValidateEqual,
+)
 
 
 class TestValidateEqual:
@@ -44,6 +51,10 @@ class TestValidateEqual:
     assert_is_translated(validate_equal_instance.hint)
     assert_is_translated(validate_equal_instance.msg_fmt_comparison_failure)
     assert_is_translated(validate_equal_instance.msg_fmt_comparison_success)
+    assert_is_translated_yaml_example(
+        validate_equal_instance.yaml_example,
+        YAML_EXAMPLE_COMPONENTS,
+    )
 
   def test_initialize__inheritance(
       self,

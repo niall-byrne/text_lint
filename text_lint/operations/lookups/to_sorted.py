@@ -10,14 +10,17 @@ from .encoders.sorted import SortedEncoder
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.linter.states import LookupState
 
+YAML_EXAMPLE_COMPONENTS = (
+    _("sorted transformation lookup example"),
+)
 YAML_EXAMPLE = """
 
-- name: sorted transformation lookup example
+- name: {0}
   operation: validate_debug
   saved:
     - example.capture(1).0.to_sorted()
 
-"""
+""".format(*YAML_EXAMPLE_COMPONENTS)
 
 
 class SortedLookup(LookupEncoderBase):

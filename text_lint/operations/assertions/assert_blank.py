@@ -8,12 +8,15 @@ from text_lint.utilities.translations import _
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.linter.states.assertion import AssertionState
 
+YAML_EXAMPLE_COMPONENTS = (
+    _("example assert blank assertion"),
+)
 YAML_EXAMPLE = """
 
-- name: example assert blank assertion
+- name: {0}
   operation: assert_blank
 
-"""
+""".format(*YAML_EXAMPLE_COMPONENTS)
 
 
 class AssertBlank(AssertionBase):

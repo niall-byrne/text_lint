@@ -3,6 +3,7 @@
 from typing import TYPE_CHECKING, Dict, List, Optional, Tuple, Union
 
 from text_lint.config import LOOKUP_STATIC_VALUE_MARKER
+from text_lint.operations.bases.operation_base import YAML_EXAMPLE_SECTIONS
 from text_lint.results.tree import ResultTree
 from text_lint.utilities.translations import _, f
 from .bases.lookup_base import LookupBase
@@ -12,17 +13,25 @@ if TYPE_CHECKING:  # pragma: no cover
   from text_lint.results.cursor import AliasResultForestCursor
   from text_lint.results.forest import AliasLookupResult
 
+YAML_EXAMPLE_COMPONENTS = (
+    _("static value lookup example"),
+    _(
+        "A static value can be used in the source position "
+        "of a lookup expression."
+    ),
+)
 YAML_EXAMPLE = """
 
-- name: static value lookup example
+- name: {0}
   operation: validate_debug
   saved:
     - example.capture(1).to_group().~static_value
     - ~static_value
 
-note: A static value can be used in the source position of a lookup expression.
+{notes_section}:
+  - {1}
 
-"""
+""".format(*YAML_EXAMPLE_COMPONENTS, **YAML_EXAMPLE_SECTIONS)
 
 
 class NameLookup(LookupBase):

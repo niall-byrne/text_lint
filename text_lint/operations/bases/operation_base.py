@@ -3,10 +3,17 @@
 import abc
 from typing import TYPE_CHECKING, Generic, TypeVar
 
+from text_lint.utilities.translations import _
+
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.linter.states.bases.state_base import StateBase
 
 TypeState = TypeVar("TypeState", bound="StateBase")
+
+YAML_EXAMPLE_SECTIONS = {
+    "notes_section": _("Notes"),
+    "options_section": _("Options"),
+}
 
 
 class OperationBase(Generic[TypeState], abc.ABC):

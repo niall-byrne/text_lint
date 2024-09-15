@@ -9,12 +9,15 @@ from text_lint.__helpers__.operations import (
     assert_operation_attributes,
     assert_operation_inheritance,
 )
-from text_lint.__helpers__.translations import assert_is_translated
+from text_lint.__helpers__.translations import (
+    assert_is_translated,
+    assert_is_translated_yaml_example,
+)
 from text_lint.config import LOOKUP_TRANSFORMATION_PREFIX
 from text_lint.operations.lookups.encoders.reversed import ReversedEncoder
 from ..bases.lookup_base import LookupBase
 from ..bases.lookup_encoder_base import LookupEncoderBase
-from ..to_reversed import YAML_EXAMPLE, ReversedLookup
+from ..to_reversed import YAML_EXAMPLE, YAML_EXAMPLE_COMPONENTS, ReversedLookup
 
 if TYPE_CHECKING:  # pragma: no-cover
   from text_lint.results.forest import AliasLookupResult
@@ -50,6 +53,10 @@ class TestReversedLookup:
       to_reversed_lookup_instance: ReversedLookup,
   ) -> None:
     assert_is_translated(to_reversed_lookup_instance.hint)
+    assert_is_translated_yaml_example(
+        to_reversed_lookup_instance.yaml_example,
+        YAML_EXAMPLE_COMPONENTS,
+    )
 
   def test_initialize__inheritance(
       self,

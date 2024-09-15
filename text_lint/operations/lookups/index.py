@@ -9,14 +9,17 @@ from .bases.lookup_base import LookupBase
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.linter.states import LookupState
 
+YAML_EXAMPLE_COMPONENTS = (
+    _("index save id lookup example"),
+)
 YAML_EXAMPLE = """
 
-- name: index save id lookup example
+- name: {0}
   operation: validate_debug
   saved:
     - example.capture(1).1
 
-"""
+""".format(*YAML_EXAMPLE_COMPONENTS)
 
 
 class IndexLookup(LookupBase):

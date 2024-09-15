@@ -8,14 +8,17 @@ from .bases.lookup_base import LookupBase
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.linter.states import LookupState
 
+YAML_EXAMPLE_COMPONENTS = (
+    _("noop lookup example"),
+)
 YAML_EXAMPLE = """
 
-- name: noop lookup example
+- name: {0}
   operation: validate_debug
   saved:
     - example.noop()
 
-"""
+""".format(*YAML_EXAMPLE_COMPONENTS)
 
 
 class NoopLookup(LookupBase):
