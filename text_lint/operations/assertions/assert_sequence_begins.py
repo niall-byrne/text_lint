@@ -4,21 +4,29 @@ from typing import TYPE_CHECKING, List
 
 from text_lint.config import LOOP_COUNT
 from text_lint.operations.assertions.bases.assertion_base import AssertionBase
+from text_lint.operations.bases.operation_base import YAML_EXAMPLE_SECTIONS
 from text_lint.utilities.translations import _, f
 
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.linter.states import AssertionState
   from text_lint.schema import AliasYamlOperation, Schema
 
+YAML_EXAMPLE_COMPONENTS = (
+    _("example assert sequence begins assertion"),
+    _("example assert blank assertion"),
+    _("example assert regex assertion"),
+    _("Set count to 0 to disable the nested assertions."),
+    _("Set count to {LOOP_COUNT} to repeat the nested assertions until EOF."),
+)
 YAML_EXAMPLE = """
 
-- name: example assert sequence begins assertion
+- name: {0}
   operation: assert_sequence_begins
   count: 3
   assertions:
-    - name: example assert blank assertion
+    - name: {1}
       operation: assert_blank
-    - name: example assert regex assertion
+    - name: {2}
       operation: assert_regex
       regex: "^([a-z-]+):\\\\s(.+)$"
       save: example
@@ -27,10 +35,14 @@ YAML_EXAMPLE = """
         - character: "-"
         - group: 2
 
-note: Set count to 0 to disable the nested assertions.
-      Set count to {LOOP_COUNT} to repeat the nested assertions until EOF.
+{notes_section}:
+  - {3}
+  - {4}
 
-""".format(LOOP_COUNT=LOOP_COUNT)
+""".format(
+    *YAML_EXAMPLE_COMPONENTS,
+    **YAML_EXAMPLE_SECTIONS,
+)
 
 
 class AssertSequenceBegins(AssertionBase):
@@ -38,7 +50,7 @@ class AssertSequenceBegins(AssertionBase):
 
   hint = _("identify a repeating sequence of assertions")
   operation = "assert_sequence_begins"
-  yaml_example = YAML_EXAMPLE
+  yaml_example = YAML_EXAMPLE.format(LOOP_COUNT=LOOP_COUNT)
 
   msg_fmt_unexpected_assertions_after_eof_sequence = _(
       "assertion #{0} there are unexpected additional assertions following "

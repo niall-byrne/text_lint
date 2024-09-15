@@ -10,16 +10,19 @@ from text_lint.utilities.translations import _
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.results.forest import AliasLookupResult
 
+YAML_EXAMPLE_COMPONENTS = (
+    _("equality validator example"),
+)
 YAML_EXAMPLE = """
 
-- name: equality validator example
+- name: {0}
   operation: validate_equal
   saved_a:
     - source1.capture(1)
   saved_b:
     - source2.capture(1)
 
-"""
+""".format(*YAML_EXAMPLE_COMPONENTS)
 
 
 class ValidateEqual(ValidationComparisonBase):

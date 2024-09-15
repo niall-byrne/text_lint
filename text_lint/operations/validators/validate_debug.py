@@ -15,15 +15,18 @@ if TYPE_CHECKING:  # pragma: no cover
       AliasYamlLookupExpressionSet,
   )
 
+YAML_EXAMPLE_COMPONENTS = (
+    _("debug validator example"),
+)
 YAML_EXAMPLE = """
 
-- name: debug validator example
+- name: {0}
   operation: validate_debug
   saved:
     - source1.capture(1)
     - source2.capture(1)
 
-"""
+""".format(*YAML_EXAMPLE_COMPONENTS)
 
 
 class ValidateDebug(ValidatorBase):

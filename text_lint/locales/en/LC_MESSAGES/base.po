@@ -265,35 +265,91 @@ msgstr ""
 msgid "mocked_translated_text"
 msgstr ""
 
-#: text_lint/operations/assertions/assert_blank.py:22
+#: text_lint/operations/assertions/assert_blank.py:12
+#: text_lint/operations/assertions/assert_equal.py:15
+#: text_lint/operations/assertions/assert_sequence_begins.py:16
+msgid "example assert blank assertion"
+msgstr ""
+
+#: text_lint/operations/assertions/assert_blank.py:25
 msgid "the line contains no text"
 msgstr ""
 
-#: text_lint/operations/assertions/assert_equal.py:34
+#: text_lint/operations/assertions/assert_equal.py:16
+msgid "'case_insensitive' will match strings with differing cases."
+msgstr ""
+
+#: text_lint/operations/assertions/assert_equal.py:17
+msgid "(This defaults to false.)"
+msgstr ""
+
+#: text_lint/operations/assertions/assert_equal.py:45
 msgid "this line must match the expected value"
 msgstr ""
 
-#: text_lint/operations/assertions/assert_regex.py:30
+#: text_lint/operations/assertions/assert_regex.py:14
+#: text_lint/operations/assertions/assert_sequence_begins.py:17
+msgid "example assert regex assertion"
+msgstr ""
+
+#: text_lint/operations/assertions/assert_regex.py:39
 msgid "this line must match the regex"
 msgstr ""
 
-#: text_lint/operations/assertions/assert_regex_section.py:32
+#: text_lint/operations/assertions/assert_regex_section.py:14
+msgid "example assert regex section assertion"
+msgstr ""
+
+#: text_lint/operations/assertions/assert_regex_section.py:41
 msgid "one or more adjacent lines (the 'section') must match this regex"
 msgstr ""
 
-#: text_lint/operations/assertions/assert_sequence_begins.py:39
+#: text_lint/operations/assertions/assert_sequence_begins.py:15
+msgid "example assert sequence begins assertion"
+msgstr ""
+
+#: text_lint/operations/assertions/assert_sequence_begins.py:18
+msgid "Set count to 0 to disable the nested assertions."
+msgstr ""
+
+#: text_lint/operations/assertions/assert_sequence_begins.py:19
+#, python-brace-format
+msgid "Set count to {LOOP_COUNT} to repeat the nested assertions until EOF."
+msgstr ""
+
+#: text_lint/operations/assertions/assert_sequence_begins.py:51
 msgid "identify a repeating sequence of assertions"
 msgstr ""
 
-#: text_lint/operations/assertions/assert_sequence_begins.py:44
+#: text_lint/operations/assertions/assert_sequence_begins.py:56
 #, python-brace-format
 msgid ""
 "assertion #{0} there are unexpected additional assertions following this 'to "
 "eof' sequence declaration"
 msgstr ""
 
-#: text_lint/operations/assertions/assert_sequence_ends.py:25
+#: text_lint/operations/assertions/assert_sequence_ends.py:13
+msgid "example assert sequence ends assertion"
+msgstr ""
+
+#: text_lint/operations/assertions/assert_sequence_ends.py:14
+msgid "This assertion is used internally by text_lint to control iteration."
+msgstr ""
+
+#: text_lint/operations/assertions/assert_sequence_ends.py:15
+msgid "It's not intended to be used directly in schemas."
+msgstr ""
+
+#: text_lint/operations/assertions/assert_sequence_ends.py:32
 msgid "reserved"
+msgstr ""
+
+#: text_lint/operations/assertions/bases/assertion_regex_base.py:14
+msgid ""
+"  - 'save' will store capture groups as save ids for validation.\n"
+"    (The default behaviour is not to save any capture groups.)\n"
+"  - 'splits' will split the specified capture groups into more elements.\n"
+"    (The default 'separator' is any white space.)"
 msgstr ""
 
 #: text_lint/operations/assertions/bases/tests/conftest.py:45
@@ -302,6 +358,14 @@ msgstr ""
 
 #: text_lint/operations/assertions/bases/tests/conftest.py:82
 msgid "a concrete regex hint"
+msgstr ""
+
+#: text_lint/operations/bases/operation_base.py:14
+msgid "Notes"
+msgstr ""
+
+#: text_lint/operations/bases/operation_base.py:15
+msgid "Options"
 msgstr ""
 
 #: text_lint/operations/documentation.py:32
@@ -338,7 +402,15 @@ msgstr ""
 msgid "Unknown operation '{0}' !"
 msgstr ""
 
-#: text_lint/operations/lookups/as_json.py:28
+#: text_lint/operations/lookups/as_json.py:14
+msgid "save id as json representation example"
+msgstr ""
+
+#: text_lint/operations/lookups/as_json.py:15
+msgid "This lookup is intended to help debug capture groups in complex loops."
+msgstr ""
+
+#: text_lint/operations/lookups/as_json.py:34
 msgid "create a JSON representation of a save id"
 msgstr ""
 
@@ -355,69 +427,138 @@ msgstr ""
 msgid "mocked_hint_lookup_encoder"
 msgstr ""
 
-#: text_lint/operations/lookups/capture.py:40
+#: text_lint/operations/lookups/capture.py:20
+msgid "capture group lookup example"
+msgstr ""
+
+#: text_lint/operations/lookups/capture.py:21
+msgid "Capture groups are indexed and need a parameter"
+msgstr ""
+
+#: text_lint/operations/lookups/capture.py:22
+msgid "1st regex capture group"
+msgstr ""
+
+#: text_lint/operations/lookups/capture.py:23
+msgid "2nd regex capture group"
+msgstr ""
+
+#: text_lint/operations/lookups/capture.py:24
+msgid "3rd regex capture group"
+msgstr ""
+
+#: text_lint/operations/lookups/capture.py:51
 msgid "select the next capture group of a save id"
 msgstr ""
 
-#: text_lint/operations/lookups/capture.py:45
+#: text_lint/operations/lookups/capture.py:56
 #, python-brace-format
 msgid "Invalid capture group '{0}' !"
 msgstr ""
 
-#: text_lint/operations/lookups/capture.py:46
+#: text_lint/operations/lookups/capture.py:57
 msgid "Invalid lookup parameters!"
 msgstr ""
 
-#: text_lint/operations/lookups/default.py:31
+#: text_lint/operations/lookups/default.py:16
+msgid "default result lookup examples"
+msgstr ""
+
+#: text_lint/operations/lookups/default.py:34
 msgid "handler for unknown lookups which may be static values or indexes"
 msgstr ""
 
-#: text_lint/operations/lookups/index.py:25
+#: text_lint/operations/lookups/index.py:13
+msgid "index save id lookup example"
+msgstr ""
+
+#: text_lint/operations/lookups/index.py:28
 msgid "select a value from a save id by index"
 msgstr ""
 
-#: text_lint/operations/lookups/index.py:29
+#: text_lint/operations/lookups/index.py:32
 #, python-brace-format
 msgid "No value at index '{0}' !"
 msgstr ""
 
-#: text_lint/operations/lookups/name.py:31
+#: text_lint/operations/lookups/name.py:17
+msgid "static value lookup example"
+msgstr ""
+
+#: text_lint/operations/lookups/name.py:19
+msgid ""
+"A static value can be used in the source position of a lookup expression."
+msgstr ""
+
+#: text_lint/operations/lookups/name.py:40
 msgid "select a static value from a save id"
 msgstr ""
 
-#: text_lint/operations/lookups/name.py:35
+#: text_lint/operations/lookups/name.py:44
 msgid "Could not find the specified value."
 msgstr ""
 
-#: text_lint/operations/lookups/noop.py:24
+#: text_lint/operations/lookups/noop.py:12
+msgid "noop lookup example"
+msgstr ""
+
+#: text_lint/operations/lookups/noop.py:27
 msgid "a simple no-operation"
 msgstr ""
 
-#: text_lint/operations/lookups/to_count.py:25
+#: text_lint/operations/lookups/to_count.py:13
+msgid "count transformation lookup example"
+msgstr ""
+
+#: text_lint/operations/lookups/to_count.py:28
 msgid "transform a save id into a count of values"
 msgstr ""
 
-#: text_lint/operations/lookups/to_group.py:26
+#: text_lint/operations/lookups/to_group.py:14
+msgid "group lookup example"
+msgstr ""
+
+#: text_lint/operations/lookups/to_group.py:29
 msgid "group the values of a save id"
 msgstr ""
 
-#: text_lint/operations/lookups/to_lower.py:27
+#: text_lint/operations/lookups/to_lower.py:14
+msgid "lowercase save id transformation lookup example"
+msgstr ""
+
+#: text_lint/operations/lookups/to_lower.py:30
 msgid "convert a save id's values to lowercase"
 msgstr ""
 
-#: text_lint/operations/lookups/to_reversed.py:27
+#: text_lint/operations/lookups/to_reversed.py:14
+msgid "reversed transformation lookup example"
+msgstr ""
+
+#: text_lint/operations/lookups/to_reversed.py:30
 msgid "reverse the order of a save id"
 msgstr ""
 
-#: text_lint/operations/lookups/to_sorted.py:27
+#: text_lint/operations/lookups/to_sorted.py:14
+msgid "sorted transformation lookup example"
+msgstr ""
+
+#: text_lint/operations/lookups/to_sorted.py:30
 msgid "sort the values of a save id"
 msgstr ""
 
-#: text_lint/operations/lookups/to_unique.py:27
+#: text_lint/operations/lookups/to_unique.py:14
+msgid "unique save id transformation lookup example"
+msgstr ""
+
+#: text_lint/operations/lookups/to_unique.py:30
 msgid "select only unique values from a save id"
 msgstr ""
 
-#: text_lint/operations/lookups/to_upper.py:27
+#: text_lint/operations/lookups/to_upper.py:14
+msgid "uppercase save id transformation lookup example"
+msgstr ""
+
+#: text_lint/operations/lookups/to_upper.py:30
 msgid "convert a save id's values to uppercase"
 msgstr ""
 
@@ -440,7 +581,7 @@ msgid "MOCKED: '{0}' and '{1}'"
 msgstr ""
 
 #: text_lint/operations/validators/bases/validator_comparison_base.py:27
-#: text_lint/operations/validators/validate_equal.py:32
+#: text_lint/operations/validators/validate_equal.py:35
 #, python-brace-format
 msgid "'{0}' != '{1}'"
 msgstr ""
@@ -449,43 +590,59 @@ msgstr ""
 msgid "Mismatched result set counts are being compared."
 msgstr ""
 
-#: text_lint/operations/validators/validate_combine.py:35
+#: text_lint/operations/validators/validate_combine.py:20
+msgid "combine validator example"
+msgstr ""
+
+#: text_lint/operations/validators/validate_combine.py:38
 msgid "combines a set of lookups into a new save id"
 msgstr ""
 
-#: text_lint/operations/validators/validate_combine.py:39
+#: text_lint/operations/validators/validate_combine.py:42
 #, python-brace-format
 msgid "COMBINE: '{0}' into '{1}'"
 msgstr ""
 
-#: text_lint/operations/validators/validate_debug.py:32
+#: text_lint/operations/validators/validate_debug.py:19
+msgid "debug validator example"
+msgstr ""
+
+#: text_lint/operations/validators/validate_debug.py:35
 msgid "output save id lookups to the console"
 msgstr ""
 
-#: text_lint/operations/validators/validate_debug.py:36
+#: text_lint/operations/validators/validate_debug.py:39
 #, python-brace-format
 msgid "DEBUG: '{0}'"
 msgstr ""
 
-#: text_lint/operations/validators/validate_equal.py:28
+#: text_lint/operations/validators/validate_equal.py:14
+msgid "equality validator example"
+msgstr ""
+
+#: text_lint/operations/validators/validate_equal.py:31
 msgid "validates equality between sets of values"
 msgstr ""
 
-#: text_lint/operations/validators/validate_equal.py:33
+#: text_lint/operations/validators/validate_equal.py:36
 #, python-brace-format
 msgid "EQUAL: '{0}' == '{1}'"
 msgstr ""
 
-#: text_lint/operations/validators/validate_membership.py:31
+#: text_lint/operations/validators/validate_membership.py:17
+msgid "membership validator example"
+msgstr ""
+
+#: text_lint/operations/validators/validate_membership.py:34
 msgid "validates membership of values inside other values"
 msgstr ""
 
-#: text_lint/operations/validators/validate_membership.py:35
+#: text_lint/operations/validators/validate_membership.py:38
 #, python-brace-format
 msgid "'{1}' not in '{0}'"
 msgstr ""
 
-#: text_lint/operations/validators/validate_membership.py:36
+#: text_lint/operations/validators/validate_membership.py:39
 #, python-brace-format
 msgid "MEMBERSHIP: '{1}' in '{0}'"
 msgstr ""

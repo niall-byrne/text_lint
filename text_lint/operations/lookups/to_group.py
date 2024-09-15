@@ -10,14 +10,17 @@ from .bases.lookup_base import LookupBase
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.linter.states import LookupState
 
+YAML_EXAMPLE_COMPONENTS = (
+    _("group lookup example"),
+)
 YAML_EXAMPLE = """
 
-- name: group lookup example
+- name: {0}
   operation: validate_debug
   saved:
     - example.capture(1).to_group()
 
-"""
+""".format(*YAML_EXAMPLE_COMPONENTS)
 
 
 class GroupLookup(LookupBase):
