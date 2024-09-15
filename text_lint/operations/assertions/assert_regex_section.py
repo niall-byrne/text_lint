@@ -4,23 +4,32 @@ import re
 from typing import TYPE_CHECKING, List, Match
 
 from text_lint.operations.assertions.bases import assertion_regex_base
+from text_lint.operations.bases.operation_base import YAML_EXAMPLE_SECTIONS
 from text_lint.utilities.translations import _
 
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.linter.states import AssertionState
 
+YAML_EXAMPLE_COMPONENTS = (
+    _("example assert regex section assertion"),
+)
 YAML_EXAMPLE = """
 
-- name: example assert regex section assertion
+- name: {0}
   operation: assert_regex_section
   regex: "^([a-z\\\\s]+)$"
   save: assert_regex_section_example
   splits:
     - group: 1
 
+{options_section}:
 {options}
 
-""".format(options=assertion_regex_base.YAML_OPTIONS)
+""".format(  # pylint: disable=duplicate-code
+    *YAML_EXAMPLE_COMPONENTS,
+    **YAML_EXAMPLE_SECTIONS,
+    options=assertion_regex_base.YAML_ASSERTION_REGEX_EXAMPLE_OPTIONS,
+)
 
 
 class AssertRegexSection(assertion_regex_base.AssertionRegexBase):
