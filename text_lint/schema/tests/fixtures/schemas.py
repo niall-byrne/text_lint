@@ -29,6 +29,9 @@ one_simple_assertion: AliasRawSchema = {
         ],
 }
 
+one_simple_assertion_interpolated: AliasRawSchema = dict(one_simple_assertion)
+one_simple_assertion_interpolated["version"] = "${ENV_VAR}"
+
 schema_missing_version: AliasRawSchema = {"ver2ion": "0.5.0"}
 
 schema_invalid_version: AliasRawSchema = {"version": "AAA"}
