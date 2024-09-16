@@ -67,6 +67,7 @@ def create_linter_instance(
     patch_textfile(textfile_content)
     settings = LinterSettings(
         file_path="mock/file/1",
+        interpolate_schema=False,
         schema_path="mock/file/2",
     )
     linter = Linter(settings=settings)
@@ -84,7 +85,7 @@ def create_mocked_linter(
 
   def setup(schema_content: str, textfile_content: str) -> mock.Mock:
     patch_schema(schema_content)
-    schema = Schema("mock/schema/file/path")
+    schema = Schema("mock/schema/file/path", False)
     patch_textfile(textfile_content)
     mocked_linter.assertions = AssertionSequencer(schema)
     mocked_linter.state = StateFactory(mocked_linter)

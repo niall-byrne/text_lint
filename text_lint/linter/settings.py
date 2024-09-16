@@ -7,7 +7,9 @@ class LinterSettings:
   def __init__(
       self,
       file_path: str,
+      interpolate_schema: bool,
       schema_path: str,
   ) -> None:
     self.file_path = file_path
+    self.interpolate_schema = interpolate_schema
     self.schema_path = schema_path

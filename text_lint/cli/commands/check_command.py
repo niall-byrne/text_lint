@@ -17,6 +17,9 @@ class CheckCommand(CLICommandBase):
 
   arg_filenames = _("filenames")
   arg_filenames_help = _("the text file(s) to lint")
+  arg_interpolate_schema_help = _(
+      "use environment variables to interpolate the schema file"
+  )
   arg_schema = _("schema")
   arg_schema_help = _("the schema to apply")
 
@@ -29,6 +32,12 @@ class CheckCommand(CLICommandBase):
         metavar=self.arg_filenames,
         nargs="+",
         type=file_type,
+    )
+    command_parser.add_argument(
+        "-i",
+        "--interpolate-schema",
+        help=self.arg_interpolate_schema_help,
+        action='store_true'
     )
     command_parser.add_argument(
         "-s",
@@ -46,6 +55,7 @@ class CheckCommand(CLICommandBase):
     for filename in args.filenames:
       settings = LinterSettings(
           file_path=filename,
+          interpolate_schema=args.interpolate_schema,
           schema_path=args.schema,
       )
       linter = Linter(settings=settings)

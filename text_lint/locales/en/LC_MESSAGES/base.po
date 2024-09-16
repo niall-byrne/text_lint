@@ -28,11 +28,15 @@ msgstr ""
 msgid "the text file(s) to lint"
 msgstr ""
 
-#: text_lint/cli/commands/check_command.py:20
+#: text_lint/cli/commands/check_command.py:21
+msgid "use environment variables to interpolate the schema file"
+msgstr ""
+
+#: text_lint/cli/commands/check_command.py:23
 msgid "schema"
 msgstr ""
 
-#: text_lint/cli/commands/check_command.py:21
+#: text_lint/cli/commands/check_command.py:24
 msgid "the schema to apply"
 msgstr ""
 
@@ -665,23 +669,23 @@ msgstr ""
 msgid "MEMBERSHIP: '{1}' in '{0}'"
 msgstr ""
 
-#: text_lint/schema/__init__.py:29
+#: text_lint/schema/__init__.py:30
 msgid "No assertions found in schema"
 msgstr ""
 
-#: text_lint/schema/__init__.py:30
+#: text_lint/schema/__init__.py:31
 msgid "No validators found in schema"
 msgstr ""
 
-#: text_lint/schema/__init__.py:31
+#: text_lint/schema/__init__.py:32
 msgid "Invalid schema settings"
 msgstr ""
 
-#: text_lint/schema/__init__.py:32
+#: text_lint/schema/__init__.py:33
 msgid "Invalid regex in schema settings"
 msgstr ""
 
-#: text_lint/schema/__init__.py:33
+#: text_lint/schema/__init__.py:34
 msgid "Invalid schema version"
 msgstr ""
 

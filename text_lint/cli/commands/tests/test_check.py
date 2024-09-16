@@ -42,6 +42,7 @@ class TestCheckCommand:
     assert_is_translated(check_command_instance.command_help)
     assert_is_translated(check_command_instance.arg_filenames)
     assert_is_translated(check_command_instance.arg_filenames_help)
+    assert_is_translated(check_command_instance.arg_interpolate_schema_help)
     assert_is_translated(check_command_instance.arg_schema)
     assert_is_translated(check_command_instance.arg_schema_help)
 
@@ -75,6 +76,12 @@ class TestCheckCommand:
             type=file_type,
         ),
         mock.call(
+            "-i",
+            "--interpolate-schema",
+            help=check_command_instance.arg_interpolate_schema_help,
+            action='store_true'
+        ),
+        mock.call(
             "-s",
             "--schema",
             dest="schema",
@@ -98,6 +105,7 @@ class TestCheckCommand:
     for index, mock_filename in enumerate(mocked_args_check.filenames):
       assert mocked_linter_settings.mock_calls[index] == mock.call(
           file_path=mock_filename,
+          interpolate_schema=mocked_args_check.interpolate_schema,
           schema_path=mocked_args_check.schema,
       )
 
@@ -114,6 +122,6 @@ class TestCheckCommand:
     assert mocked_linter.return_value.start.call_count == 3
     for index in range(len(mocked_args_check.filenames)):
       assert mocked_linter.mock_calls[index * 2:index * 2 + 2] == [
-          mock.call(settings=mocked_linter_settings_instances[index],),
+          mock.call(settings=mocked_linter_settings_instances[index]),
           mock.call().start(),
       ]

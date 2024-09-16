@@ -11,6 +11,8 @@ from text_lint.sequencers.patterns.linear import LinearPattern
 # pylint: disable=wildcard-import,unused-wildcard-import
 from .scenarios import *
 
+AliasLinterSetup = Callable[[], None]
+
 
 @pytest.fixture
 def mocked_file_path() -> str:
@@ -111,7 +113,7 @@ def setup_linter_sequencer_mocks(
     mocked_sequencer_text_file: mock.MagicMock,
     mocked_sequencer_validators: mock.MagicMock,
     monkeypatch: pytest.MonkeyPatch,
-) -> Callable[[], None]:
+) -> AliasLinterSetup:
 
   def setup() -> None:
     monkeypatch.setattr(
@@ -137,11 +139,12 @@ def setup_linter_sequencer_mocks(
 def linter_instance(
     mocked_file_path: str,
     mocked_schema_path: str,
-    setup_linter_mocks: Callable[[], None],
+    setup_linter_mocks: AliasLinterSetup,
 ) -> linter.Linter:
   setup_linter_mocks()
   linter_settings = settings.LinterSettings(
       file_path=mocked_file_path,
+      interpolate_schema=False,
       schema_path=mocked_schema_path,
   )
   return linter.Linter(settings=linter_settings)
