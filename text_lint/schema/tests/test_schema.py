@@ -1,6 +1,7 @@
 """Test the Schema class."""
 
 import json
+import os
 from io import StringIO
 from typing import Any, Dict, Type
 from unittest import mock
@@ -19,19 +20,43 @@ from .fixtures import schemas
 class TestSchema:
   """Test the Schema class."""
 
+  @pytest.mark.parametrize("interpolate", [True, False])
   def test_initialize__attributes(
       self,
       schema_class: Type[Schema],
       mocked_file_handle: StringIO,
       mocked_schema_file: str,
+      interpolate: bool,
   ) -> None:
     mocked_file_handle.write(json.dumps(schemas.one_simple_assertion))
     mocked_file_handle.seek(0)
 
-    instance = schema_class(mocked_schema_file)
+    instance = schema_class(mocked_schema_file, interpolate)
 
     assert instance.path == mocked_schema_file
     assert instance.version == (0, 5, 0)
+
+  def test_initialize__interpolated__uses_env_vars(
+      self,
+      schema_class: Type[Schema],
+      mocked_file_handle: StringIO,
+      mocked_schema_file: str,
+  ) -> None:
+    mocked_file_handle.write(
+        json.dumps(schemas.one_simple_assertion_interpolated)
+    )
+    mocked_file_handle.seek(0)
+
+    with mock.patch.dict(
+        os.environ,
+        {
+            "ENV_VAR": "0.6.0",
+        },
+        clear=True,
+    ):
+      instance = schema_class(mocked_schema_file, True)
+
+    assert instance.version == (0, 6, 0)
 
   def test_initialize__translations(
       self,
@@ -52,7 +77,7 @@ class TestSchema:
     mocked_file_handle.write(json.dumps(schemas.one_simple_assertion))
     mocked_file_handle.seek(0)
 
-    instance = schema_class(mocked_schema_file)
+    instance = schema_class(mocked_schema_file, False)
 
     assert isinstance(
         instance.settings,
@@ -80,7 +105,7 @@ class TestSchema:
     mocked_file_handle.seek(0)
 
     with pytest.raises(SchemaError) as exc:
-      schema_class(mocked_schema_file)
+      schema_class(mocked_schema_file, False)
 
     assert_is_schema_error(
         exc=exc,
@@ -101,7 +126,7 @@ class TestSchema:
     mocked_file_handle.write(json.dumps(schema))
     mocked_file_handle.seek(0)
 
-    schema_class(mocked_schema_file)
+    schema_class(mocked_schema_file, False)
 
   @pytest.mark.parametrize("unsupported_version", ["0.0.1", "1.0.0"])
   def test_initialize__unsupported_version__raises_exception(
@@ -117,7 +142,7 @@ class TestSchema:
     mocked_file_handle.seek(0)
 
     with pytest.raises(UnsupportedSchemaVersion) as exc:
-      schema_class(mocked_schema_file)
+      schema_class(mocked_schema_file, False)
 
     assert str(
         exc.value
@@ -145,7 +170,7 @@ class TestSchema:
     mocked_file_handle.seek(0)
 
     with pytest.raises(SchemaError) as exc:
-      schema_class(mocked_schema_file)
+      schema_class(mocked_schema_file, False)
 
     assert_is_schema_error(
         exc=exc,
@@ -170,7 +195,7 @@ class TestSchema:
     mocked_file_handle.seek(0)
 
     with pytest.raises(SchemaError) as exc:
-      schema_class(mocked_schema_file)
+      schema_class(mocked_schema_file, False)
 
     assert_is_schema_error(
         exc=exc,
@@ -190,7 +215,7 @@ class TestSchema:
   ) -> None:
     mocked_file_handle.write(json.dumps(invalid_schema))
     mocked_file_handle.seek(0)
-    instance = schema_class(mocked_schema_file)
+    instance = schema_class(mocked_schema_file, False)
 
     with pytest.raises(SchemaError) as exc:
       instance.load_assertions()
@@ -211,7 +236,7 @@ class TestSchema:
   ) -> None:
     mocked_file_handle.write(json.dumps(invalid_schema))
     mocked_file_handle.seek(0)
-    instance = schema_class(mocked_schema_file)
+    instance = schema_class(mocked_schema_file, False)
 
     with pytest.raises(SchemaError) as exc:
       instance.load_assertions()
@@ -231,7 +256,7 @@ class TestSchema:
   ) -> None:
     mocked_file_handle.write(json.dumps(schemas.one_simple_assertion))
     mocked_file_handle.seek(0)
-    instance = schema_class(mocked_schema_file)
+    instance = schema_class(mocked_schema_file, False)
 
     created_assertions = instance.load_assertions()
 
@@ -254,7 +279,7 @@ class TestSchema:
   ) -> None:
     mocked_file_handle.write(json.dumps(invalid_schema))
     mocked_file_handle.seek(0)
-    instance = schema_class(mocked_schema_file)
+    instance = schema_class(mocked_schema_file, False)
 
     with pytest.raises(SchemaError) as exc:
       instance.load_validators()
@@ -274,7 +299,7 @@ class TestSchema:
   ) -> None:
     mocked_file_handle.write(json.dumps(schemas.one_simple_assertion))
     mocked_file_handle.seek(0)
-    instance = schema_class(mocked_schema_file)
+    instance = schema_class(mocked_schema_file, False)
 
     created_validators = instance.load_validators()
 

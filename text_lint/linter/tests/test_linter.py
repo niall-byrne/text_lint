@@ -10,6 +10,7 @@ from text_lint.exceptions.sequencers import UnconsumedData
 from text_lint.linter import Linter
 from text_lint.linter.settings import LinterSettings
 from text_lint.sequencers.patterns.loop import LinearLoopPattern
+from .conftest import AliasLinterSetup
 
 
 class TestLinter:
@@ -32,13 +33,26 @@ class TestLinter:
     assert linter_instance.settings.file_path == mocked_file_path
     assert linter_instance.settings.schema_path == mocked_schema_path
 
-  @pytest.mark.usefixtures("linter_instance")
+  @pytest.mark.parametrize("interpolate", [True, False])
   def test_initialize__creates_schema_instance(
       self,
+      mocked_file_path: str,
       mocked_schema_path: str,
       mocked_schema: mock.Mock,
+      setup_linter_mocks: AliasLinterSetup,
+      interpolate: bool,
   ) -> None:
-    mocked_schema.assert_called_once_with(mocked_schema_path)
+    setup_linter_mocks()
+
+    settings = LinterSettings(
+        file_path=mocked_file_path,
+        interpolate_schema=interpolate,
+        schema_path=mocked_schema_path,
+    )
+
+    Linter(settings=settings)
+
+    mocked_schema.assert_called_once_with(mocked_schema_path, interpolate)
 
   def test_initialize__creates_assertions_sequencer_instance(
       self,
