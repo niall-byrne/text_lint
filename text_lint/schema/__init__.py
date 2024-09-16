@@ -1,5 +1,6 @@
 """Schema class."""
 
+import os
 import re
 from typing import TYPE_CHECKING, List, Optional
 
@@ -32,10 +33,13 @@ class Schema:
   msg_fmt_invalid_settings_regex = _("Invalid regex in schema settings")
   msg_fmt_invalid_schema_version = _("Invalid schema version")
 
-  def __init__(self, schema_path: str) -> None:
+  def __init__(self, schema_path: str, interpolate: bool) -> None:
     self.path = schema_path
     with open(self.path, 'r', encoding="utf-8") as file_handle:
-      self._content = yaml.safe_load(file_handle)
+      content = file_handle.read()
+      if interpolate:
+        content = os.path.expandvars(content)
+    self._content = yaml.safe_load(content)
     self.version: "AliasVersionTuple" = self._parse_schema_version()
     self.settings = self._parse_schema_settings()
     self._assertions = SchemaAssertions(self)
