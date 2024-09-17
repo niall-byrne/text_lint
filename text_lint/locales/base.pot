@@ -667,6 +667,24 @@ msgstr ""
 msgid "MEMBERSHIP: '{1}' in '{0}'"
 msgstr ""
 
+#: text_lint/operations/validators/validate_not_equal.py:14
+msgid "non-equality validator example"
+msgstr ""
+
+#: text_lint/operations/validators/validate_not_equal.py:31
+msgid "validates non-equality between sets of values"
+msgstr ""
+
+#: text_lint/operations/validators/validate_not_equal.py:35
+#, python-brace-format
+msgid "'{0}' == '{1}'"
+msgstr ""
+
+#: text_lint/operations/validators/validate_not_equal.py:36
+#, python-brace-format
+msgid "NOT EQUAL: '{0}' != '{1}'"
+msgstr ""
+
 #: text_lint/schema/__init__.py:30
 msgid "No assertions found in schema"
 msgstr ""
