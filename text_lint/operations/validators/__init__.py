@@ -7,10 +7,12 @@ from .validate_combine import ValidateCombine
 from .validate_debug import ValidateDebug
 from .validate_equal import ValidateEqual
 from .validate_membership import ValidateMembership
+from .validate_not_equal import ValidateNotEqual
 
 validator_registry: Dict[str, Type[ValidatorBase]] = {
     ValidateCombine.operation: ValidateCombine,
     ValidateDebug.operation: ValidateDebug,
     ValidateEqual.operation: ValidateEqual,
     ValidateMembership.operation: ValidateMembership,
+    ValidateNotEqual.operation: ValidateNotEqual,
 }

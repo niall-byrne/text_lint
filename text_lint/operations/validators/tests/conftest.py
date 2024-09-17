@@ -10,6 +10,7 @@ from .. import (
     validate_debug,
     validate_equal,
     validate_membership,
+    validate_not_equal,
 )
 # pylint: disable=wildcard-import,unused-wildcard-import
 from .scenarios import *
@@ -77,4 +78,17 @@ def validate_membership_instance(
       mocked_validator_name,
       saved_container=mocked_lookup_expression_set_a,
       saved_value=mocked_lookup_expression_set_b,
+  )
+
+
+@pytest.fixture
+def validate_not_equal_instance(
+    mocked_lookup_expression_set_a: List[str],
+    mocked_lookup_expression_set_b: List[str],
+    mocked_validator_name: str,
+) -> validate_not_equal.ValidateNotEqual:
+  return validate_not_equal.ValidateNotEqual(
+      mocked_validator_name,
+      saved_a=mocked_lookup_expression_set_a,
+      saved_b=mocked_lookup_expression_set_b,
   )
