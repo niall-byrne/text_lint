@@ -3,7 +3,10 @@
 import abc
 from typing import TYPE_CHECKING
 
-from text_lint.exceptions.validators import ValidationFailure
+from text_lint.exceptions.validators import (
+    ValidationFailure,
+    ValidationInvalidComparison,
+)
 from text_lint.operations.validators.args.lookup_expression import (
     LookupExpressionSetArg,
 )
@@ -24,6 +27,12 @@ class ValidationComparisonBase(ValidatorBase, abc.ABC):
 
   msg_fmt_comparison_failure: str
   msg_fmt_comparison_success: str
+  msg_fmt_invalid_comparison_description = _(
+      "'{0}' cannot be compared with '{1}'"
+  )
+  msg_fmt_invalid_comparison_detail = _(
+      "Cannot compare values '{0}' and '{1}'"
+  )
   msg_fmt_set_count_failure_description = _("'{0}' != '{1}'")
   msg_fmt_set_count_failure_detail = _(
       "Mismatched result set counts are being compared."
@@ -46,6 +55,31 @@ class ValidationComparisonBase(ValidatorBase, abc.ABC):
       result_b: "AliasLookupResult",
   ) -> bool:
     """Perform the result comparison between each result element."""
+
+  def create_invalid_comparison_exception(
+      self,
+      result_a: "AliasLookupResult",
+      result_b: "AliasLookupResult",
+      lookup_expression_a: "LookupExpression",
+      lookup_expression_b: "LookupExpression",
+  ) -> ValidationInvalidComparison:
+    """Create an exception for an invalid comparison."""
+
+    return ValidationInvalidComparison(
+        description=f(
+            self.msg_fmt_invalid_comparison_description,
+            lookup_expression_a.name,
+            lookup_expression_b.name,
+            nl=1,
+        ),
+        detail=f(
+            self.msg_fmt_invalid_comparison_detail,
+            str(type(result_a)),
+            str(type(result_b)),
+            nl=1,
+        ),
+        validator=self
+    )
 
   def create_validation_failure_exception(
       self,
@@ -83,13 +117,21 @@ class ValidationComparisonBase(ValidatorBase, abc.ABC):
     ):
       result_a = state.lookup_expression(lookup_expression_a)
       result_b = state.lookup_expression(lookup_expression_b)
-      if not self.comparison(result_a, result_b):
-        raise self.create_validation_failure_exception(
+      try:
+        if not self.comparison(result_a, result_b):
+          raise self.create_validation_failure_exception(
+              result_a=result_a,
+              result_b=result_b,
+              requested_result_a=lookup_expression_a,
+              requested_result_b=lookup_expression_b,
+          )
+      except TypeError as exc:
+        raise self.create_invalid_comparison_exception(
             result_a=result_a,
             result_b=result_b,
-            requested_result_a=lookup_expression_a,
-            requested_result_b=lookup_expression_b,
-        )
+            lookup_expression_a=lookup_expression_a,
+            lookup_expression_b=lookup_expression_b,
+        ) from exc
       state.log(
           f(
               self.msg_fmt_comparison_success,
