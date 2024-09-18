@@ -10,8 +10,14 @@ from text_lint.__helpers__.operations import (
     assert_operation_inheritance,
 )
 from text_lint.__helpers__.translations import assert_is_translated
-from text_lint.__helpers__.validators import assert_is_validation_failure
-from text_lint.exceptions.validators import ValidationFailure
+from text_lint.__helpers__.validators import (
+    assert_is_invalid_comparison,
+    assert_is_validation_failure,
+)
+from text_lint.exceptions.validators import (
+    ValidationFailure,
+    ValidationInvalidComparison,
+)
 from text_lint.operations.validators.args.lookup_expression import (
     LookupExpressionSetArg,
 )
@@ -49,6 +55,14 @@ class TestValidationComparisonBase:
     )
     assert_is_translated(
         concrete_validator_comparison_base_instance.msg_fmt_comparison_success
+    )
+    assert_is_translated(
+        concrete_validator_comparison_base_instance.
+        msg_fmt_invalid_comparison_description
+    )
+    assert_is_translated(
+        concrete_validator_comparison_base_instance.
+        msg_fmt_invalid_comparison_detail
     )
     assert_is_translated(
         concrete_validator_comparison_base_instance.
@@ -210,6 +224,40 @@ class TestValidationComparisonBase:
             msg_fmt_comparison_failure,
             mocked_state.lookup_expression.return_value,
             mocked_state.lookup_expression.return_value,
+        ),
+        validator=concrete_validator_comparison_base_instance,
+    )
+
+  def test_apply__comparison_type_error__raises_exception(
+      self,
+      mocked_state: mock.Mock,
+      mocked_comparison: mock.Mock,
+      concrete_validator_comparison_base_instance: ValidationComparisonBase,
+  ) -> None:
+    mocked_comparison.side_effect = TypeError
+
+    with pytest.raises(ValidationInvalidComparison) as exc:
+      concrete_validator_comparison_base_instance.apply(mocked_state)
+
+    assert_is_invalid_comparison(
+        exc,
+        description_t=(
+            concrete_validator_comparison_base_instance.
+            msg_fmt_invalid_comparison_description,
+            list(
+              concrete_validator_comparison_base_instance. \
+              lookup_expression_set_a
+            )[0].name,
+            list(
+              concrete_validator_comparison_base_instance. \
+              lookup_expression_set_b
+            )[0].name,
+        ),
+        detail_t=(
+            concrete_validator_comparison_base_instance.
+            msg_fmt_invalid_comparison_detail,
+            str(type(mocked_state.lookup_expression.return_value)),
+            str(type(mocked_state.lookup_expression.return_value)),
         ),
         validator=concrete_validator_comparison_base_instance,
     )

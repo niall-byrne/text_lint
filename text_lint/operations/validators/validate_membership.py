@@ -37,6 +37,9 @@ class ValidateMembership(ValidationComparisonBase):
 
   msg_fmt_comparison_failure = _("'{1}' not in '{0}'")
   msg_fmt_comparison_success = _("MEMBERSHIP: '{1}' in '{0}'")
+  msg_fmt_invalid_comparison_detail = _(
+      "Cannot test for membership of '{1}' in '{0}'"
+  )
 
   def __init__(  # pylint: disable=W0246
       self,
@@ -53,7 +56,4 @@ class ValidateMembership(ValidationComparisonBase):
   ) -> bool:
     """Perform the result comparison between each result element."""
 
-    try:
-      return result_b in result_a
-    except TypeError:
-      return False
+    return result_b in result_a

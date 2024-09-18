@@ -582,13 +582,23 @@ msgstr ""
 msgid "MOCKED: '{0}' and '{1}'"
 msgstr ""
 
-#: text_lint/operations/validators/bases/validator_comparison_base.py:27
+#: text_lint/operations/validators/bases/validator_comparison_base.py:31
+#, python-brace-format
+msgid "'{0}' cannot be compared with '{1}'"
+msgstr ""
+
+#: text_lint/operations/validators/bases/validator_comparison_base.py:34
+#, python-brace-format
+msgid "Cannot compare values '{0}' and '{1}'"
+msgstr ""
+
+#: text_lint/operations/validators/bases/validator_comparison_base.py:36
 #: text_lint/operations/validators/validate_equal.py:35
 #, python-brace-format
 msgid "'{0}' != '{1}'"
 msgstr ""
 
-#: text_lint/operations/validators/bases/validator_comparison_base.py:29
+#: text_lint/operations/validators/bases/validator_comparison_base.py:38
 msgid "Mismatched result set counts are being compared."
 msgstr ""
 
@@ -647,6 +657,11 @@ msgstr ""
 #: text_lint/operations/validators/validate_membership.py:39
 #, python-brace-format
 msgid "MEMBERSHIP: '{1}' in '{0}'"
+msgstr ""
+
+#: text_lint/operations/validators/validate_membership.py:41
+#, python-brace-format
+msgid "Cannot test for membership of '{1}' in '{0}'"
 msgstr ""
 
 #: text_lint/operations/validators/validate_not_equal.py:14
