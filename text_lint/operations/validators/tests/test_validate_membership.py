@@ -13,9 +13,12 @@ from text_lint.__helpers__.translations import (
     assert_is_translated,
     assert_is_translated_yaml_example,
 )
-from text_lint.__helpers__.validators import assert_is_validation_failure
+from text_lint.__helpers__.validators import (
+    assert_is_invalid_comparison,
+    assert_is_validation_failure,
+)
 from text_lint.exceptions.validators import ValidationFailure
-from ..bases.validator_base import ValidatorBase
+from text_lint.operations.validators.bases.validator_base import ValidatorBase
 from ..validate_membership import (
     YAML_EXAMPLE,
     YAML_EXAMPLE_COMPONENTS,
@@ -54,6 +57,9 @@ class TestValidateMembership:
     )
     assert_is_translated(
         validate_membership_instance.msg_fmt_comparison_success
+    )
+    assert_is_translated(
+        validate_membership_instance.msg_fmt_invalid_comparison_detail
     )
 
   def test_initialize__inheritance(
@@ -134,17 +140,17 @@ class TestValidateMembership:
     with pytest.raises(ValidationFailure) as exc:
       validate_membership_instance.apply(mocked_state)
 
-    assert_is_validation_failure(
+    assert_is_invalid_comparison(
         exc,
         description_t=(
-            validate_membership_instance.msg_fmt_comparison_failure,
+            validate_membership_instance.msg_fmt_invalid_comparison_description,
             list(validate_membership_instance.lookup_expression_set_a)[0].name,
             list(validate_membership_instance.lookup_expression_set_b)[0].name,
         ),
         detail_t=(
-            validate_membership_instance.msg_fmt_comparison_failure,
-            "result_0",
-            "['result_1']",
+            validate_membership_instance.msg_fmt_invalid_comparison_detail,
+            str(type("result_0")),
+            str(type(['result_1'])),
         ),
         validator=validate_membership_instance,
     )

@@ -50,3 +50,7 @@ class ValidationFailure(ValidationExceptionBase):
     )
 
     super().__init__(message)
+
+
+class ValidationInvalidComparison(ValidationFailure):
+  """Raised when a validation operation performs an invalid comparison."""
