@@ -1,0 +1,9 @@
+---
+- id: text_lint
+  name: text_lint
+  description: "Apply a schema to generic text files."
+  entry: text_lint
+  always_run: true
+  language: python
+  pass_filenames: true
+  stages: [commit]
