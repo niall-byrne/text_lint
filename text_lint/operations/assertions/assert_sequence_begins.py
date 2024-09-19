@@ -52,6 +52,9 @@ class AssertSequenceBegins(AssertionBase):
   operation = "assert_sequence_begins"
   yaml_example = YAML_EXAMPLE.format(LOOP_COUNT=LOOP_COUNT)
 
+  msg_fmt_invalid_sequence_count = _(
+      "assertion #{0} there is an invalid sequence count"
+  )
   msg_fmt_unexpected_assertions_after_eof_sequence = _(
       "assertion #{0} there are unexpected additional assertions following "
       "this 'to eof' sequence declaration"
@@ -83,6 +86,18 @@ class AssertSequenceBegins(AssertionBase):
       schema: "Schema",
   ) -> None:
     """Optional additional schema level validation for this assertion."""
+
+    if self.count != LOOP_COUNT and self.count < 0:
+      raise schema.create_exception(
+          description=f(
+              self.msg_fmt_invalid_sequence_count,
+              schema_assertion_index,
+              nl=1,
+          ),
+          operation_definition=self._simplify_yaml_definition(
+              schema_assertion_definitions[schema_assertion_index],
+          )
+      )
 
     if (
         self.count == LOOP_COUNT
