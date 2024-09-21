@@ -20,6 +20,7 @@ class CheckCommand(CLICommandBase):
   arg_interpolate_schema_help = _(
       "use environment variables to interpolate the schema file"
   )
+  arg_quiet_help = _("suppress non critical messages")
   arg_schema = _("schema")
   arg_schema_help = _("the schema to apply")
 
@@ -40,6 +41,12 @@ class CheckCommand(CLICommandBase):
         action='store_true'
     )
     command_parser.add_argument(
+        "-q",
+        "--quiet",
+        help=self.arg_quiet_help,
+        action='store_true',
+    )
+    command_parser.add_argument(
         "-s",
         "--schema",
         dest="schema",
@@ -56,7 +63,8 @@ class CheckCommand(CLICommandBase):
       settings = LinterSettings(
           file_path=filename,
           interpolate_schema=args.interpolate_schema,
-          schema_path=args.schema,
+          quiet=args.quiet,
+          schema_path=args.schema
       )
       linter = Linter(settings=settings)
       linter.start()

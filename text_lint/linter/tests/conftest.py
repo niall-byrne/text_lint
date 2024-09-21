@@ -145,6 +145,7 @@ def linter_instance(
   linter_settings = settings.LinterSettings(
       file_path=mocked_file_path,
       interpolate_schema=False,
+      quiet=False,
       schema_path=mocked_schema_path,
   )
   return linter.Linter(settings=linter_settings)
