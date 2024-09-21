@@ -68,6 +68,7 @@ def create_linter_instance(
     settings = LinterSettings(
         file_path="mock/file/1",
         interpolate_schema=False,
+        quiet=True,
         schema_path="mock/file/2",
     )
     linter = Linter(settings=settings)

@@ -12,6 +12,7 @@ from .. import check_command, documentation_command, list_command
 def mocked_args_check() -> mock.Mock:
   instance = mock.Mock()
   instance.filenames = ["1.txt", "2.txt", "3.txt"]
+  instance.quiet = True
   instance.schema = "/path/to/schema.yml"
   return instance
 
