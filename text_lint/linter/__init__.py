@@ -31,7 +31,10 @@ class Linter:
   def __init__(self, settings: "LinterSettings") -> None:
     self.settings = settings
 
-    schema = Schema(self.settings.schema_path, self.settings.interpolate_schema)
+    schema = Schema(
+        self.settings.schema_path,
+        self.settings.interpolate_schema,
+    )
 
     self.assertions = AssertionSequencer(schema)
     self.validators = ValidatorSequencer(schema)

@@ -43,6 +43,7 @@ class TestCheckCommand:
     assert_is_translated(check_command_instance.arg_filenames)
     assert_is_translated(check_command_instance.arg_filenames_help)
     assert_is_translated(check_command_instance.arg_interpolate_schema_help)
+    assert_is_translated(check_command_instance.arg_quiet_help)
     assert_is_translated(check_command_instance.arg_schema)
     assert_is_translated(check_command_instance.arg_schema_help)
 
@@ -82,6 +83,12 @@ class TestCheckCommand:
             action='store_true'
         ),
         mock.call(
+            "-q",
+            "--quiet",
+            help=check_command_instance.arg_quiet_help,
+            action='store_true'
+        ),
+        mock.call(
             "-s",
             "--schema",
             dest="schema",
@@ -106,6 +113,7 @@ class TestCheckCommand:
       assert mocked_linter_settings.mock_calls[index] == mock.call(
           file_path=mock_filename,
           interpolate_schema=mocked_args_check.interpolate_schema,
+          quiet=mocked_args_check.quiet,
           schema_path=mocked_args_check.schema,
       )
 

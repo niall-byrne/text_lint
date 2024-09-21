@@ -31,10 +31,14 @@ msgid "use environment variables to interpolate the schema file"
 msgstr ""
 
 #: text_lint/cli/commands/check_command.py:23
-msgid "schema"
+msgid "suppress non critical messages"
 msgstr ""
 
 #: text_lint/cli/commands/check_command.py:24
+msgid "schema"
+msgstr ""
+
+#: text_lint/cli/commands/check_command.py:25
 msgid "the schema to apply"
 msgstr ""
 

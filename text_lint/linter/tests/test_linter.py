@@ -47,6 +47,7 @@ class TestLinter:
     settings = LinterSettings(
         file_path=mocked_file_path,
         interpolate_schema=interpolate,
+        quiet=False,
         schema_path=mocked_schema_path,
     )
 
