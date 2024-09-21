@@ -1,0 +1,76 @@
+---
+version: "0.1.0"
+
+settings:
+  comment_regex: null
+
+assertions:
+  - name: is titled with the project's name
+    operation: assert_equal
+    expected: "# ${PROJECT_NAME}"
+
+  - name: blank line after title
+    operation: assert_blank
+
+  - name: has ci/cd tools badge
+    operation: assert_equal
+    expected: "[![cicd-tools](https://img.shields.io/badge/ci/cd:-cicd_tools-blue)](https://github.com/cicd-tools-org/cicd-tools)"
+
+  - name: has pre-commit badge
+    operation: assert_equal
+    expected: "[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)"
+
+  - name: blank line after badges
+    operation: assert_blank
+
+  - name: builds table line 1 is correct
+    operation: assert_regex
+    regex: "^\\| Branch \\s+| Build \\s+ \\|$"
+
+  - name: builds table line 2 is correct
+    operation: assert_regex
+    regex: "^\\|-+\\|-+\\|$"
+
+  - name: builds table line 3 is correct
+    operation: assert_regex
+    regex: "^\\| \\[main\\]\\(https://github.com/${PROJECT_OWNER}/${PROJECT_NAME}/tree/main\\)\\s+\\| \\[!\\[workflow-link\\]\\(https://github.com/${PROJECT_OWNER}/${PROJECT_NAME}/actions/workflows/workflow-push.yml/badge.svg\\?branch=main\\)\\]\\(https://github.com/${PROJECT_OWNER}/${PROJECT_NAME}/actions/workflows/workflow-push.yml\\)\\s+\\|$"
+
+  - name: builds table line 4 is correct
+    operation: assert_regex
+    regex: "^\\| \\[dev\\]\\(https://github.com/${PROJECT_OWNER}/${PROJECT_NAME}/tree/dev\\)\\s+\\| \\[!\\[workflow-link\\]\\(https://github.com/${PROJECT_OWNER}/${PROJECT_NAME}/actions/workflows/workflow-push.yml/badge.svg\\?branch=dev\\)\\]\\(https://github.com/${PROJECT_OWNER}/${PROJECT_NAME}/actions/workflows/workflow-push.yml\\)\\s+\\|$"
+
+  - name: text until sub header
+    operation: assert_regex_section
+    regex: "^(?!#+\\s).*$"
+
+  - name: read until eof
+    operation: assert_sequence_begins
+    count: -1
+    assertions:
+
+      - name: read a sub header
+        operation: assert_regex
+        regex: "^#+\\s(.+)$"
+        save: sub_headers
+
+      - name: blank line between sections
+        operation: assert_blank
+
+      - name: text until there sub header
+        operation: assert_regex_section
+        regex: "^(?!#+\\s).*$"
+
+validators:
+  - name: no duplicate sub headers
+    operation: validate_equal
+    saved_a:
+      - sub_headers.capture(1).to_lower()
+    saved_b:
+      - sub_headers.capture(1).to_lower().to_unique()
+
+  - name: no colon in sub headers
+    operation: validate_not_membership
+    saved_container:
+      - sub_headers.capture(1)
+    saved_value:
+      - "~:"
