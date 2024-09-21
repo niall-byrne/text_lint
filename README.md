@@ -1,5 +1,13 @@
 # text_lint
 
+[![cicd-tools](https://img.shields.io/badge/ci/cd:-cicd_tools-blue)](https://github.com/cicd-tools-org/cicd-tools)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
+
+| Branch                                                     | Build                                                                                                                                                                                                |
+|------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [main](https://github.com/niall-byrne/text_lint/tree/main) | [![workflow-link](https://github.com/niall-byrne/text_lint/actions/workflows/workflow-push.yml/badge.svg?branch=main)](https://github.com/niall-byrne/text_lint/actions/workflows/workflow-push.yml) |
+| [dev](https://github.com/niall-byrne/text_lint/tree/dev)   | [![workflow-link](https://github.com/niall-byrne/text_lint/actions/workflows/workflow-push.yml/badge.svg?branch=dev)](https://github.com/niall-byrne/text_lint/actions/workflows/workflow-push.yml)  |
+
 Define a custom YAML schema and use it to validate text files.
 
 ## Use Cases
