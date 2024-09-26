@@ -18,6 +18,7 @@ from .. import (
     to_lower,
     to_reversed,
     to_sorted,
+    to_split,
     to_unique,
     to_upper,
 )
@@ -276,6 +277,21 @@ def to_sorted_lookup_instance(
     mocked_requesting_operation_name: str,
 ) -> to_sorted.SortedLookup:
   return to_sorted.SortedLookup(
+      mocked_lookup_name,
+      mocked_lookup_expression,
+      mocked_lookup_params,
+      mocked_requesting_operation_name,
+  )
+
+
+@pytest.fixture
+def to_split_lookup_instance(
+    mocked_lookup_expression: mock.Mock,
+    mocked_lookup_name: str,
+    mocked_lookup_params: "AliasLookupParams",
+    mocked_requesting_operation_name: str,
+) -> to_split.SplitLookup:
+  return to_split.SplitLookup(
       mocked_lookup_name,
       mocked_lookup_expression,
       mocked_lookup_params,

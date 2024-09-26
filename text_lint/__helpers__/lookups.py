@@ -250,6 +250,63 @@ result_sorting_test_cases = pytest.mark.parametrize(
     ids=["list", "tuple", "dict", "nested"]
 )
 
+result_splitting_test_cases = pytest.mark.parametrize(
+    "result,seperator,expected", [
+        [
+            "one-two-three",
+            "-",
+            ["one", "two", "three"],
+        ],
+        [
+            "one-two-three",
+            None,
+            ["one-two-three"],
+        ],
+        [
+            ["one-two-three"],
+            "-",
+            [["one", "two", "three"]],
+        ],
+        [
+            ["one-two-three"],
+            None,
+            [["one-two-three"]],
+        ],
+        [
+            (("one-two-three",), ("one-two-three",)),
+            "-",
+            [[['one', 'two', 'three']], [['one', 'two', 'three']]],
+        ],
+        [
+            (("one-two-three",), ("one-two-three",)),
+            None,
+            [[['one-two-three']], [['one-two-three']]],
+        ],
+        [
+            {
+                "one-two": "three-four"
+            },
+            "-",
+            {
+                'one-two': ['three', 'four']
+            },
+        ],
+        [
+            [{
+                "one-two": "three-four"
+            }],
+            None,
+            [{
+                'one-two': ['three-four']
+            }],
+        ],
+    ],
+    ids=[
+        "str_dash", "str_none", "list_dash", "list_none", "tuple_dash",
+        "tuple_none", "dict_dash", "dict_none"
+    ]
+)
+
 
 def set_lookup_params(
     params_test_inputs: List["AliasLookupParams"]
