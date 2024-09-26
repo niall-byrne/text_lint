@@ -8,7 +8,7 @@ import pytest
 from .. import lower
 from .. import reversed as reversed_module
 from .. import sorted as sorted_module
-from .. import tree, unique, upper
+from .. import split, tree, unique, upper
 
 
 class AliasSetupEncoderMock(Protocol):
@@ -48,6 +48,11 @@ def reversed_encoder_instance() -> reversed_module.ReversedEncoder:
 @pytest.fixture
 def sorted_encoder_instance() -> sorted_module.SortedEncoder:
   return sorted_module.SortedEncoder()
+
+
+@pytest.fixture
+def split_encoder_instance() -> split.SplitEncoder:
+  return split.SplitEncoder()
 
 
 @pytest.fixture

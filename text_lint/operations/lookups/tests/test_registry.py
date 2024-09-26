@@ -12,6 +12,7 @@ from .. import (
     NoopLookup,
     ReversedLookup,
     SortedLookup,
+    SplitLookup,
     UniqueLookup,
     UpperLookup,
     lookup_registry,
@@ -48,6 +49,7 @@ class TestLookupRegistry:
         NoopLookup.operation,
         ReversedLookup.operation,
         SortedLookup.operation,
+        SplitLookup.operation,
         UniqueLookup.operation,
         UpperLookup.operation,
     ]

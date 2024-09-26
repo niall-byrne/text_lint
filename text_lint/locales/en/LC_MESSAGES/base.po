@@ -572,6 +572,18 @@ msgstr ""
 msgid "sort the values of a save id"
 msgstr ""
 
+#: text_lint/operations/lookups/to_split.py:18
+msgid "split lookup example"
+msgstr ""
+
+#: text_lint/operations/lookups/to_split.py:35
+msgid "split the values of a save id"
+msgstr ""
+
+#: text_lint/operations/lookups/to_split.py:39
+msgid "Invalid split lookup parameters!"
+msgstr ""
+
 #: text_lint/operations/lookups/to_unique.py:14
 msgid "unique save id transformation lookup example"
 msgstr ""
