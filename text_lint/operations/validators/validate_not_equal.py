@@ -42,4 +42,4 @@ class ValidateNotEqual(ValidationComparisonBase):
   ) -> bool:
     """Perform the result comparison between each result element."""
 
-    return result_a != result_b
+    return bool(result_a != result_b)

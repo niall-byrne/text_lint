@@ -16,6 +16,7 @@ from .to_group import GroupLookup
 from .to_lower import LowerLookup
 from .to_reversed import ReversedLookup
 from .to_sorted import SortedLookup
+from .to_split import SplitLookup
 from .to_unique import UniqueLookup
 from .to_upper import UpperLookup
 
@@ -30,6 +31,7 @@ lookup_registry: Dict[str, Type[LookupBase]] = defaultdict(
         NoopLookup.operation: NoopLookup,
         ReversedLookup.operation: ReversedLookup,
         SortedLookup.operation: SortedLookup,
+        SplitLookup.operation: SplitLookup,
         UniqueLookup.operation: UniqueLookup,
         UpperLookup.operation: UpperLookup,
     }
