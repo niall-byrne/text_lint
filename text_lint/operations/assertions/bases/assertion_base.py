@@ -1,10 +1,13 @@
 """AssertionBase class."""
 
 import abc
+import re
 from typing import TYPE_CHECKING, List, Match, Optional, Sequence
 
+from text_lint.config import SAVED_NAME_REGEX
 from text_lint.exceptions.assertions import AssertionCaptureGroupNotFound
 from text_lint.exceptions.results import SplitGroupNotFound
+from text_lint.exceptions.schema import SaveIdInvalid
 from text_lint.operations.assertions.args.split import (
     AliasYamlSplit,
     SplitArgs,
@@ -27,8 +30,9 @@ class AssertionBase(OperationBase["states.AssertionState"], abc.ABC):
       splits: Optional[AliasYamlSplit] = None,
   ) -> None:
     self.name = name
-    self.splits = SplitArgs.create(splits)
     self.save = save
+    self.__save_validator()
+    self.splits = SplitArgs.create(splits)
 
   @abc.abstractmethod
   def apply(self, state: "states.AssertionState") -> None:
@@ -55,6 +59,10 @@ class AssertionBase(OperationBase["states.AssertionState"], abc.ABC):
         ) from exc
 
     return result
+
+  def __save_validator(self) -> None:
+    if self.save and not re.match(SAVED_NAME_REGEX, self.save):
+      raise SaveIdInvalid(self.save)
 
   def schema_validator(
       self,

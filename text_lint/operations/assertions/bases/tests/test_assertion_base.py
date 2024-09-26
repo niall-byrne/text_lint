@@ -14,6 +14,7 @@ from text_lint.__helpers__.operations import (
 )
 from text_lint.exceptions.assertions import AssertionCaptureGroupNotFound
 from text_lint.exceptions.results import SplitGroupNotFound
+from text_lint.exceptions.schema import SaveIdInvalid
 from text_lint.operations.assertions.bases.assertion_base import AssertionBase
 
 
@@ -64,6 +65,20 @@ class TestAssertionBase:
     assert_operation_inheritance(
         concrete_assertion_base_instance, bases=(AssertionBase,)
     )
+
+  def test_initialize__invalid_save_id__raises_exception(
+      self,
+      concrete_assertion_base_class: Type[AssertionBase],
+  ) -> None:
+    invalid_save_id = "invalid save id with spaces and ~ $ # characters"
+
+    with pytest.raises(SaveIdInvalid) as exc:
+      concrete_assertion_base_class(
+          name="assertion with invalid save id",
+          save=invalid_save_id,
+      )
+
+    assert str(exc.value) == invalid_save_id
 
   def test_apply__calls_mocked_implementation(
       self,
