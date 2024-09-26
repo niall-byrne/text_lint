@@ -12,6 +12,7 @@ from text_lint.exceptions.schema import (
     LookupExpressionInvalid,
     LookupExpressionInvalidDuplicatePositional,
     LookupExpressionInvalidSequence,
+    SaveIdInvalid,
     SchemaError,
     SplitGroupInvalid,
 )
@@ -48,6 +49,9 @@ class TestSchemaSectionBase:
         msg_fmt_invalid_lookup_expression_sequence
     )
     assert_is_translated(concrete_schema_section_instance.msg_fmt_invalid_regex)
+    assert_is_translated(
+        concrete_schema_section_instance.msg_fmt_invalid_save_id
+    )
     assert_is_translated(
         concrete_schema_section_instance.msg_fmt_invalid_split_group
     )
@@ -279,6 +283,31 @@ class TestSchemaSectionBase:
         exc=exc,
         description_t=(
             concrete_schema_section_instance.msg_fmt_invalid_regex,
+            concrete_schema_section_instance.entity_name,
+            1,
+        ),
+        assertion_definition=cloned_schema[0],
+        schema_path=mocked_schema.path,
+    )
+
+  @pytest.mark.parametrize("exception", [SaveIdInvalid])
+  def test_load__defined_section__save_id_invalid__raises_schema_exception(
+      self,
+      concrete_schema_section_instance: SchemaSectionBase[mock.Mock],
+      mocked_operation_classes: Dict[str, Type[mock.Mock]],
+      mocked_schema: mock.Mock,
+      exception: Type[Exception],
+  ) -> None:
+    mocked_operation_classes["A"].side_effect = exception("error")
+    cloned_schema = deepcopy(schemas.one_simple_assertion)
+
+    with pytest.raises(SchemaError) as exc:
+      concrete_schema_section_instance.load(cloned_schema)
+
+    assert_is_schema_error(
+        exc=exc,
+        description_t=(
+            concrete_schema_section_instance.msg_fmt_invalid_save_id,
             concrete_schema_section_instance.entity_name,
             1,
         ),

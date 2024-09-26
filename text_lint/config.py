@@ -19,3 +19,4 @@ LOOP_COUNT = -1
 MAXIMUM_SUPPORTED_SCHEMA_VERSION: "AliasVersionTuple" = (0, 2, 0)
 MINIMUM_SUPPORTED_SCHEMA_VERSION: "AliasVersionTuple" = (0, 0, 1)
 NEW_LINE = os.linesep
+SAVED_NAME_REGEX = re.compile(r'^[A-Za-z_][A-Za-z0-9_]+$')
