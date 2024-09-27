@@ -9,6 +9,7 @@ from .. import (
     validate_combine,
     validate_debug,
     validate_equal,
+    validate_expression,
     validate_membership,
     validate_not_equal,
     validate_not_membership,
@@ -18,8 +19,8 @@ from .scenarios import *
 
 
 @pytest.fixture
-def mocked_combined_result_tree_name() -> str:
-  return "mocked_combined_result_name"
+def mocked_result_tree_name() -> str:
+  return "mocked_result_tree_name"
 
 
 @pytest.fixture
@@ -34,13 +35,13 @@ def mocked_validator_name() -> str:
 
 @pytest.fixture
 def validate_combine_instance(
-    mocked_combined_result_tree_name: str,
     mocked_lookup_expression_set_a: List[str],
+    mocked_result_tree_name: str,
     mocked_validator_name: str,
 ) -> validate_combine.ValidateCombine:
   return validate_combine.ValidateCombine(
       mocked_validator_name,
-      new_saved=mocked_combined_result_tree_name,
+      new_saved=mocked_result_tree_name,
       saved=mocked_lookup_expression_set_a,
   )
 
@@ -64,6 +65,23 @@ def validate_equal_instance(
 ) -> validate_equal.ValidateEqual:
   return validate_equal.ValidateEqual(
       mocked_validator_name,
+      saved_a=mocked_lookup_expression_set_a,
+      saved_b=mocked_lookup_expression_set_b,
+  )
+
+
+@pytest.fixture
+def validate_expression_instance(
+    mocked_lookup_expression_set_a: List[str],
+    mocked_lookup_expression_set_b: List[str],
+    mocked_result_tree_name: str,
+    mocked_validator_name: str,
+    request: pytest.FixtureRequest,
+) -> validate_expression.ValidateExpression:
+  return validate_expression.ValidateExpression(
+      mocked_validator_name,
+      operator=request.param,
+      new_saved=mocked_result_tree_name,
       saved_a=mocked_lookup_expression_set_a,
       saved_b=mocked_lookup_expression_set_b,
   )
