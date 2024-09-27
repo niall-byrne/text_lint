@@ -15,6 +15,7 @@ from text_lint.exceptions.schema import (
     SaveIdInvalid,
     SchemaError,
     SplitGroupInvalid,
+    ValidatorParametersInvalid,
 )
 from ..section_base import SchemaSectionBase
 from .fixtures import schemas
@@ -54,6 +55,9 @@ class TestSchemaSectionBase:
     )
     assert_is_translated(
         concrete_schema_section_instance.msg_fmt_invalid_split_group
+    )
+    assert_is_translated(
+        concrete_schema_section_instance.msg_fmt_invalid_validator_parameters
     )
     assert_is_translated(
         concrete_schema_section_instance.msg_fmt_restricted_operation
@@ -335,6 +339,34 @@ class TestSchemaSectionBase:
             concrete_schema_section_instance.msg_fmt_invalid_split_group,
             concrete_schema_section_instance.entity_name,
             1,
+        ),
+        assertion_definition=cloned_schema[0],
+        schema_path=mocked_schema.path,
+    )
+
+  @pytest.mark.parametrize("exception", [ValidatorParametersInvalid])
+  def test_load__defined_section__bad_validator_param__raises_schema_exception(
+      self,
+      concrete_schema_section_instance: SchemaSectionBase[mock.Mock],
+      mocked_operation_classes: Dict[str, Type[mock.Mock]],
+      mocked_schema: mock.Mock,
+      exception: Type[Exception],
+  ) -> None:
+    raised_exception = exception("operator '!'")
+    mocked_operation_classes["A"].side_effect = raised_exception
+    cloned_schema = deepcopy(schemas.one_simple_assertion)
+
+    with pytest.raises(SchemaError) as exc:
+      concrete_schema_section_instance.load(cloned_schema)
+
+    assert_is_schema_error(
+        exc=exc,
+        description_t=(
+            concrete_schema_section_instance.
+            msg_fmt_invalid_validator_parameters,
+            concrete_schema_section_instance.entity_name,
+            1,
+            raised_exception.args[0],
         ),
         assertion_definition=cloned_schema[0],
         schema_path=mocked_schema.path,

@@ -75,3 +75,9 @@ assert_is_validation_failure = validator_helper_factory(ValidationFailure)
 assert_is_invalid_comparison = validator_helper_factory(
     ValidationInvalidComparison
 )
+
+validate_expression_with_numeric_lookup_results = pytest.mark.parametrize(
+    "lookup_results",
+    [(1, 2, 3, 4)],
+    ids=str,
+)

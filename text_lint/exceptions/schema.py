@@ -85,3 +85,7 @@ class UnsupportedSchemaVersion(SchemaExceptionBase):
             version_tuple_to_string(config.MAXIMUM_SUPPORTED_SCHEMA_VERSION),
         ),
     )
+
+
+class ValidatorParametersInvalid(SchemaExceptionBase):
+  """Raised when misconfigured validator parameters is found in the schema."""
