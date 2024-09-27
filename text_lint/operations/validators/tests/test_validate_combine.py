@@ -81,12 +81,12 @@ class TestValidateCombine:
 
   def test_initialize__creates_empty_result_tree_instance(
       self,
-      mocked_combined_result_tree_name: str,
+      mocked_result_tree_name: str,
       validate_combine_instance: ValidateCombine,
   ) -> None:
     assert isinstance(validate_combine_instance.new_tree, ResultTree)
     assert validate_combine_instance.new_tree.value == \
-        mocked_combined_result_tree_name
+        mocked_result_tree_name
     assert len(validate_combine_instance.new_tree.children) == 0
 
   def test_apply__performs_each_expected_lookup(
@@ -112,7 +112,7 @@ class TestValidateCombine:
 
   def test_apply__str_results__creates_expected_result_tree_children(
       self,
-      mocked_combined_result_tree_name: str,
+      mocked_result_tree_name: str,
       mocked_state: mock.Mock,
       validate_combine_instance: ValidateCombine,
   ) -> None:
@@ -125,14 +125,14 @@ class TestValidateCombine:
 
     assert isinstance(validate_combine_instance.new_tree, ResultTree)
     assert validate_combine_instance.new_tree.value == \
-        mocked_combined_result_tree_name
+        mocked_result_tree_name
     for index, child in enumerate(validate_combine_instance.new_tree.children):
       assert isinstance(child, ResultTree)
       assert child.value == "result_{0}".format(index)
 
   def test_apply__list_results__creates_expected_result_tree_children(
       self,
-      mocked_combined_result_tree_name: str,
+      mocked_result_tree_name: str,
       mocked_state: mock.Mock,
       validate_combine_instance: ValidateCombine,
   ) -> None:
@@ -145,14 +145,14 @@ class TestValidateCombine:
 
     assert isinstance(validate_combine_instance.new_tree, ResultTree)
     assert validate_combine_instance.new_tree.value == \
-        mocked_combined_result_tree_name
+        mocked_result_tree_name
     for index, child in enumerate(validate_combine_instance.new_tree.children):
       assert isinstance(child, ResultTree)
       assert child.value == "result_{0}".format(index)
 
   def test_apply__grouped_results__creates_expected_result_tree_children(
       self,
-      mocked_combined_result_tree_name: str,
+      mocked_result_tree_name: str,
       mocked_state: mock.Mock,
       validate_combine_instance: ValidateCombine,
   ) -> None:
@@ -167,7 +167,7 @@ class TestValidateCombine:
 
     assert isinstance(validate_combine_instance.new_tree, ResultTree)
     assert validate_combine_instance.new_tree.value == \
-        mocked_combined_result_tree_name
+        mocked_result_tree_name
     for index, child in enumerate(validate_combine_instance.new_tree.children):
       assert isinstance(child, ResultTree)
       assert child.value == "result_{0}".format(index)
