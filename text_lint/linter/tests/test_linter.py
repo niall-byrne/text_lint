@@ -10,7 +10,6 @@ from text_lint.exceptions.sequencers import UnconsumedData
 from text_lint.linter import Linter
 from text_lint.linter.settings import LinterSettings
 from text_lint.sequencers.patterns.loop import LinearLoopPattern
-from .conftest import AliasLinterSetup
 
 
 class TestLinter:
@@ -34,16 +33,14 @@ class TestLinter:
     assert linter_instance.settings.schema_path == mocked_schema_path
 
   @pytest.mark.parametrize("interpolate", [True, False])
+  @pytest.mark.usefixtures("setup_linter_mocks")
   def test_initialize__creates_schema_instance(
       self,
       mocked_file_path: str,
       mocked_schema_path: str,
       mocked_schema: mock.Mock,
-      setup_linter_mocks: AliasLinterSetup,
       interpolate: bool,
   ) -> None:
-    setup_linter_mocks()
-
     settings = LinterSettings(
         file_path=mocked_file_path,
         interpolate_schema=interpolate,
@@ -100,6 +97,16 @@ class TestLinter:
     mocked_sequencer_text_file.return_value.configure.\
         assert_called_once_with(mocked_schema.return_value)
     assert linter_instance.textfile == mocked_sequencer_text_file.return_value
+
+  def test_initialize__creates_recursion_detection_instance(
+      self,
+      mocked_recursion_detection: mock.Mock,
+      linter_instance: Linter,
+  ) -> None:
+    mocked_recursion_detection.assert_called_once_with(linter_instance)
+    assert linter_instance.recursion == (
+        mocked_recursion_detection.return_value
+    )
 
   def test_initialize__creates_result_forest_instance(
       self,
@@ -183,6 +190,21 @@ class TestLinter:
     )
 
   @pytest.mark.usefixtures("scenario__all_text__all_schema__all_assertions")
+  def test_start__all_text__all_schema__assertions_finish__detect_recursion(
+      self,
+      mocked_recursion_detection: mock.Mock,
+      mocked_sequence_assertions: List[mock.Mock],
+      linter_instance: Linter,
+  ) -> None:
+    recursion_instance = mocked_recursion_detection.return_value
+
+    linter_instance.start()
+
+    assert recursion_instance.detect.mock_calls == (
+        [mock.call()] * len(mocked_sequence_assertions)
+    )
+
+  @pytest.mark.usefixtures("scenario__all_text__all_schema__all_assertions")
   def test_start__all_text__all_schema__assertions_finish__run_all_validators(
       self,
       mocked_sequence_validators: List[mock.Mock],
@@ -217,6 +239,21 @@ class TestLinter:
     mocked_sequence_assertions[2].apply.assert_not_called()
     assert mocked_state_factory.return_value.assertion.mock_calls == (
         [mock.call()] * (len(mocked_sequence_assertions) - 1)
+    )
+
+  @pytest.mark.usefixtures("scenario__all_text__all_schema__some_assertions")
+  def test_start__all_text__all_schema__assertions_stop__detect_recursion(
+      self,
+      mocked_recursion_detection: mock.Mock,
+      mocked_sequence_assertions: List[mock.Mock],
+      linter_instance: Linter,
+  ) -> None:
+    recursion_instance = mocked_recursion_detection.return_value
+
+    linter_instance.start()
+
+    assert recursion_instance.detect.mock_calls == (
+        [mock.call()] * (len(mocked_sequence_assertions) - 2)
     )
 
   @pytest.mark.usefixtures("scenario__all_text__all_schema__some_assertions")
@@ -259,6 +296,22 @@ class TestLinter:
     )
 
   @pytest.mark.usefixtures("scenario__all_text__all_schema__some_assertions")
+  def test_start__all_text__all_schema__loop_signals_stop__detect_recursion(
+      self,
+      mocked_recursion_detection: mock.Mock,
+      mocked_sequence_assertions: List[mock.Mock],
+      linter_instance: Linter,
+  ) -> None:
+    linter_instance.assertions.pattern = mock.Mock(spec=LinearLoopPattern)
+    recursion_instance = mocked_recursion_detection.return_value
+
+    linter_instance.start()
+
+    assert recursion_instance.detect.mock_calls == (
+        [mock.call()] * (len(mocked_sequence_assertions) - 2)
+    )
+
+  @pytest.mark.usefixtures("scenario__all_text__all_schema__some_assertions")
   def test_start__all_text__all_schema__loop_signals_stop__run_all_validators(
       self,
       mocked_sequence_validators: List[mock.Mock],
@@ -297,6 +350,22 @@ class TestLinter:
     )
 
   @pytest.mark.usefixtures("scenario__all_text__some_schema__all_assertions")
+  def test_start__all_text__some_schema__loop_signals_stop__detect_recursion(
+      self,
+      mocked_recursion_detection: mock.Mock,
+      mocked_sequence_assertions: List[mock.Mock],
+      linter_instance: Linter,
+  ) -> None:
+    linter_instance.assertions.pattern = mock.Mock(spec=LinearLoopPattern)
+    recursion_instance = mocked_recursion_detection.return_value
+
+    linter_instance.start()
+
+    assert recursion_instance.detect.mock_calls == (
+        [mock.call()] * len(mocked_sequence_assertions)
+    )
+
+  @pytest.mark.usefixtures("scenario__all_text__some_schema__all_assertions")
   def test_start__all_text__some_schema__loop_signals_stop__run_all_validators(
       self,
       mocked_sequence_validators: List[mock.Mock],
@@ -318,18 +387,22 @@ class TestLinter:
   @pytest.mark.usefixtures("scenario__all_text__some_schema__all_assertions")
   def test_start__all_text__some_schema__assertions_finish__raise_exception(
       self,
+      mocked_recursion_detection: mock.Mock,
       mocked_sequence_assertions: List[mock.Mock],
       mocked_sequence_validators: List[mock.Mock],
       mocked_state_factory: mock.Mock,
       linter_instance: Linter,
   ) -> None:
+    recursion_instance = mocked_recursion_detection.return_value
+
     with pytest.raises(UnconsumedData) as exc:
       linter_instance.start()
 
-    for mocked_assertion in mocked_sequence_assertions:
+    for index, mocked_assertion in enumerate(mocked_sequence_assertions):
       mocked_assertion.apply.assert_called_once_with(
           mocked_state_factory.return_value.assertion.return_value
       )
+      assert recursion_instance.detect.mock_calls[index] == mock.call()
     for mocked_validator in mocked_sequence_validators:
       mocked_validator.apply.assert_not_called()
     assert str(exc.value) == \
@@ -338,18 +411,22 @@ class TestLinter:
   @pytest.mark.usefixtures("scenario__some_text__all_schema__all_assertions")
   def test_start__some_text__all_schema__assertions_finish__raise_exception(
       self,
+      mocked_recursion_detection: mock.Mock,
       mocked_sequence_assertions: List[mock.Mock],
       mocked_sequence_validators: List[mock.Mock],
       mocked_state_factory: mock.Mock,
       linter_instance: Linter,
   ) -> None:
+    recursion_instance = mocked_recursion_detection.return_value
+
     with pytest.raises(UnconsumedData) as exc:
       linter_instance.start()
 
-    for mocked_assertion in mocked_sequence_assertions:
+    for index, mocked_assertion in enumerate(mocked_sequence_assertions):
       mocked_assertion.apply.assert_called_once_with(
           mocked_state_factory.return_value.assertion.return_value
       )
+      assert recursion_instance.detect.mock_calls[index] == mock.call()
     for mocked_validator in mocked_sequence_validators:
       mocked_validator.apply.assert_not_called()
     assert str(exc.value) == linter_instance.msg_fmt_entire_file_not_read
