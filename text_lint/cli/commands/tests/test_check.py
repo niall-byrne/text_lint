@@ -9,7 +9,6 @@ from text_lint.__helpers__.translations import (
 )
 from text_lint.cli.commands.bases.command_base import CLICommandBase
 from text_lint.cli.types.file_type import file_type
-from text_lint.operations.documentation import OperationDocumentation
 from ..check_command import CheckCommand
 
 
@@ -29,10 +28,6 @@ class TestCheckCommand:
     )
     assert check_command_instance.arg_schema_help == as_translation(
         "the schema to apply"
-    )
-    assert isinstance(
-        check_command_instance.documentation,
-        OperationDocumentation,
     )
 
   def test_initialize__translations(
@@ -102,34 +97,40 @@ class TestCheckCommand:
   def test_invoke__configures_linter_correctly(
       self,
       mocked_args_check: mock.Mock,
-      mocked_linter_settings: mock.Mock,
+      mocked_deferred_linter_settings: mock.Mock,
       check_command_instance: CheckCommand,
   ) -> None:
+    mocked_linter_settings_class = (
+        mocked_deferred_linter_settings.return_value
+    )
 
     check_command_instance.invoke(mocked_args_check)
 
-    assert mocked_linter_settings.call_count == 3
+    assert mocked_linter_settings_class.call_count == 3
     for index, mock_filename in enumerate(mocked_args_check.filenames):
-      assert mocked_linter_settings.mock_calls[index] == mock.call(
-          file_path=mock_filename,
-          interpolate_schema=mocked_args_check.interpolate_schema,
-          quiet=mocked_args_check.quiet,
-          schema_path=mocked_args_check.schema,
-      )
+      assert mocked_linter_settings_class.mock_calls[index] == \
+          mock.call(
+              file_path=mock_filename,
+              interpolate_schema=mocked_args_check.interpolate_schema,
+              quiet=mocked_args_check.quiet,
+              schema_path=mocked_args_check.schema,
+          )
 
   def test_invoke__starts_linter_correctly(
       self,
       mocked_args_check: mock.Mock,
-      mocked_linter: mock.Mock,
+      mocked_deferred_linter: mock.Mock,
       mocked_linter_settings_instances: List[mock.Mock],
       check_command_instance: CheckCommand,
   ) -> None:
+    mocked_linter_class = mocked_deferred_linter.return_value
+
     check_command_instance.invoke(mocked_args_check)
 
-    assert mocked_linter.call_count == 3
-    assert mocked_linter.return_value.start.call_count == 3
+    assert mocked_linter_class.call_count == 3
+    assert mocked_linter_class.return_value.start.call_count == 3
     for index in range(len(mocked_args_check.filenames)):
-      assert mocked_linter.mock_calls[index * 2:index * 2 + 2] == [
+      assert mocked_linter_class.mock_calls[index * 2:index * 2 + 2] == [
           mock.call(settings=mocked_linter_settings_instances[index]),
           mock.call().start(),
       ]
