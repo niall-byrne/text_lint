@@ -6,6 +6,7 @@ from text_lint.exceptions.sequencers import UnconsumedData
 from text_lint.linter import states
 from text_lint.linter.logging import Logger
 from text_lint.linter.logging import contexts as logging_contexts
+from text_lint.linter.recursion import RecursionDetection
 from text_lint.results.forest import ResultForest
 from text_lint.schema import Schema
 from text_lint.sequencers.assertions import AssertionSequencer
@@ -42,6 +43,8 @@ class Linter:
     self.textfile = TextFileSequencer(self.settings.file_path)
     self.textfile.configure(schema)
 
+    self.recursion = RecursionDetection(self)
+
     self.states = states.StateFactory(self)
 
     self.forest = ResultForest()
@@ -67,6 +70,7 @@ class Linter:
       except StopIteration:
         # Text file has finished.
         break
+      self.recursion.detect()
 
   def _run_validators(self) -> None:
     for operation in self.validators:
