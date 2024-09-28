@@ -3,9 +3,11 @@
 from argparse import ArgumentParser, Namespace
 
 from text_lint.cli.commands.bases.command_base import CLICommandBase
+from text_lint.cli.deferred.deferred_linter import deferred_linter
+from text_lint.cli.deferred.deferred_linter_settings import (
+    deferred_linter_settings,
+)
 from text_lint.cli.types.file_type import file_type
-from text_lint.linter import Linter
-from text_lint.linter.settings import LinterSettings
 from text_lint.utilities.translations import _
 
 
@@ -60,11 +62,11 @@ class CheckCommand(CLICommandBase):
     """Invoke this CLI command."""
 
     for filename in args.filenames:
-      settings = LinterSettings(
+      settings = deferred_linter_settings()(
           file_path=filename,
           interpolate_schema=args.interpolate_schema,
           quiet=args.quiet,
           schema_path=args.schema
       )
-      linter = Linter(settings=settings)
+      linter = deferred_linter()(settings=settings)
       linter.start()
