@@ -15,7 +15,6 @@ class TestDocumentationCommand:
 
   def test_initialize__attributes(
       self,
-      mocked_documentation: mock.Mock,
       documentation_command_instance: DocumentationCommand,
   ) -> None:
     assert documentation_command_instance.command_help == as_translation(
@@ -25,7 +24,6 @@ class TestDocumentationCommand:
     assert documentation_command_instance.arg_operations_help == as_translation(
         "the operation(s) to document"
     )
-    assert documentation_command_instance.documentation == mocked_documentation
 
   def test_initialize__translations(
       self,
@@ -69,14 +67,16 @@ class TestDocumentationCommand:
   def test_invoke__lists_and_prints_documentation(
       self,
       mocked_args_documentation: mock.Mock,
-      mocked_documentation: mock.Mock,
+      mocked_deferred_documentation: mock.Mock,
       documentation_command_instance: DocumentationCommand,
   ) -> None:
+    mocked_documentation_class = mocked_deferred_documentation.return_value
+
     documentation_command_instance.invoke(mocked_args_documentation)
 
-    assert mocked_documentation.search.call_count == 3
-    assert mocked_documentation.print.call_count == 1
-    assert mocked_documentation.mock_calls == [
+    assert mocked_documentation_class.return_value.search.call_count == 3
+    assert mocked_documentation_class.return_value.print.call_count == 1
+    assert mocked_documentation_class.return_value.mock_calls == [
         mock.call.search(mocked_operation)
         for mocked_operation in mocked_args_documentation.operations
     ] + [mock.call.print()]
