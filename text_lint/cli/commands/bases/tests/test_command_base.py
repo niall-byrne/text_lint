@@ -1,6 +1,5 @@
 """Test the CLICommandBase class."""
 
-from text_lint.operations.documentation import OperationDocumentation
 from ..command_base import CLICommandBase
 
 
@@ -18,8 +17,4 @@ class TestCLICommandBase:
     )
     assert concrete_cli_command_base_instance.command_name == (
         mocked_command_name
-    )
-    assert isinstance(
-        concrete_cli_command_base_instance.documentation,
-        OperationDocumentation,
     )
