@@ -80,12 +80,13 @@ msgid "ASSERTION VIOLATION: {0}"
 msgstr ""
 
 #: text_lint/exceptions/assertions.py:24 text_lint/exceptions/assertions.py:78
+#: text_lint/exceptions/linter.py:21
 #, python-brace-format
 msgid "  SOURCE FILE: {0}"
 msgstr ""
 
 #: text_lint/exceptions/assertions.py:25 text_lint/exceptions/assertions.py:58
-#: text_lint/exceptions/assertions.py:79
+#: text_lint/exceptions/assertions.py:79 text_lint/exceptions/linter.py:22
 #, python-brace-format
 msgid "  ASSERTION: '{0}'"
 msgstr ""
@@ -96,11 +97,13 @@ msgid "  EXPECTED: '{0}'"
 msgstr ""
 
 #: text_lint/exceptions/assertions.py:27 text_lint/exceptions/assertions.py:80
+#: text_lint/exceptions/linter.py:23
 #, python-brace-format
 msgid "  FILE LINE: '{0}'"
 msgstr ""
 
 #: text_lint/exceptions/assertions.py:28 text_lint/exceptions/assertions.py:81
+#: text_lint/exceptions/linter.py:24
 #, python-brace-format
 msgid "  FILE LINE NUMBER: {0}"
 msgstr ""
@@ -128,6 +131,16 @@ msgstr ""
 #: text_lint/exceptions/assertions.py:77
 #, python-brace-format
 msgid "ASSERTION LOGIC ERROR: {0}"
+msgstr ""
+
+#: text_lint/exceptions/linter.py:20
+msgid "RECURSION LIMIT REACHED"
+msgstr ""
+
+#: text_lint/exceptions/linter.py:26
+msgid ""
+"  HINT: 'There appears to be a non-matching unbounded loop in the "
+"assertions.'"
 msgstr ""
 
 #: text_lint/exceptions/lookups.py:19 text_lint/exceptions/lookups.py:86
@@ -222,11 +235,11 @@ msgstr ""
 msgid "The value '{0}' is not a valid version!"
 msgstr ""
 
-#: text_lint/linter/__init__.py:25
+#: text_lint/linter/__init__.py:26
 msgid "The entire file was read before all schema assertions were run."
 msgstr ""
 
-#: text_lint/linter/__init__.py:28
+#: text_lint/linter/__init__.py:29
 msgid "The entire file was not read after all schema assertions were run."
 msgstr ""
 
@@ -557,15 +570,15 @@ msgstr ""
 msgid "sort the values of a save id"
 msgstr ""
 
-#: text_lint/operations/lookups/to_split.py:18
+#: text_lint/operations/lookups/to_split.py:20
 msgid "split lookup example"
 msgstr ""
 
-#: text_lint/operations/lookups/to_split.py:35
+#: text_lint/operations/lookups/to_split.py:37
 msgid "split the values of a save id"
 msgstr ""
 
-#: text_lint/operations/lookups/to_split.py:39
+#: text_lint/operations/lookups/to_split.py:41
 msgid "Invalid split lookup parameters!"
 msgstr ""
 
