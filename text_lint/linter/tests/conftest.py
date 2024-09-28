@@ -6,7 +6,7 @@ from unittest import mock
 
 import pytest
 from text_lint import linter
-from text_lint.linter import settings
+from text_lint.linter import recursion, settings
 from text_lint.sequencers.patterns.linear import LinearPattern
 # pylint: disable=wildcard-import,unused-wildcard-import
 from .scenarios import *
@@ -21,6 +21,18 @@ def mocked_file_path() -> str:
 
 @pytest.fixture
 def mocked_logger() -> mock.Mock:
+  return mock.Mock()
+
+
+@pytest.fixture
+def mocked_linter() -> mock.Mock:
+  instance = mock.Mock(unsafe=True)
+  instance.textfile.path = "mocked_file_path"
+  return instance
+
+
+@pytest.fixture
+def mocked_recursion_detection() -> mock.Mock:
   return mock.Mock()
 
 
@@ -73,16 +85,30 @@ def mocked_state_factory() -> mock.Mock:
 
 @pytest.fixture
 def setup_linter_mocks(
+    setup_linter_attribute_mocks: AliasLinterSetup,
+    setup_linter_sequencer_mocks: AliasLinterSetup,
+) -> None:
+  setup_linter_attribute_mocks()
+  setup_linter_sequencer_mocks()
+
+
+@pytest.fixture
+def setup_linter_attribute_mocks(
+    mocked_recursion_detection: mock.Mock,
     mocked_logger: mock.Mock,
     mocked_result_forest: mock.Mock,
     mocked_schema: mock.Mock,
     mocked_state_factory: mock.Mock,
-    setup_linter_sequencer_mocks: Callable[[], None],
     monkeypatch: pytest.MonkeyPatch,
 ) -> Callable[[], None]:
 
   def setup() -> None:
-    setup_linter_sequencer_mocks()
+
+    monkeypatch.setattr(
+        linter,
+        "RecursionDetection",
+        mocked_recursion_detection,
+    )
     monkeypatch.setattr(
         linter,
         "Logger",
@@ -139,9 +165,11 @@ def setup_linter_sequencer_mocks(
 def linter_instance(
     mocked_file_path: str,
     mocked_schema_path: str,
-    setup_linter_mocks: AliasLinterSetup,
+    setup_linter_attribute_mocks: AliasLinterSetup,
+    setup_linter_sequencer_mocks: AliasLinterSetup,
 ) -> linter.Linter:
-  setup_linter_mocks()
+  setup_linter_attribute_mocks()
+  setup_linter_sequencer_mocks()
   linter_settings = settings.LinterSettings(
       file_path=mocked_file_path,
       interpolate_schema=False,
@@ -149,3 +177,10 @@ def linter_instance(
       schema_path=mocked_schema_path,
   )
   return linter.Linter(settings=linter_settings)
+
+
+@pytest.fixture
+def recursion_detection_instance(
+    mocked_linter: mock.Mock
+) -> recursion.RecursionDetection:
+  return recursion.RecursionDetection(mocked_linter)
