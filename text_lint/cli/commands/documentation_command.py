@@ -3,6 +3,9 @@
 from argparse import ArgumentParser, Namespace
 
 from text_lint.cli.commands.bases.command_base import CLICommandBase
+from text_lint.cli.deferred.deferred_operation_documentation import (
+    deferred_operation_documentation,
+)
 from text_lint.utilities.translations import _
 
 
@@ -29,7 +32,9 @@ class DocumentationCommand(CLICommandBase):
   def invoke(self, args: "Namespace") -> None:
     """Invoke this CLI command."""
 
-    for operation in args.operations:
-      self.documentation.search(operation)
+    documentation = deferred_operation_documentation()()
 
-    self.documentation.print()
+    for operation in args.operations:
+      documentation.search(operation)
+
+    documentation.print()
