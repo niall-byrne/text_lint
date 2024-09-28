@@ -15,14 +15,12 @@ class TestListCommand:
 
   def test_initialize__attributes(
       self,
-      mocked_documentation: mock.Mock,
       list_command_instance: ListCommand,
   ) -> None:
     assert list_command_instance.command_help == as_translation(
         "list all available operations"
     )
     assert list_command_instance.command_name == "list"
-    assert list_command_instance.documentation == mocked_documentation
 
   def test_initialize__translations(
       self,
@@ -54,12 +52,14 @@ class TestListCommand:
   def test_invoke__lists_and_prints_documentation(
       self,
       mocked_args_list: mock.Mock,
-      mocked_documentation: mock.Mock,
+      mocked_deferred_documentation: mock.Mock,
       list_command_instance: ListCommand,
   ) -> None:
+    mocked_documentation_class = mocked_deferred_documentation.return_value
+
     list_command_instance.invoke(mocked_args_list)
 
-    assert mocked_documentation.mock_calls == [
+    assert mocked_documentation_class.return_value.mock_calls == [
         mock.call.list(),
         mock.call.print(),
     ]
