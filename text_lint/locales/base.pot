@@ -14,47 +14,47 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: text_lint/cli/commands/check_command.py:15
+#: text_lint/cli/commands/check_command.py:17
 msgid "lint a text file"
 msgstr ""
 
-#: text_lint/cli/commands/check_command.py:18
+#: text_lint/cli/commands/check_command.py:20
 msgid "filenames"
 msgstr ""
 
-#: text_lint/cli/commands/check_command.py:19
+#: text_lint/cli/commands/check_command.py:21
 msgid "the text file(s) to lint"
 msgstr ""
 
-#: text_lint/cli/commands/check_command.py:21
+#: text_lint/cli/commands/check_command.py:23
 msgid "use environment variables to interpolate the schema file"
 msgstr ""
 
-#: text_lint/cli/commands/check_command.py:23
+#: text_lint/cli/commands/check_command.py:25
 msgid "suppress non critical messages"
 msgstr ""
 
-#: text_lint/cli/commands/check_command.py:24
+#: text_lint/cli/commands/check_command.py:26
 msgid "schema"
 msgstr ""
 
-#: text_lint/cli/commands/check_command.py:25
+#: text_lint/cli/commands/check_command.py:27
 msgid "the schema to apply"
 msgstr ""
 
-#: text_lint/cli/commands/documentation_command.py:12
+#: text_lint/cli/commands/documentation_command.py:15
 msgid "document the available operations"
 msgstr ""
 
-#: text_lint/cli/commands/documentation_command.py:15
+#: text_lint/cli/commands/documentation_command.py:18
 msgid "operations"
 msgstr ""
 
-#: text_lint/cli/commands/documentation_command.py:16
+#: text_lint/cli/commands/documentation_command.py:19
 msgid "the operation(s) to document"
 msgstr ""
 
-#: text_lint/cli/commands/list_command.py:12
+#: text_lint/cli/commands/list_command.py:15
 msgid "list all available operations"
 msgstr ""
 
