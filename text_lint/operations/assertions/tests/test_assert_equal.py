@@ -5,15 +5,13 @@ from unittest import mock
 import pytest
 from text_lint.__helpers__.assertion import (
     assert_assertion_attributes,
-    assert_is_assertion_violation,
+    assert_state_saved,
 )
 from text_lint.__helpers__.operations import (
     AliasOperationAttributes,
     assert_operation_inheritance,
 )
-from text_lint.__helpers__.results import assert_result_tree
 from text_lint.__helpers__.translations import assert_is_translated
-from text_lint.exceptions.assertions import AssertionViolation
 from text_lint.operations.assertions.bases.assertion_base import AssertionBase
 from ..assert_equal import AssertEqual
 from .conftest import CaseSensitivityScenario
@@ -82,25 +80,21 @@ class TestAssertEqual:
           CaseSensitivityScenario(sensitive=True, text="#!/usr/bin/make -f"),
       ],
   )
-  def test_apply__vary_case_sensitivity__matches__stores_result(
+  def test_apply__vary_case_sensitivity__matches__saves_result(
       self,
       assert_equal_instance: AssertEqual,
-      mocked_controller: mock.Mock,
-      mocked_textfile: mock.MagicMock,
+      mocked_state: mock.Mock,
       scenario: CaseSensitivityScenario,
   ) -> None:
-    mocked_textfile.__next__.return_value = scenario.text
+    mocked_state.next.return_value = scenario.text
     assert_equal_instance.case_sensitive = scenario.sensitive
-    expected_split_text = scenario.text.split("/")
 
-    assert_equal_instance.apply(mocked_controller)
+    assert_equal_instance.apply(mocked_state)
 
-    assert len(mocked_controller.forest.add.mock_calls) == 1
-    result_tree = mocked_controller.forest.add.mock_calls[0].args[0]
-    assert_result_tree(
-        result_tree,
-        assert_equal_instance.save,
-        [expected_split_text],
+    assert_state_saved(
+        assert_equal_instance,
+        mocked_state,
+        [scenario.text],
     )
 
   @pytest.mark.parametrize(
@@ -110,24 +104,15 @@ class TestAssertEqual:
           CaseSensitivityScenario(sensitive=True, text="#!/usr/bin/Make -f"),
       ],
   )
-  def test_apply__vary_case_sensitivity__does_not_match__raises_exception(
+  def test_apply__vary_case_sensitivity__does_not_match__calls_fail(
       self,
       assert_equal_instance: AssertEqual,
-      mocked_controller: mock.Mock,
-      mocked_textfile: mock.MagicMock,
+      mocked_state: mock.Mock,
       scenario: CaseSensitivityScenario,
   ) -> None:
-    mocked_textfile.index = 1
-    mocked_textfile.__next__.return_value = scenario.text
+    mocked_state.next.return_value = scenario.text
     assert_equal_instance.case_sensitive = scenario.sensitive
 
-    with pytest.raises(AssertionViolation) as exc:
-      assert_equal_instance.apply(mocked_controller)
+    assert_equal_instance.apply(mocked_state)
 
-    mocked_controller.forest.add.assert_not_called()
-    assert_is_assertion_violation(
-        exc=exc,
-        assertion=assert_equal_instance,
-        textfile=mocked_textfile,
-        expected=assert_equal_instance.expected,
-    )
+    mocked_state.fail.assert_called_once_with(assert_equal_instance.expected)

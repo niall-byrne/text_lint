@@ -8,7 +8,7 @@ from .bases.lookup_encoder_base import LookupEncoderBase
 from .encoders.unique import UniqueEncoder
 
 if TYPE_CHECKING:  # pragma: no cover
-  from text_lint.controller import Controller
+  from text_lint.controller.states import LookupState
 
 YAML_EXAMPLE = """
 
@@ -29,10 +29,8 @@ class UniqueLookup(LookupEncoderBase):
 
   def apply(
       self,
-      controller: "Controller",
+      state: "LookupState",
   ) -> None:
     """Select only unique values from a save id."""
 
-    controller.forest.lookup_results = self.encode(
-        controller.forest.lookup_results
-    )
+    state.results = self.encode(state.results)

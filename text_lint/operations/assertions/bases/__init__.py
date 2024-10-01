@@ -1,1 +1,1 @@
-"""Parser assertion base classes."""
+"""Assertion operation base classes."""

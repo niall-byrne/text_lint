@@ -46,12 +46,12 @@ class LookupFailure(LookupExceptionBase):
     )
     message += f(
         self.msg_fmt_result_source,
-        make_visible(lookup.result_set.source),
+        make_visible(lookup.lookup_expression.source),
         nl=1,
     )
     message += f(
         self.msg_fmt_lookups,
-        make_visible(lookup.result_set.lookups),
+        make_visible(lookup.lookup_expression.lookups),
         nl=1,
     )
     message += f(
@@ -109,12 +109,12 @@ class LookupUnknown(LookupExceptionBase):
     )
     message += f(
         self.msg_fmt_result_source,
-        make_visible(lookup.result_set.source),
+        make_visible(lookup.lookup_expression.source),
         nl=1,
     )
     message += f(
         self.msg_fmt_lookups,
-        make_visible(lookup.result_set.lookups),
+        make_visible(lookup.lookup_expression.lookups),
         nl=1,
     )
     message += f(

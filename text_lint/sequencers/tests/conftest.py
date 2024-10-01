@@ -35,11 +35,11 @@ def mocked_file_handle() -> StringIO:
 
 
 @pytest.fixture
-def mocked_result_set(
+def mocked_lookup_expression(
     mocked_lookup_registry: Dict[str, mock.Mock],
 ) -> mock.Mock:
   instance = mock.Mock()
-  instance.source = "mocked_result_set_source"
+  instance.source = "mocked_lookup_expression_source"
   instance.lookups = list(mocked_lookup_registry.keys())
   return instance
 

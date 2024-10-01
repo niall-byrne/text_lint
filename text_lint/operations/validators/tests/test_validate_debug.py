@@ -10,8 +10,10 @@ from text_lint.__helpers__.operations import (
     assert_operation_inheritance,
 )
 from text_lint.__helpers__.translations import assert_is_translated
-from text_lint.operations.validators.args.result_set import ResultSetArg
-from ..bases.validator_base import ValidationBase
+from text_lint.operations.validators.args.lookup_expression import (
+    LookupExpressionSetArg,
+)
+from ..bases.validator_base import ValidatorBase
 from ..validate_debug import ValidateDebug
 
 
@@ -47,51 +49,46 @@ class TestValidateDebug:
   ) -> None:
     assert_operation_inheritance(
         validate_debug_instance,
-        bases=(ValidationBase, ValidateDebug),
+        bases=(ValidatorBase, ValidateDebug),
     )
 
-  def test_initialize__creates_result_set_arg_instance(
+  def test_initialize__creates_lookup_expression_set_arg_instance(
       self,
-      mocked_result_set: List[str],
+      mocked_lookup_expression_set: List[str],
       validate_debug_instance: ValidateDebug,
   ) -> None:
-    assert isinstance(validate_debug_instance.saved_results, ResultSetArg)
-    requested_results = list(validate_debug_instance.saved_results)
-    assert requested_results[0].name == mocked_result_set[0]
-    assert requested_results[1].name == mocked_result_set[1]
+    assert isinstance(
+        validate_debug_instance.lookup_expressions,
+        LookupExpressionSetArg,
+    )
+    requested_results = list(validate_debug_instance.lookup_expressions)
+    assert requested_results[0].name == mocked_lookup_expression_set[0]
+    assert requested_results[1].name == mocked_lookup_expression_set[1]
 
   def test_apply__valid_lookups__performs_each_expected_lookup(
       self,
-      mocked_controller: mock.Mock,
+      mocked_state: mock.Mock,
       validate_debug_instance: ValidateDebug,
   ) -> None:
-    validate_debug_instance.apply(mocked_controller)
+    validate_debug_instance.apply(mocked_state)
 
-    requested_results = list(validate_debug_instance.saved_results)
-    assert mocked_controller.forest.lookup.mock_calls == [
-        mock.call(
-            mocked_controller,
-            requested_results[0],
-            validate_debug_instance.name,
-        ),
-        mock.call(
-            mocked_controller,
-            requested_results[1],
-            validate_debug_instance.name,
-        ),
+    requested_results = list(validate_debug_instance.lookup_expressions)
+    assert mocked_state.lookup_expression.mock_calls == [
+        mock.call(requested_results[0],),
+        mock.call(requested_results[1],),
     ]
 
   def test_apply__valid_lookups__logs_expected_lookup_results(
       self,
-      mocked_controller: mock.Mock,
-      mocked_result_set: List[str],
+      mocked_state: mock.Mock,
+      mocked_lookup_expression_set: List[str],
       validate_debug_instance: ValidateDebug,
   ) -> None:
-    mocked_controller.forest.lookup.side_effect = ("result_0", "result_1")
+    mocked_state.lookup_expression.side_effect = ("result_0", "result_1")
 
-    validate_debug_instance.apply(mocked_controller)
+    validate_debug_instance.apply(mocked_state)
 
-    assert mocked_controller.log.mock_calls == [
+    assert mocked_state.log.mock_calls == [
         call for call_group in [
             [
                 mock.call(
@@ -105,6 +102,6 @@ class TestValidateDebug:
                         default=str,
                     )
                 ),
-            ] for index, mock_result in enumerate(mocked_result_set)
+            ] for index, mock_result in enumerate(mocked_lookup_expression_set)
         ] for call in call_group
     ]

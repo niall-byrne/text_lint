@@ -1,1 +1,1 @@
-"""Base classes for the parser result validators."""
+"""Base classes for validator operations."""

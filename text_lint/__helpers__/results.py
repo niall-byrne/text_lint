@@ -10,13 +10,15 @@ from text_lint.utilities.translations import f as translation_f
 from text_lint.utilities.whitespace import make_visible
 
 if TYPE_CHECKING:  # pragma: no cover
-  from text_lint.operations.validators.args.result_set import ResultSet
+  from text_lint.operations.validators.args.lookup_expression import (
+      LookupExpression,
+  )
   from text_lint.results.tree import AliasTreeValue
 
 
 def assert_is_result_does_not_exist(
     exc: pytest.ExceptionInfo[ResultDoesNotExist],
-    result_set: "ResultSet",
+    lookup_expression: "LookupExpression",
     requesting_operation_name: str,
     hint: str,
 ) -> None:
@@ -32,7 +34,7 @@ def assert_is_result_does_not_exist(
   )
   message += f(
       ResultDoesNotExist.msg_fmt_result_source,
-      make_visible(result_set.source),
+      make_visible(lookup_expression.source),
       nl=1,
   )
   message += f(
@@ -46,12 +48,12 @@ def assert_is_result_does_not_exist(
   )
   message += f(
       ResultDoesNotExist.msg_fmt_lookup_result_source,
-      make_visible(result_set.source),
+      make_visible(lookup_expression.source),
       nl=1,
   )
   message += f(
       ResultDoesNotExist.msg_fmt_lookups,
-      make_visible(result_set.lookups),
+      make_visible(lookup_expression.lookups),
       nl=1,
   )
   message += f(

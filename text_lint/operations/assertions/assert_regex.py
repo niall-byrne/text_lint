@@ -3,12 +3,11 @@
 import re
 from typing import TYPE_CHECKING
 
-from text_lint.exceptions.assertions import AssertionViolation
 from text_lint.operations.assertions.bases import assertion_regex_base
 from text_lint.utilities.translations import _
 
 if TYPE_CHECKING:  # pragma: no cover
-  from text_lint.controller import Controller
+  from text_lint.controller.states import AssertionState
 
 YAML_EXAMPLE = """
 
@@ -33,20 +32,14 @@ class AssertRegex(assertion_regex_base.AssertionRegexBase):
 
   def apply(
       self,
-      controller: "Controller",
+      state: "AssertionState",
   ) -> None:
     """Apply the AssertRegex assertion logic."""
 
-    data = next(controller.textfile)
+    data = state.next()
     match = re.match(self.regex, data)
 
     if not match:
-      # pylint: disable=duplicate-code
-      raise AssertionViolation(
-          assertion=self,
-          expected=self.regex.pattern,
-          textfile=controller.textfile,
-      )
-
-    result_tree = self.create_result_tree([match])
-    controller.forest.add(result_tree)
+      state.fail(self.regex.pattern)
+    else:
+      state.save(match)

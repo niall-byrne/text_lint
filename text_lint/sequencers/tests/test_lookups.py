@@ -14,10 +14,10 @@ class TestLookupsSequencer:
   def test_initialize__attributes(
       self,
       lookups_sequencer_class: Type[LookupsSequencer],
-      mocked_result_set: mock.Mock,
+      mocked_lookup_expression: mock.Mock,
   ) -> None:
     instance = lookups_sequencer_class(
-        mocked_result_set,
+        mocked_lookup_expression,
         "mocked_requesting_operation_name",
     )
 
@@ -26,10 +26,10 @@ class TestLookupsSequencer:
   def test_initialize__inheritance(
       self,
       lookups_sequencer_class: Type[LookupsSequencer],
-      mocked_result_set: mock.Mock,
+      mocked_lookup_expression: mock.Mock,
   ) -> None:
     instance = lookups_sequencer_class(
-        mocked_result_set,
+        mocked_lookup_expression,
         "mocked_requesting_operation_name",
     )
 
@@ -41,17 +41,17 @@ class TestLookupsSequencer:
       self,
       lookups_sequencer_class: Type[LookupsSequencer],
       mocked_lookup_registry: Dict[str, mock.Mock],
-      mocked_result_set: mock.Mock,
+      mocked_lookup_expression: mock.Mock,
   ) -> None:
     _ = lookups_sequencer_class(
-        mocked_result_set,
+        mocked_lookup_expression,
         "mocked_requesting_operation_name",
     )
 
     for lookup in mocked_lookup_registry.keys():
       mocked_lookup_registry[lookup].assert_called_once_with(
           lookup,
-          mocked_result_set,
+          mocked_lookup_expression,
           "mocked_requesting_operation_name",
       )
 
@@ -59,10 +59,10 @@ class TestLookupsSequencer:
       self,
       lookups_sequencer_class: Type[LookupsSequencer],
       mocked_lookup_registry: Dict[str, mock.Mock],
-      mocked_result_set: mock.Mock,
+      mocked_lookup_expression: mock.Mock,
   ) -> None:
     instance = lookups_sequencer_class(
-        mocked_result_set,
+        mocked_lookup_expression,
         "mocked_requesting_operation_name",
     )
 

@@ -19,6 +19,10 @@ class SequencerBase(abc.ABC, Generic[TypeSequencerEntity]):
   def current(self) -> "TypeSequencerEntity":
     return self._entities[self.index]
 
+  @property
+  def last(self) -> "TypeSequencerEntity":
+    return self._entities[self.index - 1]
+
   def __iter__(self) -> Iterator["TypeSequencerEntity"]:
     return self
 

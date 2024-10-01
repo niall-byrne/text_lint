@@ -7,7 +7,7 @@ from text_lint.utilities.translations import _
 from .bases.lookup_base import LookupBase
 
 if TYPE_CHECKING:  # pragma: no cover
-  from text_lint.controller import Controller
+  from text_lint.controller.states import LookupState
   from text_lint.results.forest import AliasLookupResult
 
 YAML_EXAMPLE = """
@@ -38,24 +38,24 @@ class CaptureLookup(LookupBase):
 
   def apply(
       self,
-      controller: "Controller",
+      state: "LookupState",
   ) -> None:
     """Select all next capture group from the current ResultForest location."""
 
-    controller.forest.lookup_results = []
+    state.results = []
 
     self._update_results(
-        controller.forest.cursor.location,
-        controller.forest.lookup_results,
+        state.cursor.location,
+        state.results,
     )
 
-    self._update_location(controller)
+    self._update_location(state)
 
   def _update_location(
       self,
-      controller: "Controller",
+      state: "LookupState",
   ) -> None:
-    controller.forest.cursor.increment_depth()
+    state.cursor.increment_depth()
 
   def _update_results(
       self,

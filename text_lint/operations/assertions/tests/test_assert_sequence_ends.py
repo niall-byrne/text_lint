@@ -47,11 +47,11 @@ class TestAssertSequenceEnds:
         ),
     )
 
-  def test_apply__calls_parser_methods(
+  def test_apply__calls_loop_stop(
       self,
       assert_sequence_ends_instance: AssertSequenceEnds,
-      mocked_controller: mock.Mock,
+      mocked_state: mock.Mock,
   ) -> None:
-    assert_sequence_ends_instance.apply(mocked_controller)
+    assert_sequence_ends_instance.apply(mocked_state)
 
-    mocked_controller.assertions.stop_repeating.assert_called_once_with()
+    mocked_state.loop_stop.assert_called_once_with()

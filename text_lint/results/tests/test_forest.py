@@ -154,7 +154,9 @@ class TestResultForest:
     )
 
     for mock_operation in mocked_lookup_operations:
-      mock_operation.apply.assert_called_once_with(mocked_controller)
+      mock_operation.apply.assert_called_once_with(
+          mocked_controller.encapsulate_for_lookup.return_value
+      )
 
   def test_lookup__valid_source__returns_correct_results(
       self,
@@ -192,7 +194,7 @@ class TestResultForest:
 
     assert_is_result_does_not_exist(
         exc=exc,
-        result_set=mocked_requested_result,
+        lookup_expression=mocked_requested_result,
         requesting_operation_name=mocked_requesting_operation,
         hint=ResultDoesNotExist.msg_fmt_does_not_exist_hint,
     )

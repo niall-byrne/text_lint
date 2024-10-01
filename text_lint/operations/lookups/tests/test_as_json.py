@@ -21,19 +21,19 @@ class TestJsonLookup:
 
   def test_initialize__defined__attributes(
       self,
-      as_json_lookup_instance: JsonLookup,
       mocked_lookup_name: str,
+      mocked_lookup_expression: mock.Mock,
       mocked_requesting_operation_name: str,
-      mocked_result_set: mock.Mock,
+      as_json_lookup_instance: JsonLookup,
   ) -> None:
     attributes: AliasOperationAttributes = {
         "encoder_class": ResultTreeEncoder,
         "hint": "create a JSON representation of a save id",
         "is_positional": True,
+        "lookup_expression": mocked_lookup_expression,
         "lookup_name": mocked_lookup_name,
         "operation": "as_json",
         "requesting_operation_name": mocked_requesting_operation_name,
-        "result_set": mocked_result_set,
     }
 
     assert_operation_attributes(as_json_lookup_instance, attributes)
@@ -61,28 +61,24 @@ class TestJsonLookup:
       self,
       as_json_lookup_instance: JsonLookup,
       mocked_encode_method: mock.Mock,
-      mocked_controller: mock.Mock,
+      mocked_state: mock.Mock,
       mocked_trees_woods: mock.Mock,
   ) -> None:
-    mocked_controller.forest.cursor.location = mocked_trees_woods
+    mocked_state.cursor.location = mocked_trees_woods
 
-    as_json_lookup_instance.apply(mocked_controller)
+    as_json_lookup_instance.apply(mocked_state)
 
-    mocked_encode_method.assert_called_once_with(
-        mocked_controller.forest.cursor.location
-    )
+    mocked_encode_method.assert_called_once_with(mocked_state.cursor.location)
 
   def test_apply__updates_forest_lookup_results(
       self,
       as_json_lookup_instance: JsonLookup,
       mocked_encode_method: mock.Mock,
-      mocked_controller: mock.Mock,
+      mocked_state: mock.Mock,
       mocked_trees_woods: mock.Mock,
   ) -> None:
-    mocked_controller.forest.cursor.location = mocked_trees_woods
+    mocked_state.cursor.location = mocked_trees_woods
 
-    as_json_lookup_instance.apply(mocked_controller)
+    as_json_lookup_instance.apply(mocked_state)
 
-    assert mocked_controller.forest.lookup_results == (
-        mocked_encode_method.return_value
-    )
+    assert mocked_state.results == (mocked_encode_method.return_value)

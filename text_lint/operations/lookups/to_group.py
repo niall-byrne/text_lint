@@ -8,7 +8,7 @@ from text_lint.utilities.translations import _
 from .bases.lookup_base import LookupBase
 
 if TYPE_CHECKING:  # pragma: no cover
-  from text_lint.controller import Controller
+  from text_lint.controller.states import LookupState
 
 YAML_EXAMPLE = """
 
@@ -28,10 +28,8 @@ class GroupLookup(LookupBase):
 
   def apply(
       self,
-      controller: "Controller",
+      state: "LookupState",
   ) -> None:
     """Group the current result set into a flat list."""
 
-    controller.forest.lookup_results = list(
-        chain.from_iterable(controller.forest.lookup_results)
-    )
+    state.results = list(chain.from_iterable(state.results))

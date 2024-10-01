@@ -1,19 +1,19 @@
-"""Test the ValidationBase class."""
+"""Test the ValidatorBase class."""
 
 from text_lint.__helpers__.operations import (
     AliasOperationAttributes,
     assert_operation_attributes,
     assert_operation_inheritance,
 )
-from ..validator_base import ValidationBase
+from ..validator_base import ValidatorBase
 
 
-class TestValidationBase:
-  """Test the ValidationBase class."""
+class TestValidatorBase:
+  """Test the ValidatorBase class."""
 
   def test_initialize__defined__attributes(
       self,
-      concrete_validator_base_instance: ValidationBase,
+      concrete_validator_base_instance: ValidatorBase,
       mocked_validator_name: str,
   ) -> None:
     attributes: AliasOperationAttributes = {
@@ -29,9 +29,9 @@ class TestValidationBase:
 
   def test_initialize__inheritance(
       self,
-      concrete_validator_base_instance: ValidationBase,
+      concrete_validator_base_instance: ValidatorBase,
   ) -> None:
     assert_operation_inheritance(
         concrete_validator_base_instance,
-        bases=(ValidationBase,),
+        bases=(ValidatorBase,),
     )

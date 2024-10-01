@@ -15,7 +15,7 @@ if TYPE_CHECKING:  # pragma: no cover
       AssertionBase,
   )
   from text_lint.operations.validators.bases.validator_base import (
-      ValidationBase,
+      ValidatorBase,
   )
   from text_lint.schema.bases.section_base import AliasYamlOperation
 
@@ -50,7 +50,7 @@ class Schema:
           description=f(self.msg_fmt_no_assertions, nl=1),
       ) from exc
 
-  def load_validators(self) -> List["ValidationBase"]:
+  def load_validators(self) -> List["ValidatorBase"]:
     """Create and return the text file parser validation instances."""
     return self._validators.load(self._parse_schema_validators())
 

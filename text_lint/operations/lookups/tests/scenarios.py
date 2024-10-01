@@ -22,21 +22,21 @@ __all__ = (
 class ScenarioNameLookup(NamedTuple):
   name_lookup_instance: NameLookup
   mocked_lookup_name: str
-  mocked_controller: mock.Mock
+  mocked_state: mock.Mock
   mocked_trees_grove: List[List[mock.Mock]]
 
 
 @pytest.fixture
 def scenario__name_lookup__scenario_base(
     name_lookup_instance: NameLookup,
-    mocked_controller: mock.Mock,
+    mocked_state: mock.Mock,
     mocked_lookup_name: str,
     mocked_trees_grove: List[List[mock.Mock]],
 ) -> ScenarioNameLookup:
   name_lookup_instance.lookup_name = (
       LOOKUP_STATIC_VALUE_MARKER + mocked_lookup_name
   )
-  mocked_controller.forest.cursor.location = [
+  mocked_state.cursor.location = [
       # simulates flattening
       tree for grove in mocked_trees_grove for tree in grove
   ]
@@ -44,7 +44,7 @@ def scenario__name_lookup__scenario_base(
   return ScenarioNameLookup(
       name_lookup_instance=name_lookup_instance,
       mocked_lookup_name=mocked_lookup_name,
-      mocked_controller=mocked_controller,
+      mocked_state=mocked_state,
       mocked_trees_grove=mocked_trees_grove,
   )
 
@@ -79,5 +79,5 @@ def scenario__name_lookup__non_matching_tree(
   mock_tree = mock.Mock(spec=ResultTree)
   mock_tree.value = ["1", "2", "3"]
   scenario__name_lookup__scenario_base.\
-      mocked_controller.forest.cursor.location = [mock_tree]
+      mocked_state.cursor.location = [mock_tree]
   return scenario__name_lookup__scenario_base

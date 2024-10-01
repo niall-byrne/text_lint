@@ -9,7 +9,9 @@ from .cursor import ResultTreeCursor
 
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.controller import Controller
-  from text_lint.operations.validators.args.result_set import ResultSet
+  from text_lint.operations.validators.args.lookup_expression import (
+      LookupExpression,
+  )
   from .tree import AliasTreeValue, ResultTree
 
 AliasLookupResult = Union[
@@ -54,28 +56,28 @@ class ResultForest:
   def lookup(
       self,
       controller: "Controller",
-      requested_result: "ResultSet",
+      lookup_expression: "LookupExpression",
       requesting_operation_name: str,
   ) -> "AliasLookupResult":
     """Perform a lookup against the ResultForest."""
 
-    if requested_result.source.startswith(LOOKUP_STATIC_VALUE_MARKER):
-      self.lookup_results = requested_result.source[1:]
+    if lookup_expression.source.startswith(LOOKUP_STATIC_VALUE_MARKER):
+      self.lookup_results = lookup_expression.source[1:]
       return self.lookup_results
 
-    if requested_result.source not in self._trees:
+    if lookup_expression.source not in self._trees:
       raise ResultDoesNotExist(
-          result_set=requested_result,
+          lookup_expression=lookup_expression,
           requesting_operation_name=requesting_operation_name,
       )
 
-    self.cursor.location = [self.get(requested_result.source)]
+    self.cursor.location = [self.get(lookup_expression.source)]
     self.cursor = self.cursor.clone()
-    self.lookup_results = [[requested_result.source]]
+    self.lookup_results = [[lookup_expression.source]]
 
-    lookups = LookupsSequencer(requested_result, requesting_operation_name)
+    lookups = LookupsSequencer(lookup_expression, requesting_operation_name)
 
     for operation in lookups:
-      operation.apply(controller)
+      operation.apply(controller.encapsulate_for_lookup())
 
     return self.lookup_results

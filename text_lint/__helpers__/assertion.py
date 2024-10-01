@@ -1,7 +1,8 @@
 """Shared assertions testing helpers."""
 import os
 import re
-from typing import TYPE_CHECKING, Any, Dict
+from typing import TYPE_CHECKING, Any, Dict, List
+from unittest import mock
 
 import pytest
 from text_lint.__helpers__.translations import (
@@ -14,6 +15,9 @@ from text_lint.exceptions.assertions import (
 )
 from text_lint.operations.assertions.args.split import SplitArgs
 from text_lint.operations.assertions.bases.assertion_base import AssertionBase
+from text_lint.operations.assertions.bases.assertion_regex_base import (
+    AssertionRegexBase,
+)
 from text_lint.utilities.translations import f as translation_f
 from text_lint.utilities.whitespace import make_visible
 
@@ -130,3 +134,25 @@ def assert_is_assertion_violation(
   assert exc.value.__class__ == AssertionViolation
   assert exc.value.args[0] == message
   assert_all_translated(expected_translation)
+
+
+def assert_state_saved(
+    operation: "AssertionRegexBase",
+    mocked_state: mock.Mock,
+    matches: List[str],
+) -> None:
+  assert len(mocked_state.save.mock_calls) == 1
+  assert len(mocked_state.save.mock_calls[0].args) == 1
+
+  if isinstance(mocked_state.save.mock_calls[0].args[0], list):
+    received_args = mocked_state.save.mock_calls[0].args[0]
+    assert len(mocked_state.save.mock_calls[0].args[0]) == len(matches)
+  else:
+    received_args = [mocked_state.save.mock_calls[0].args[0]]
+
+  for received, expected in zip(
+      received_args,
+      matches,
+  ):
+    assert received.string == expected
+    assert received.re.pattern == operation.regex.pattern

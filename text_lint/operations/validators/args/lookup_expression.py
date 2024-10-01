@@ -1,35 +1,36 @@
-"""Parser result set YAML argument definitions."""
+"""Lookup expression YAML argument definitions."""
 from typing import Dict, Iterator, List, Optional
 
 from text_lint.config import LOOKUP_SENTINEL, LOOKUP_SEPERATOR
 from text_lint.operations.lookups import lookup_registry
 
-AliasYamlResultSet = List[str]
-AliasYamlResultDefinition = Dict[str, "AliasYamlResultDefinition"]
+AliasYamlLookupExpressionSet = List[str]
 AliasResultOptions = Dict[str, Optional["AliasResultOptions"]]
 
 
-class ResultSetArg:
-  """"Parser result set YAML argument definitions."""
+class LookupExpressionSetArg:
+  """"A set of YAML argument definitions for lookup expressions."""
 
-  def __init__(self, saved_result_set: List["ResultSet"]) -> None:
-    self._saved_result_set = saved_result_set
+  def __init__(self, lookup_expression_set: List["LookupExpression"]) -> None:
+    self._lookup_expression_set = lookup_expression_set
 
-  def __iter__(self) -> Iterator["ResultSet"]:
-    return iter(self._saved_result_set)
+  def __iter__(self) -> Iterator["LookupExpression"]:
+    return iter(self._lookup_expression_set)
 
   @classmethod
-  def create(cls, yaml_input: AliasYamlResultSet) -> "ResultSetArg":
+  def create(
+      cls, yaml_input: AliasYamlLookupExpressionSet
+  ) -> "LookupExpressionSetArg":
     """Create an instance from YAML input."""
 
-    created_sets = []
+    created_set = []
     for yaml_set in yaml_input:
-      created_sets.append(ResultSet(yaml_set))
-    return cls(saved_result_set=created_sets)
+      created_set.append(LookupExpression(yaml_set))
+    return cls(lookup_expression_set=created_set)
 
 
-class ResultSet:
-  """Parser result set definition."""
+class LookupExpression:
+  """A lookup expression definition."""
 
   lookups: List[str]
   name: str
@@ -37,10 +38,10 @@ class ResultSet:
 
   def __init__(
       self,
-      result_lookup_definition: str,
+      lookup_expression: str,
   ) -> None:
-    self.name = result_lookup_definition
-    self._parsing_container: List[str] = result_lookup_definition.split(
+    self.name = lookup_expression
+    self._parsing_container: List[str] = lookup_expression.split(
         LOOKUP_SEPERATOR
     )
     self.source = self._parsing_container[0]

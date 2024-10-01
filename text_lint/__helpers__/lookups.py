@@ -39,12 +39,12 @@ def assert_is_lookup_failure(
   )
   message += f(
       LookupFailure.msg_fmt_result_source,
-      make_visible(lookup.result_set.source),
+      make_visible(lookup.lookup_expression.source),
       nl=1,
   )
   message += f(
       LookupFailure.msg_fmt_lookups,
-      make_visible(lookup.result_set.lookups),
+      make_visible(lookup.lookup_expression.lookups),
       nl=1,
   )
   message += f(
@@ -93,12 +93,12 @@ def assert_is_lookup_unknown(
   )
   message += f(
       LookupUnknown.msg_fmt_result_source,
-      make_visible(lookup.result_set.source),
+      make_visible(lookup.lookup_expression.source),
       nl=1,
   )
   message += f(
       LookupUnknown.msg_fmt_lookups,
-      make_visible(lookup.result_set.lookups),
+      make_visible(lookup.lookup_expression.lookups),
       nl=1,
   )
   message += f(

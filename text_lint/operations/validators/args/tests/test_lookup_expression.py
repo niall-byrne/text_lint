@@ -1,4 +1,4 @@
-"""Test the ResultSet class."""
+"""Test the LookupExpressionSet class."""
 import pytest
 from text_lint.config import (
     LOOKUP_SENTINEL,
@@ -6,16 +6,16 @@ from text_lint.config import (
     LOOKUP_STATIC_VALUE_MARKER,
 )
 from text_lint.operations.lookups import CaptureLookup, NoopLookup, UpperLookup
-from ..result_set import ResultSet
+from ..lookup_expression import LookupExpression
 
 
-class TestResultSet:
-  """Test the ResultSet class."""
+class TestLookupExpressionSet:
+  """Test the LookupExpressionSet class."""
 
   def test_initialize__source_only__attributes(self) -> None:
     mock_lookup = "source_name"
 
-    instance = ResultSet(mock_lookup)
+    instance = LookupExpression(mock_lookup)
 
     assert instance.name == mock_lookup
     assert instance.source == "source_name"
@@ -30,7 +30,7 @@ class TestResultSet:
         ]
     )
 
-    instance = ResultSet(mock_lookup)
+    instance = LookupExpression(mock_lookup)
 
     assert instance.name == mock_lookup
     assert instance.source == "source_name"
@@ -49,7 +49,7 @@ class TestResultSet:
         ]
     )
 
-    instance = ResultSet(mock_lookup)
+    instance = LookupExpression(mock_lookup)
 
     assert instance.name == mock_lookup
     assert instance.source == "source_name"
@@ -69,7 +69,7 @@ class TestResultSet:
         ]
     )
 
-    instance = ResultSet(mock_lookup)
+    instance = LookupExpression(mock_lookup)
 
     assert instance.name == mock_lookup
     assert instance.source == "source_name"
@@ -89,7 +89,7 @@ class TestResultSet:
         ]
     )
 
-    instance = ResultSet(mock_lookup)
+    instance = LookupExpression(mock_lookup)
 
     assert instance.name == mock_lookup
     assert instance.source == "source_name"
@@ -109,7 +109,7 @@ class TestResultSet:
     )
 
     with pytest.raises(ValueError) as exc:
-      ResultSet(mock_lookup)
+      LookupExpression(mock_lookup)
 
     assert str(exc.value) == \
         "Transformations belong at the end of a lookup expression."

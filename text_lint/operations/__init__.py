@@ -1,1 +1,1 @@
-"""Discrete text file operations for text_lint."""
+"""Discrete operations for text_lint."""

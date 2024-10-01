@@ -3,12 +3,11 @@
 import re
 from typing import TYPE_CHECKING, Optional
 
-from text_lint.exceptions.assertions import AssertionViolation
 from text_lint.operations.assertions.bases import assertion_regex_base
 from text_lint.utilities.translations import _
 
 if TYPE_CHECKING:  # pragma: no cover
-  from text_lint.controller import Controller
+  from text_lint.controller.states.assertion import AssertionState
   from text_lint.operations.assertions.args.split import AliasYamlSplit
 
 YAML_EXAMPLE = """
@@ -49,11 +48,11 @@ class AssertEqual(assertion_regex_base.AssertionRegexBase):
 
   def apply(
       self,
-      controller: "Controller",
+      state: "AssertionState",
   ) -> None:
     """Apply the AssertEqual assertion logic."""
 
-    data = next(controller.textfile)
+    data = state.next()
     match = re.match(self.regex, data)
 
     equality_check: bool = False
@@ -65,12 +64,6 @@ class AssertEqual(assertion_regex_base.AssertionRegexBase):
       equality_check = match.group(1) == self.expected
 
     if not match or not equality_check:
-      # pylint: disable=duplicate-code
-      raise AssertionViolation(
-          assertion=self,
-          expected=self.expected,
-          textfile=controller.textfile,
-      )
-
-    result_tree = self.create_result_tree([match])
-    controller.forest.add(result_tree)
+      state.fail(self.expected)
+    else:
+      state.save(match)

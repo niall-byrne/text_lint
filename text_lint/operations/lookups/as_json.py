@@ -7,7 +7,7 @@ from text_lint.utilities.translations import _
 from .bases.lookup_encoder_base import LookupEncoderBase
 
 if TYPE_CHECKING:  # pragma: no cover
-  from text_lint.controller import Controller
+  from text_lint.controller.states import LookupState
 
 YAML_EXAMPLE = """
 
@@ -31,10 +31,8 @@ class JsonLookup(LookupEncoderBase):
 
   def apply(
       self,
-      controller: "Controller",
+      state: "LookupState",
   ) -> None:
     """Create a JSON representation of the current ResultForest location."""
 
-    controller.forest.lookup_results = self.encode(
-        controller.forest.cursor.location
-    )
+    state.results = self.encode(state.cursor.location)

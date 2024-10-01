@@ -1,5 +1,6 @@
 """Test the NameLookup class."""
 
+from typing import TYPE_CHECKING
 from unittest import mock
 
 import pytest
@@ -15,9 +16,11 @@ from text_lint.__helpers__.operations import (
 from text_lint.__helpers__.translations import assert_is_translated
 from text_lint.config import LOOKUP_STATIC_VALUE_MARKER
 from text_lint.exceptions.lookups import LookupFailure, LookupUnknown
-from text_lint.results.forest import AliasLookupResult
 from ..bases.lookup_base import LookupBase
 from ..name import NameLookup
+
+if TYPE_CHECKING:  # no cover
+  from text_lint.results.forest import AliasLookupResult
 
 
 class TestNameLookup:
@@ -25,18 +28,18 @@ class TestNameLookup:
 
   def test_initialize__defined__attributes(
       self,
-      name_lookup_instance: NameLookup,
+      mocked_lookup_expression: mock.Mock,
       mocked_lookup_name: str,
       mocked_requesting_operation_name: str,
-      mocked_result_set: mock.Mock,
+      name_lookup_instance: NameLookup,
   ) -> None:
     attributes: AliasOperationAttributes = {
         "hint": "select a static value from a save id",
         "is_positional": False,
+        "lookup_expression": mocked_lookup_expression,
         "lookup_name": mocked_lookup_name,
         "operation": "name",
         "requesting_operation_name": mocked_requesting_operation_name,
-        "result_set": mocked_result_set,
     }
 
     assert_operation_attributes(name_lookup_instance, attributes)
@@ -70,13 +73,11 @@ class TestNameLookup:
       request: pytest.FixtureRequest,
   ) -> None:
     scenario = request.getfixturevalue(scenario_fixture)
-    scenario.mocked_controller.forest.lookup_results = [
-        scenario.mocked_lookup_name
-    ]
+    scenario.mocked_state.results = [scenario.mocked_lookup_name]
 
-    name_lookup_instance.apply(scenario.mocked_controller)
+    name_lookup_instance.apply(scenario.mocked_state)
 
-    scenario.mocked_controller.forest.cursor.flatten.assert_called_once_with()
+    scenario.mocked_state.cursor.flatten.assert_called_once_with()
 
   @pytest.mark.parametrize(
       "scenario_fixture", [
@@ -91,13 +92,11 @@ class TestNameLookup:
       request: pytest.FixtureRequest,
   ) -> None:
     scenario = request.getfixturevalue(scenario_fixture)
-    scenario.mocked_controller.forest.lookup_results = [
-        scenario.mocked_lookup_name
-    ]
+    scenario.mocked_state.results = [scenario.mocked_lookup_name]
 
-    name_lookup_instance.apply(scenario.mocked_controller)
+    name_lookup_instance.apply(scenario.mocked_state)
 
-    assert scenario.mocked_controller.forest.cursor.location == [
+    assert scenario.mocked_state.cursor.location == [
         scenario.mocked_trees_grove[0][1]
     ]
 
@@ -105,15 +104,15 @@ class TestNameLookup:
   def test_apply__non_matching_tree__matching_result__no_cursor_update(
       self,
       name_lookup_instance: NameLookup,
-      mocked_controller: mock.Mock,
+      mocked_state: mock.Mock,
       mocked_lookup_name: str,
   ) -> None:
-    original_position = mocked_controller.forest.cursor.location
-    mocked_controller.forest.lookup_results = [mocked_lookup_name]
+    original_position = mocked_state.cursor.location
+    mocked_state.results = [mocked_lookup_name]
 
-    name_lookup_instance.apply(mocked_controller)
+    name_lookup_instance.apply(mocked_state)
 
-    assert mocked_controller.forest.cursor.location == original_position
+    assert mocked_state.cursor.location == original_position
 
   @pytest.mark.parametrize(
       "mocked_lookup_result,expected_results", [
@@ -177,20 +176,20 @@ class TestNameLookup:
   def test_apply__vary_tree__vary_matching_result__updates_results(
       self,
       name_lookup_instance: NameLookup,
-      mocked_lookup_result: AliasLookupResult,
-      expected_results: AliasLookupResult,
+      mocked_lookup_result: "AliasLookupResult",
+      expected_results: "AliasLookupResult",
       scenario_fixture: str,
       request: pytest.FixtureRequest,
   ) -> None:
     scenario = request.getfixturevalue(scenario_fixture)
-    scenario.mocked_controller.forest.lookup_results = mocked_lookup_result
+    scenario.mocked_state.results = mocked_lookup_result
     name_lookup_instance.lookup_name = (
         LOOKUP_STATIC_VALUE_MARKER + "mocked_lookup_name"
     )
 
-    name_lookup_instance.apply(scenario.mocked_controller)
+    name_lookup_instance.apply(scenario.mocked_state)
 
-    assert scenario.mocked_controller.forest.lookup_results == expected_results
+    assert scenario.mocked_state.results == expected_results
 
   @pytest.mark.parametrize(
       "scenario_fixture", [
@@ -205,12 +204,12 @@ class TestNameLookup:
       request: pytest.FixtureRequest,
   ) -> None:
     scenario = request.getfixturevalue(scenario_fixture)
-    scenario.mocked_controller.forest.lookup_results = None
+    scenario.mocked_state.results = None
 
     with pytest.raises(LookupFailure):
-      name_lookup_instance.apply(scenario.mocked_controller)
+      name_lookup_instance.apply(scenario.mocked_state)
 
-    assert scenario.mocked_controller.forest.lookup_results is None
+    assert scenario.mocked_state.results is None
 
   @pytest.mark.parametrize(
       "non_matching_results", [
@@ -230,15 +229,15 @@ class TestNameLookup:
   def test_apply__vary_tree__vary_non_matching__raises_lookup_failure(
       self,
       name_lookup_instance: NameLookup,
-      non_matching_results: AliasLookupResult,
+      non_matching_results: "AliasLookupResult",
       scenario_fixture: str,
       request: pytest.FixtureRequest,
   ) -> None:
     scenario = request.getfixturevalue(scenario_fixture)
-    scenario.mocked_controller.forest.lookup_results = non_matching_results
+    scenario.mocked_state.results = non_matching_results
 
     with pytest.raises(LookupFailure) as exc:
-      name_lookup_instance.apply(scenario.mocked_controller)
+      name_lookup_instance.apply(scenario.mocked_state)
 
     assert_is_lookup_failure(
         exc=exc,
@@ -246,44 +245,44 @@ class TestNameLookup:
         lookup=name_lookup_instance,
     )
 
-  def test_apply__invalid_lookup__does_not_call_forest_cursor_flatten(
+  def test_apply__invalid_lookup__does_not_call_cursor_flatten(
       self,
       name_lookup_instance: NameLookup,
-      mocked_controller: mock.Mock,
+      mocked_state: mock.Mock,
       mocked_lookup_name: str,
   ) -> None:
     name_lookup_instance.lookup_name = mocked_lookup_name
 
     with pytest.raises(LookupUnknown):
-      name_lookup_instance.apply(mocked_controller)
+      name_lookup_instance.apply(mocked_state)
 
-    mocked_controller.forest.cursor.flatten.assert_not_called()
+    mocked_state.cursor.flatten.assert_not_called()
 
   def test_apply__invalid_lookup__raises_unknown_lookup(
       self,
       name_lookup_instance: NameLookup,
-      mocked_controller: mock.Mock,
+      mocked_state: mock.Mock,
       mocked_lookup_name: str,
   ) -> None:
     name_lookup_instance.lookup_name = mocked_lookup_name
 
     with pytest.raises(LookupUnknown) as exc:
-      name_lookup_instance.apply(mocked_controller)
+      name_lookup_instance.apply(mocked_state)
 
     assert_is_lookup_unknown(
         exc=exc,
         lookup=name_lookup_instance,
     )
 
-  def test_apply__invalid_lookup__does_not_update_forest_lookup_results(
+  def test_apply__invalid_lookup__does_not_update_lookup_results(
       self,
       name_lookup_instance: NameLookup,
-      mocked_controller: mock.Mock,
+      mocked_state: mock.Mock,
       mocked_lookup_name: str,
   ) -> None:
     name_lookup_instance.lookup_name = mocked_lookup_name
 
     with pytest.raises(LookupUnknown):
-      name_lookup_instance.apply(mocked_controller)
+      name_lookup_instance.apply(mocked_state)
 
-    assert mocked_controller.forest.lookup_results is None
+    assert mocked_state.results is None

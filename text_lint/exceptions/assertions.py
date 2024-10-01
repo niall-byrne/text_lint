@@ -66,3 +66,32 @@ class AssertionCaptureGroupNotFound(AssertionExceptionBase):
     message += f(self.msg_fmt_capture_group, make_visible(capture_group), nl=1)
     message += f(self.msg_fmt_hint, [], nl=1)
     super().__init__(message)
+
+
+class AssertionLogicError(AssertionExceptionBase):
+  """Raised when an assertion violates a known programming constraint."""
+
+  msg_fmt_assertion_operation = _("ASSERTION LOGIC ERROR: {0}")
+  msg_fmt_source_file = _("  SOURCE FILE: {0}")
+  msg_fmt_assertion_name = _("  ASSERTION: '{0}'")
+  msg_fmt_file_line = _("  FILE LINE: '{0}'")
+  msg_fmt_file_line_number = _("  FILE LINE NUMBER: {0}")
+  msg_fmt_hint = _("  HINT: '{0}'")
+
+  def __init__(
+      self,
+      assertion: "AssertionBase",
+      hint: str,
+      textfile: "TextFileSequencer",
+  ) -> None:
+    message = f(self.msg_fmt_assertion_operation, assertion.operation, nl=1)
+    message += f(
+        self.msg_fmt_source_file,
+        os.path.abspath(textfile.path),
+        nl=1,
+    )
+    message += f(self.msg_fmt_assertion_name, assertion.name, nl=1)
+    message += f(self.msg_fmt_file_line, make_visible(textfile.current), nl=1)
+    message += f(self.msg_fmt_file_line_number, textfile.index + 1, nl=1)
+    message += f(self.msg_fmt_hint, hint, nl=1)
+    super().__init__(message)

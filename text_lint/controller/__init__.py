@@ -2,6 +2,7 @@
 
 from typing import TYPE_CHECKING
 
+from text_lint.controller import states
 from text_lint.logging import Logger
 from text_lint.logging import contexts as logging_contexts
 from text_lint.results.forest import ResultForest
@@ -32,6 +33,15 @@ class Controller:
 
     self.log = Logger(self)
 
+  def encapsulate_for_assertion(self) -> "states.AssertionState":
+    return states.AssertionState(self)
+
+  def encapsulate_for_lookup(self) -> "states.LookupState":
+    return states.LookupState(self)
+
+  def encapsulate_for_validator(self) -> "states.ValidatorState":
+    return states.ValidatorState(self)
+
   def start(self) -> None:
     """Start the text file validation process."""
     with logging_contexts.main(self):
@@ -45,7 +55,7 @@ class Controller:
 
       try:
         with logging_contexts.assertion(self, operation):
-          operation.apply(self)
+          operation.apply(self.encapsulate_for_assertion())
       except StopIteration:
         # TODO: I think an exception should be raised here?
         break
@@ -53,4 +63,4 @@ class Controller:
   def run_validators(self) -> None:
     for operation in self.validators:
       with logging_contexts.validator(self, operation):
-        operation.apply(self)
+        operation.apply(self.encapsulate_for_validator())

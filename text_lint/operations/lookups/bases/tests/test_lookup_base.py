@@ -16,17 +16,17 @@ class TestLookupBase:
   def test_initialize__defined__attributes(
       self,
       concrete_lookup_base_instance: LookupBase,
+      mocked_lookup_expression: mock.Mock,
       mocked_lookup_name: str,
       mocked_requesting_operation_name: str,
-      mocked_result_set: mock.Mock,
   ) -> None:
     attributes: AliasOperationAttributes = {
         "hint": "mocked_hint_lookup",
         "is_positional": False,
+        "lookup_expression": mocked_lookup_expression,
         "lookup_name": mocked_lookup_name,
         "operation": "mocked_operation_lookup",
         "requesting_operation_name": mocked_requesting_operation_name,
-        "result_set": mocked_result_set,
     }
 
     assert_operation_attributes(

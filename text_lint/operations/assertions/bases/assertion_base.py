@@ -13,11 +13,11 @@ from text_lint.operations.bases.operation_base import OperationBase
 from text_lint.results.tree import ResultTree
 
 if TYPE_CHECKING:  # pragma: no cover
-  from text_lint.controller import Controller
+  from text_lint.controller import states
 
 
-class AssertionBase(OperationBase, abc.ABC):
-  """Parser assertion base class."""
+class AssertionBase(OperationBase["states.AssertionState"], abc.ABC):
+  """Assertion operation base class."""
 
   def __init__(
       self,
@@ -30,11 +30,8 @@ class AssertionBase(OperationBase, abc.ABC):
     self.save = save
 
   @abc.abstractmethod
-  def apply(
-      self,
-      controller: "Controller",
-  ) -> None:
-    """Base method for applying an assertion."""
+  def apply(self, state: "states.AssertionState") -> None:
+    """Assertion implementation"""
 
   def create_result_tree(
       self,

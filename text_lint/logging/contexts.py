@@ -12,7 +12,7 @@ if TYPE_CHECKING:  # no cover
       AssertionBase,
   )
   from text_lint.operations.validators.bases.validator_base import (
-      ValidationBase,
+      ValidatorBase,
   )
 
 
@@ -77,7 +77,7 @@ def assertion_section(controller: "Controller") -> Generator[None, None, None]:
 @contextmanager
 def validator(
     controller: "Controller",
-    operation: "ValidationBase",
+    operation: "ValidatorBase",
 ) -> Generator[None, None, None]:
   controller.log(operation)
   yield None

@@ -5,7 +5,9 @@ from text_lint.utilities.translations import _, f
 from text_lint.utilities.whitespace import make_visible
 
 if TYPE_CHECKING:  # pragma: no cover
-  from text_lint.operations.validators.args.result_set import ResultSet
+  from text_lint.operations.validators.args.lookup_expression import (
+      LookupExpression,
+  )
 
 
 class ResultExceptionBase(ValueError):
@@ -31,7 +33,7 @@ class ResultDoesNotExist(ResultExceptionBase):
 
   def __init__(
       self,
-      result_set: "ResultSet",
+      lookup_expression: "LookupExpression",
       requesting_operation_name: str,
   ) -> None:
     message = f(
@@ -40,7 +42,7 @@ class ResultDoesNotExist(ResultExceptionBase):
     )
     message += f(
         self.msg_fmt_result_source,
-        make_visible(result_set.source),
+        make_visible(lookup_expression.source),
         nl=1,
     )
     message += f(
@@ -54,12 +56,12 @@ class ResultDoesNotExist(ResultExceptionBase):
     )
     message += f(
         self.msg_fmt_lookup_result_source,
-        make_visible(result_set.source),
+        make_visible(lookup_expression.source),
         nl=1,
     )
     message += f(
         self.msg_fmt_lookups,
-        make_visible(result_set.lookups),
+        make_visible(lookup_expression.lookups),
         nl=1,
     )
     message += f(

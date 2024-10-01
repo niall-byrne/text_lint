@@ -9,13 +9,12 @@ from .. import validate_debug
 
 
 @pytest.fixture
-def mocked_controller() -> mock.Mock:
-  instance = mock.Mock()
-  return instance
+def mocked_state() -> mock.Mock:
+  return mock.Mock()
 
 
 @pytest.fixture
-def mocked_result_set() -> List[str]:
+def mocked_lookup_expression_set() -> List[str]:
   return [
       "source1.capture.to_upper",
       "source2.capture.to_group",
@@ -29,10 +28,10 @@ def mocked_validator_name() -> str:
 
 @pytest.fixture
 def validate_debug_instance(
-    mocked_result_set: List[str],
+    mocked_lookup_expression_set: List[str],
     mocked_validator_name: str,
 ) -> validate_debug.ValidateDebug:
   return validate_debug.ValidateDebug(
       mocked_validator_name,
-      mocked_result_set,
+      mocked_lookup_expression_set,
   )

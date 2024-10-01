@@ -1,4 +1,4 @@
-"""Test fixtures for the parser assertions base classes."""
+"""Test fixtures for the assertion operation base classes."""
 # pylint: disable=redefined-outer-name
 
 from typing import TYPE_CHECKING, List, Type
@@ -9,7 +9,7 @@ from text_lint.utilities.translations import _
 from .. import assertion_base, assertion_regex_base
 
 if TYPE_CHECKING:  # pragma: no cover
-  from text_lint.controller import Controller
+  from text_lint.controller.states import AssertionState
 
 
 @pytest.fixture
@@ -47,9 +47,9 @@ def concrete_assertion_base_class(
 
     def apply(
         self,
-        controller: "Controller",
+        state: "AssertionState",
     ) -> None:
-      mocked_implementation(controller)
+      mocked_implementation(state)
 
   return ConcreteAssertion
 
@@ -83,7 +83,7 @@ def concrete_assertion_regex_base_class(
 
     def apply(
         self,
-        controller: "Controller",
+        state: "AssertionState",
     ) -> None:
       """Mocked implementation."""
 

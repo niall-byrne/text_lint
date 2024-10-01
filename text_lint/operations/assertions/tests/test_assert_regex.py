@@ -2,18 +2,15 @@
 
 from unittest import mock
 
-import pytest
 from text_lint.__helpers__.assertion import (
     assert_assertion_attributes,
-    assert_is_assertion_violation,
+    assert_state_saved,
 )
 from text_lint.__helpers__.operations import (
     AliasOperationAttributes,
     assert_operation_inheritance,
 )
-from text_lint.__helpers__.results import assert_result_tree
 from text_lint.__helpers__.translations import assert_is_translated
-from text_lint.exceptions.assertions import AssertionViolation
 from text_lint.operations.assertions.bases.assertion_base import AssertionBase
 from text_lint.operations.assertions.bases.assertion_regex_base import (
     AssertionRegexBase,
@@ -77,40 +74,30 @@ class TestAssertRegex:
         ),
     )
 
-  def test_apply__matches__stores_result(
+  def test_apply__matches__saves_result(
       self,
       assert_regex_instance: AssertRegex,
-      mocked_controller: mock.Mock,
-      mocked_textfile: mock.MagicMock,
+      mocked_state: mock.Mock,
   ) -> None:
-    mocked_textfile.__next__.return_value = "matching: string"
+    mocked_state.next.return_value = "matching: string"
 
-    assert_regex_instance.apply(mocked_controller)
+    assert_regex_instance.apply(mocked_state)
 
-    assert len(mocked_controller.forest.add.mock_calls) == 1
-    result_tree = mocked_controller.forest.add.mock_calls[0].args[0]
-    assert_result_tree(
-        result_tree,
-        assert_regex_instance.save,
-        ["matching".split(" ")],
+    assert_state_saved(
+        assert_regex_instance,
+        mocked_state,
+        [mocked_state.next.return_value],
     )
 
-  def test_apply__does_not_match__raises_exception(
+  def test_apply__does_not_match__calls_fail(
       self,
       assert_regex_instance: AssertRegex,
-      mocked_controller: mock.Mock,
-      mocked_textfile: mock.MagicMock,
+      mocked_state: mock.Mock,
   ) -> None:
-    mocked_textfile.index = 1
-    mocked_textfile.__next__.return_value = "non matching string"
+    mocked_state.next.return_value = "non matching string"
 
-    with pytest.raises(AssertionViolation) as exc:
-      assert_regex_instance.apply(mocked_controller)
+    assert_regex_instance.apply(mocked_state)
 
-    mocked_controller.forest.add.assert_not_called()
-    assert_is_assertion_violation(
-        exc=exc,
-        assertion=assert_regex_instance,
-        textfile=mocked_textfile,
-        expected=assert_regex_instance.regex.pattern,
+    mocked_state.fail.assert_called_once_with(
+        assert_regex_instance.regex.pattern
     )

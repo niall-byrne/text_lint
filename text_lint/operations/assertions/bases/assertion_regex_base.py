@@ -18,7 +18,7 @@ optional: 'save' will store capture groups as save ids for validation processing
 
 
 class AssertionRegexBase(AssertionBase, abc.ABC):
-  """Parser regex based assertion base class."""
+  """Regex based assertion operation base class."""
 
   __regex_flags = re.DOTALL
 

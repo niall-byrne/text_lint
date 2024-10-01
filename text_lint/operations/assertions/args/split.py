@@ -1,4 +1,4 @@
-"""String splits parser assertion YAML argument definitions."""
+"""String splits assertion operation YAML argument definitions."""
 
 from typing import Any, Dict, List, Optional
 

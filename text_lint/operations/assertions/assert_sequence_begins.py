@@ -7,7 +7,7 @@ from text_lint.operations.assertions.bases.assertion_base import AssertionBase
 from text_lint.utilities.translations import _
 
 if TYPE_CHECKING:  # pragma: no cover
-  from text_lint.controller import Controller
+  from text_lint.controller.states import AssertionState
 
 YAML_EXAMPLE = """
 
@@ -33,7 +33,7 @@ note: Set count to 0 to disable the nested assertions.
 
 
 class AssertSequenceBegins(AssertionBase):
-  """Inform the parser to start repeating a list of assertions."""
+  """Inform the linter to start repeating a list of assertions."""
 
   hint = _("identify a repeating sequence of assertions")
   operation = "assert_sequence_begins"
@@ -50,10 +50,8 @@ class AssertSequenceBegins(AssertionBase):
 
   def apply(
       self,
-      controller: "Controller",
+      state: "AssertionState",
   ) -> None:
     """Apply the AssertSequenceBegins assertion logic."""
 
-    if self.count == LOOP_COUNT or self.count > 0:
-      controller.assertions.start_repeating(self.count)
-      controller.assertions.insert(self.assertions)
+    state.loop(self.assertions, self.count)

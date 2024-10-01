@@ -9,7 +9,7 @@ from text_lint.utilities.translations import _, f
 from .bases.lookup_base import LookupBase
 
 if TYPE_CHECKING:  # pragma: no cover
-  from text_lint.controller import Controller
+  from text_lint.controller.states import LookupState
   from text_lint.results.cursor import AliasResultForestCursor
   from text_lint.results.forest import AliasLookupResult
 
@@ -36,7 +36,7 @@ class NameLookup(LookupBase):
 
   def apply(
       self,
-      controller: "Controller",
+      state: "LookupState",
   ) -> None:
     """Select the specified tree from the current ResultForest location."""
 
@@ -45,24 +45,24 @@ class NameLookup(LookupBase):
 
     search_string = self.lookup_name[len(LOOKUP_STATIC_VALUE_MARKER):]
 
-    controller.forest.cursor.flatten()
+    state.cursor.flatten()
 
-    self._update_location(controller, search_string)
-    self._update_results(controller, search_string)
+    self._update_location(state, search_string)
+    self._update_results(state, search_string)
 
   def _update_location(
       self,
-      controller: "Controller",
+      state: "LookupState",
       search_string: str,
   ) -> None:
     matches: "AliasResultForestCursor" = []
     self._find_matching_result_tree(
-        controller.forest.cursor.location,
+        state.cursor.location,
         search_string,
         matches,
     )
     if matches:
-      controller.forest.cursor.location = matches
+      state.cursor.location = matches
 
   def _find_matching_result_tree(
       self,
@@ -87,16 +87,16 @@ class NameLookup(LookupBase):
 
   def _update_results(
       self,
-      controller: "Controller",
+      state: "LookupState",
       search_string: str,
   ) -> None:
     matches = self._find_matching_result(
-        controller.forest.lookup_results,
+        state.results,
         search_string,
     )
     if not matches:
       raise self._create_lookup_failure()
-    controller.forest.lookup_results = matches
+    state.results = matches
 
   def _find_matching_result(
       self,

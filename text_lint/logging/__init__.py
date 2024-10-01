@@ -9,7 +9,7 @@ from text_lint.config import (
     LOGGING_INDENT,
 )
 from text_lint.operations.assertions.bases.assertion_base import AssertionBase
-from text_lint.operations.validators.bases.validator_base import ValidationBase
+from text_lint.operations.validators.bases.validator_base import ValidatorBase
 from text_lint.utilities.translations import _
 from text_lint.utilities.whitespace import new_line
 
@@ -52,7 +52,7 @@ class Logger:
   @overload
   def __call__(
       self,
-      obj: ValidationBase,
+      obj: ValidatorBase,
       index: None = None,
       indent: "Literal[False]" = False,
       section: "Literal[False]" = False,
@@ -61,7 +61,7 @@ class Logger:
 
   def __call__(
       self,
-      obj: Union[str, AssertionBase, ValidationBase],
+      obj: Union[str, AssertionBase, ValidatorBase],
       index: Optional[int] = None,
       indent: bool = False,
       section: bool = False,
@@ -70,7 +70,7 @@ class Logger:
       self._log_string(obj, indent, section)
     elif isinstance(obj, AssertionBase) and index is not None:
       self._log_assertion(obj, index)
-    elif isinstance(obj, ValidationBase):
+    elif isinstance(obj, ValidatorBase):
       self._log_validator(obj)
     else:
       self._log_string(
@@ -124,7 +124,7 @@ class Logger:
 
   def _log_validator(
       self,
-      validator: "ValidationBase",
+      validator: "ValidatorBase",
   ) -> None:
     self._log_string(
         self.msg_fmt_log_validator_prefix.ljust(LOGGING_COLUMN1_WIDTH) +
@@ -135,6 +135,6 @@ class Logger:
 
   def _operation_as_columns(
       self,
-      operation: Union[AssertionBase, ValidationBase],
+      operation: Union[AssertionBase, ValidatorBase],
   ) -> str:
     return operation.operation.ljust(LOGGING_COLUMN2_WIDTH) + operation.name

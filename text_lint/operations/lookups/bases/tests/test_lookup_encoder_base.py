@@ -20,19 +20,19 @@ class TestLookupEncoderBase:
       self,
       concrete_lookup_encoder_base_instance: LookupEncoderBase,
       mocked_encoder_class: mock.Mock,
+      mocked_lookup_expression: mock.Mock,
       mocked_lookup_name: str,
       mocked_requesting_operation_name: str,
-      mocked_result_set: mock.Mock,
   ) -> None:
     attributes: AliasOperationAttributes = {
         "encoder_class": mocked_encoder_class,
         "encoder_params": {},
         "hint": "mocked_hint_lookup_encoder",
         "is_positional": False,
+        "lookup_expression": mocked_lookup_expression,
         "lookup_name": mocked_lookup_name,
         "operation": "mocked_operation_lookup_encoder",
         "requesting_operation_name": mocked_requesting_operation_name,
-        "result_set": mocked_result_set,
     }
 
     assert_operation_attributes(

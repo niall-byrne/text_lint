@@ -22,6 +22,17 @@ class TestOperatorBase:
 
     assert instance.index == 0
 
+  def test_current__returns_current_element(
+      self,
+      concrete_operator_class: Type["OperatorBase[mock.Mock]"],
+      mocked_operations: List["mock.Mock"],
+  ) -> None:
+    instance = concrete_operator_class(mocked_operations)
+
+    for _ in instance:
+      if instance.index < len(mocked_operations):
+        assert instance.current == mocked_operations[instance.index]
+
   def test_insert__inserts_assertions_in_correct_order(
       self,
       concrete_operator_class: Type["OperatorBase[mock.Mock]"],
@@ -49,6 +60,17 @@ class TestOperatorBase:
     iter_instance = iter(instance)
 
     assert iter_instance == instance
+
+  def test_last__returns_previous_element(
+      self,
+      concrete_operator_class: Type["OperatorBase[mock.Mock]"],
+      mocked_operations: List["mock.Mock"],
+  ) -> None:
+    instance = concrete_operator_class(mocked_operations)
+
+    for _ in instance:
+      if instance.index > -1:
+        assert instance.last == mocked_operations[instance.index - 1]
 
   def test_next__available_operation__returns_next_operation(
       self,

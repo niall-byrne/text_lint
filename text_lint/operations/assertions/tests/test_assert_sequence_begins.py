@@ -54,32 +54,17 @@ class TestAssertSequenceBegins:
     )
 
   @pytest.mark.parametrize("count", [LOOP_COUNT, 2, 4])
-  def test_apply__infinite_or_bound_count__calls_parser_methods(
+  def test_apply__infinite_or_bound_count__calls_loop(
       self,
       assert_sequence_begins_instance: AssertSequenceBegins,
-      mocked_controller: mock.Mock,
+      mocked_state: mock.Mock,
       count: Optional[int],
   ) -> None:
     setattr(assert_sequence_begins_instance, "count", count)
 
-    assert_sequence_begins_instance.apply(mocked_controller)
+    assert_sequence_begins_instance.apply(mocked_state)
 
-    mocked_controller.assertions.start_repeating.assert_called_with(
+    mocked_state.loop.assert_called_with(
+        assert_sequence_begins_instance.assertions,
         assert_sequence_begins_instance.count
     )
-    mocked_controller.assertions.insert.assert_called_with(
-        assert_sequence_begins_instance.assertions
-    )
-
-  @pytest.mark.parametrize("count", [0, -10])
-  def test_apply__zero_count__does_not_call_parser_methods(
-      self,
-      assert_sequence_begins_instance: AssertSequenceBegins,
-      mocked_controller: mock.Mock,
-      count: Optional[int],
-  ) -> None:
-    setattr(assert_sequence_begins_instance, "count", count)
-
-    assert_sequence_begins_instance.apply(mocked_controller)
-
-    mocked_controller.assertions.assert_not_called()

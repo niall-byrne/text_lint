@@ -6,7 +6,9 @@ from typing import TYPE_CHECKING, Any, Dict, Type
 from .lookup_base import LookupBase
 
 if TYPE_CHECKING:  # pragma: no cover
-  from text_lint.operations.validators.args.result_set import ResultSet
+  from text_lint.operations.validators.args.lookup_expression import (
+      LookupExpression,
+  )
 
 
 class LookupEncoderBase(LookupBase, abc.ABC):
@@ -18,12 +20,12 @@ class LookupEncoderBase(LookupBase, abc.ABC):
   def __init__(
       self,
       lookup_name: str,
-      result_set: "ResultSet",
+      lookup_expression: "LookupExpression",
       requesting_operation_name: str,
   ) -> None:
     super().__init__(
         lookup_name,
-        result_set,
+        lookup_expression,
         requesting_operation_name,
     )
     self.encoder_params = {}

@@ -18,18 +18,18 @@ class TestNoopLookup:
 
   def test_initialize__defined__attributes(
       self,
-      noop_lookup_instance: NoopLookup,
+      mocked_lookup_expression: mock.Mock,
       mocked_lookup_name: str,
       mocked_requesting_operation_name: str,
-      mocked_result_set: mock.Mock,
+      noop_lookup_instance: NoopLookup,
   ) -> None:
     attributes: AliasOperationAttributes = {
         "hint": "a simple no-operation",
         "is_positional": False,
+        "lookup_expression": mocked_lookup_expression,
         "lookup_name": mocked_lookup_name,
         "operation": "noop",
         "requesting_operation_name": mocked_requesting_operation_name,
-        "result_set": mocked_result_set,
     }
 
     assert_operation_attributes(noop_lookup_instance, attributes)
@@ -52,24 +52,24 @@ class TestNoopLookup:
   def test_apply__does_not_modify_forest_cursor(
       self,
       noop_lookup_instance: NoopLookup,
-      mocked_controller: mock.Mock,
+      mocked_state: mock.Mock,
       mocked_trees_grove: List[List[mock.Mock]],
   ) -> None:
-    mocked_controller.forest.cursor.location = mocked_trees_grove
+    mocked_state.cursor.location = mocked_trees_grove
 
-    noop_lookup_instance.apply(mocked_controller)
+    noop_lookup_instance.apply(mocked_state)
 
-    mocked_controller.forest.cursor.increment_depth.assert_not_called()
-    mocked_controller.forest.cursor.flatten.assert_not_called()
+    mocked_state.cursor.increment_depth.assert_not_called()
+    mocked_state.cursor.flatten.assert_not_called()
 
   def test_apply__does_not_modify_forest_lookup_results(
       self,
       noop_lookup_instance: NoopLookup,
-      mocked_controller: mock.Mock,
+      mocked_state: mock.Mock,
       mocked_trees_grove: List[List[mock.Mock]],
   ) -> None:
-    mocked_controller.forest.cursor.location = mocked_trees_grove
+    mocked_state.cursor.location = mocked_trees_grove
 
-    noop_lookup_instance.apply(mocked_controller)
+    noop_lookup_instance.apply(mocked_state)
 
-    assert mocked_controller.forest.lookup_results is None
+    assert mocked_state.results is None

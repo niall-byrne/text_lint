@@ -8,7 +8,7 @@ from text_lint.utilities.translations import _
 from .. import validator_base
 
 if TYPE_CHECKING:  # pragma: no cover
-  from text_lint.controller import Controller
+  from text_lint.controller.states import ValidatorState
 
 
 @pytest.fixture
@@ -17,14 +17,14 @@ def mocked_validator_name() -> str:
 
 
 @pytest.fixture
-def concrete_validator_base_class() -> Type[validator_base.ValidationBase]:
+def concrete_validator_base_class() -> Type[validator_base.ValidatorBase]:
 
-  class ConcreteValidator(validator_base.ValidationBase):
+  class ConcreteValidator(validator_base.ValidatorBase):
 
     hint = _("mocked_hint")
     operation = "mocked_operation"
 
-    def apply(self, controller: "Controller") -> None:
+    def apply(self, state: "ValidatorState") -> None:
       """Mocked implementation."""
 
   return ConcreteValidator
@@ -32,7 +32,7 @@ def concrete_validator_base_class() -> Type[validator_base.ValidationBase]:
 
 @pytest.fixture
 def concrete_validator_base_instance(
-    concrete_validator_base_class: Type[validator_base.ValidationBase],
+    concrete_validator_base_class: Type[validator_base.ValidatorBase],
     mocked_validator_name: str,
-) -> validator_base.ValidationBase:
+) -> validator_base.ValidatorBase:
   return concrete_validator_base_class(mocked_validator_name)

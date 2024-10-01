@@ -1,4 +1,4 @@
-"""Test fixtures for the text_lint parser assertions."""
+"""Test fixtures for the text_lint assertion operations."""
 # pylint: disable=redefined-outer-name
 
 from typing import TYPE_CHECKING, List, NamedTuple
@@ -26,31 +26,13 @@ class CaseSensitivityScenario(NamedTuple):
 
 
 @pytest.fixture
-def mocked_assertion_sequencer() -> mock.MagicMock:
-  return mock.MagicMock()
-
-
-@pytest.fixture
-def mocked_controller(
-    mocked_assertion_sequencer: mock.MagicMock,
-    mocked_textfile: mock.MagicMock,
-) -> mock.Mock:
-  instance = mock.Mock()
-  instance.assertions = mocked_assertion_sequencer
-  instance.textfile = mocked_textfile
-  return instance
+def mocked_state() -> mock.Mock:
+  return mock.Mock()
 
 
 @pytest.fixture
 def mocked_nested_assertions() -> List[mock.Mock]:
   return [mock.Mock(), mock.Mock()]
-
-
-@pytest.fixture
-def mocked_textfile() -> mock.MagicMock:
-  instance = mock.MagicMock()
-  instance.index = 0
-  return instance
 
 
 @pytest.fixture

@@ -1,1 +1,1 @@
-"""Parser assertion argument definitions."""
+"""Assertion operation argument definitions."""

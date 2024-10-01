@@ -4,12 +4,12 @@ from typing import List
 import pytest
 from text_lint.config import LOOKUP_SEPERATOR
 from text_lint.operations.lookups import CaptureLookup, JsonLookup, UpperLookup
-from ..result_set import ResultSet
+from ..lookup_expression import LookupExpression
 
 
 @pytest.fixture
-def result_set_instances() -> List[ResultSet]:
-  result_set1 = ResultSet(
+def lookup_expression_set_instances() -> List[LookupExpression]:
+  lookup_expression_1 = LookupExpression(
       LOOKUP_SEPERATOR.join(
           [
               "source1",
@@ -18,10 +18,10 @@ def result_set_instances() -> List[ResultSet]:
           ]
       )
   )
-  result_set2 = ResultSet(
+  lookup_expression_2 = LookupExpression(
       LOOKUP_SEPERATOR.join([
           "source2",
           UpperLookup.operation,
       ])
   )
-  return [result_set1, result_set2]
+  return [lookup_expression_1, lookup_expression_2]

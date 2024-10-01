@@ -9,7 +9,7 @@ AliasOperationAttributes = Dict[str, Any]
 
 
 def assert_operation_attributes(
-    operation_instance: "OperationBase",
+    operation_instance: "OperationBase[Any]",
     attributes: AliasOperationAttributes,
 ) -> None:
 
@@ -22,8 +22,8 @@ def assert_operation_attributes(
 
 
 def assert_operation_inheritance(
-    operation_instance: "OperationBase",
-    bases: Tuple[Type["OperationBase"], ...] = (),
+    operation_instance: "OperationBase[Any]",
+    bases: Tuple[Type["OperationBase[Any]"], ...] = (),
 ) -> None:
   assert isinstance(
       operation_instance,

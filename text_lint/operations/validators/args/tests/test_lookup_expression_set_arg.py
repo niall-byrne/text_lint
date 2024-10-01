@@ -1,36 +1,38 @@
-"""Test the ResultSetArg class."""
+"""Test the LookupExpressionSetArgSetArg class."""
 
 from typing import Any, List
 
 from text_lint.config import LOOKUP_SENTINEL, LOOKUP_SEPERATOR
 from text_lint.operations.lookups import CaptureLookup, JsonLookup, UpperLookup
-from ..result_set import ResultSet, ResultSetArg
+from ..lookup_expression import LookupExpression, LookupExpressionSetArg
 
 
-class TestResultSetArg:
-  """Test the ResultSetArg class."""
+class TestLookupExpressionSetArgSetArg:
+  """Test the LookupExpressionSetArgSetArg class."""
 
-  def assert_is_result_set(
+  def assert_is_lookup_expression_set(
       self,
       instance: Any,
       name: str,
       source: str,
       lookups: List[str],
   ) -> None:
-    assert isinstance(instance, ResultSet)
+    assert isinstance(instance, LookupExpression)
     assert instance.name == name
     assert instance.source == source
     assert instance.lookups == lookups
 
   def test_intialize__attributes(
       self,
-      result_set_instances: List[ResultSet],
+      lookup_expression_set_instances: List[LookupExpression],
   ) -> None:
-    instance = ResultSetArg(saved_result_set=result_set_instances)
+    instance = LookupExpressionSetArg(
+        lookup_expression_set=lookup_expression_set_instances
+    )
 
     results = list(instance)
-    assert len(results) == len(result_set_instances)
-    self.assert_is_result_set(
+    assert len(results) == len(lookup_expression_set_instances)
+    self.assert_is_lookup_expression_set(
         results[0],
         name=LOOKUP_SEPERATOR.join(
             [
@@ -42,25 +44,21 @@ class TestResultSetArg:
         source="source1",
         lookups=[CaptureLookup.operation, JsonLookup.operation]
     )
-    self.assert_is_result_set(
+    self.assert_is_lookup_expression_set(
         results[1],
         name=LOOKUP_SEPERATOR.join(["source2", UpperLookup.operation]),
         source="source2",
         lookups=[UpperLookup.operation]
     )
 
-  def test_create__no_yaml_definition__does_not_create_result_sets(
-      self
-  ) -> None:
-    instance = ResultSetArg.create([])
+  def test_create__no_yaml_definition__does_not_create_instances(self) -> None:
+    instance = LookupExpressionSetArg.create([])
 
     results = list(instance)
     assert len(results) == 0
 
-  def test_create__single_yaml_definition__creates_result_set_instance(
-      self
-  ) -> None:
-    instance = ResultSetArg.create(
+  def test_create__single_yaml_definition__creates_instance(self) -> None:
+    instance = LookupExpressionSetArg.create(
         [
             LOOKUP_SEPERATOR.join(
                 [
@@ -74,7 +72,7 @@ class TestResultSetArg:
 
     results = list(instance)
     assert len(results) == 1
-    self.assert_is_result_set(
+    self.assert_is_lookup_expression_set(
         results[0],
         name=LOOKUP_SEPERATOR.join(
             [
@@ -87,10 +85,8 @@ class TestResultSetArg:
         lookups=[CaptureLookup.operation, JsonLookup.operation]
     )
 
-  def test_create__multiple_yaml_definitions__creates_result_set_instances(
-      self
-  ) -> None:
-    instance = ResultSetArg.create(
+  def test_create__multiple_yaml_definitions__creates_instances(self) -> None:
+    instance = LookupExpressionSetArg.create(
         [
             LOOKUP_SEPERATOR.join(
                 [
@@ -112,7 +108,7 @@ class TestResultSetArg:
 
     results = list(instance)
     assert len(results) == 3
-    self.assert_is_result_set(
+    self.assert_is_lookup_expression_set(
         results[0],
         name=LOOKUP_SEPERATOR.join(
             [
@@ -124,7 +120,7 @@ class TestResultSetArg:
         source="source1",
         lookups=[CaptureLookup.operation, JsonLookup.operation]
     )
-    self.assert_is_result_set(
+    self.assert_is_lookup_expression_set(
         results[1],
         name=LOOKUP_SEPERATOR.join(
             [
@@ -136,7 +132,7 @@ class TestResultSetArg:
         source="source2",
         lookups=[CaptureLookup.operation, UpperLookup.operation]
     )
-    self.assert_is_result_set(
+    self.assert_is_lookup_expression_set(
         results[2],
         name="source3",
         source="source3",

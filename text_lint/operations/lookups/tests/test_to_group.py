@@ -19,18 +19,18 @@ class TestGroupLookup:
 
   def test_initialize__defined__attributes(
       self,
-      to_group_lookup_instance: GroupLookup,
+      mocked_lookup_expression: mock.Mock,
       mocked_lookup_name: str,
       mocked_requesting_operation_name: str,
-      mocked_result_set: mock.Mock,
+      to_group_lookup_instance: GroupLookup,
   ) -> None:
     attributes: AliasOperationAttributes = {
         "hint": "group the values of a save id",
         "is_positional": False,
+        "lookup_expression": mocked_lookup_expression,
         "lookup_name": mocked_lookup_name,
         "operation": LOOKUP_TRANSFORMATION_PREFIX + "group",
         "requesting_operation_name": mocked_requesting_operation_name,
-        "result_set": mocked_result_set,
     }
 
     assert_operation_attributes(to_group_lookup_instance, attributes)
@@ -56,13 +56,13 @@ class TestGroupLookup:
   def test_apply__updates_forest_lookup_results(
       self,
       to_group_lookup_instance: GroupLookup,
-      mocked_controller: mock.Mock,
+      mocked_state: mock.Mock,
       fixture_name: str,
       request: pytest.FixtureRequest,
   ) -> None:
     mocked_result_trees = request.getfixturevalue(fixture_name)
-    mocked_controller.forest.lookup_results = [mocked_result_trees]
+    mocked_state.results = [mocked_result_trees]
 
-    to_group_lookup_instance.apply(mocked_controller)
+    to_group_lookup_instance.apply(mocked_state)
 
-    assert mocked_controller.forest.lookup_results == list(mocked_result_trees)
+    assert mocked_state.results == list(mocked_result_trees)

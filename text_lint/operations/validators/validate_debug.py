@@ -3,14 +3,16 @@
 import json
 from typing import TYPE_CHECKING
 
-from text_lint.operations.validators.args.result_set import ResultSetArg
-from text_lint.operations.validators.bases.validator_base import ValidationBase
+from text_lint.operations.validators.args.lookup_expression import (
+    LookupExpressionSetArg,
+)
+from text_lint.operations.validators.bases.validator_base import ValidatorBase
 from text_lint.utilities.translations import _, f
 
 if TYPE_CHECKING:  # pragma: no cover
-  from text_lint.controller import Controller
-  from text_lint.operations.validators.args.result_set import (
-      AliasYamlResultSet,
+  from text_lint.controller.states import ValidatorState
+  from text_lint.operations.validators.args.lookup_expression import (
+      AliasYamlLookupExpressionSet,
   )
 
 YAML_EXAMPLE = """
@@ -24,7 +26,7 @@ YAML_EXAMPLE = """
 """
 
 
-class ValidateDebug(ValidationBase):
+class ValidateDebug(ValidatorBase):
   """A validator to display result lookups."""
 
   hint = _("output save id lookups to the console")
@@ -32,26 +34,22 @@ class ValidateDebug(ValidationBase):
 
   msg_fmt_debug = _("DEBUG: '{0}'")
 
-  def __init__(self, name: str, saved: "AliasYamlResultSet"):
+  def __init__(self, name: str, saved: "AliasYamlLookupExpressionSet"):
     super().__init__(name)
-    self.saved_results = ResultSetArg.create(saved)
+    self.lookup_expressions = LookupExpressionSetArg.create(saved)
 
-  def apply(self, controller: "Controller") -> None:
+  def apply(self, state: "ValidatorState") -> None:
     """Apply the ValidateDebug validator logic."""
 
-    for requested_lookup_to_debug in self.saved_results:
+    for requested_lookup_to_debug in self.lookup_expressions:
 
-      result = controller.forest.lookup(
-          controller,
-          requested_lookup_to_debug,
-          self.name,
-      )
+      result = state.lookup_expression(requested_lookup_to_debug)
 
-      controller.log(
+      state.log(
           f(
               self.msg_fmt_debug,
               requested_lookup_to_debug.name,
           ),
           indent=True,
       )
-      controller.log(json.dumps(result, indent=4, default=str))
+      state.log(json.dumps(result, indent=4, default=str))

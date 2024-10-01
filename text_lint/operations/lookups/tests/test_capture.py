@@ -19,18 +19,18 @@ class TestCaptureLookup:
 
   def test_initialize__defined__attributes(
       self,
-      capture_lookup_instance: CaptureLookup,
+      mocked_lookup_expression: mock.Mock,
       mocked_lookup_name: str,
       mocked_requesting_operation_name: str,
-      mocked_result_set: mock.Mock,
+      capture_lookup_instance: CaptureLookup,
   ) -> None:
     attributes: AliasOperationAttributes = {
         "hint": "select the next capture group of a save id",
         "is_positional": True,
+        "lookup_expression": mocked_lookup_expression,
         "lookup_name": mocked_lookup_name,
         "operation": "capture",
         "requesting_operation_name": mocked_requesting_operation_name,
-        "result_set": mocked_result_set,
     }
 
     assert_operation_attributes(capture_lookup_instance, attributes)
@@ -53,14 +53,14 @@ class TestCaptureLookup:
   def test_apply__calls_forest_cursor_increment_depth(
       self,
       capture_lookup_instance: CaptureLookup,
-      mocked_controller: mock.Mock,
+      mocked_state: mock.Mock,
       mocked_trees_grove: List[List[mock.Mock]],
   ) -> None:
-    mocked_controller.forest.cursor.location = mocked_trees_grove
+    mocked_state.cursor.location = mocked_trees_grove
 
-    capture_lookup_instance.apply(mocked_controller)
+    capture_lookup_instance.apply(mocked_state)
 
-    mocked_controller.forest.cursor.increment_depth.assert_called_once_with()
+    mocked_state.cursor.increment_depth.assert_called_once_with()
 
   @pytest.mark.parametrize(
       "fixture_name", ["mocked_trees_grove", "mocked_trees_woods"]
@@ -68,16 +68,16 @@ class TestCaptureLookup:
   def test_apply__updates_forest_lookup_results(
       self,
       capture_lookup_instance: CaptureLookup,
-      mocked_controller: mock.Mock,
+      mocked_state: mock.Mock,
       fixture_name: str,
       request: pytest.FixtureRequest,
   ) -> None:
     mocked_result_trees = request.getfixturevalue(fixture_name)
-    mocked_controller.forest.cursor.location = mocked_result_trees
+    mocked_state.cursor.location = mocked_result_trees
 
-    capture_lookup_instance.apply(mocked_controller)
+    capture_lookup_instance.apply(mocked_state)
 
-    assert mocked_controller.forest.lookup_results == [
+    assert mocked_state.results == [
         [child.value
          for child in grove.children]
         for woods in mocked_result_trees

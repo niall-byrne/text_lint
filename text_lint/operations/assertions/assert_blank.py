@@ -2,12 +2,11 @@
 
 from typing import TYPE_CHECKING
 
-from text_lint.exceptions.assertions import AssertionViolation
 from text_lint.operations.assertions.bases.assertion_base import AssertionBase
 from text_lint.utilities.translations import _
 
 if TYPE_CHECKING:  # pragma: no cover
-  from text_lint.controller import Controller
+  from text_lint.controller.states.assertion import AssertionState
 
 YAML_EXAMPLE = """
 
@@ -31,15 +30,11 @@ class AssertBlank(AssertionBase):
 
   def apply(
       self,
-      controller: "Controller",
+      state: "AssertionState",
   ) -> None:
     """Apply the AssertBlank assertion logic."""
 
-    data = next(controller.textfile)
+    data = state.next()
 
     if data != "":
-      raise AssertionViolation(
-          assertion=self,
-          expected="",
-          textfile=controller.textfile,
-      )
+      state.fail("")

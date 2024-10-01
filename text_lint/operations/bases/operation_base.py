@@ -1,14 +1,15 @@
 """OperationBase class."""
 
 import abc
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Generic, TypeVar
 
 if TYPE_CHECKING:  # pragma: no cover
-  from text_lint.controller import Controller
+  from text_lint.controller.states.bases.state_base import StateBase
+
+TypeState = TypeVar("TypeState", bound="StateBase")
 
 
-class OperationBase(abc.ABC):
-  """Text file operation base class."""
+class OperationBase(Generic[TypeState], abc.ABC):
 
   hint: str
   operation: str
@@ -16,6 +17,6 @@ class OperationBase(abc.ABC):
   @abc.abstractmethod
   def apply(
       self,
-      controller: "Controller",
+      state: "TypeState",
   ) -> None:
-    """Base method for applying an operation."""
+    """Override this method to type narrow state."""

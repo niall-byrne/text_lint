@@ -9,7 +9,7 @@ from text_lint.utilities.translations import _
 from .. import lookup_base, lookup_encoder_base
 
 if TYPE_CHECKING:  # pragma: no cover
-  from text_lint.controller import Controller
+  from text_lint.controller.states import LookupState
 
 
 @pytest.fixture
@@ -33,7 +33,7 @@ def mocked_requesting_operation_name() -> str:
 
 
 @pytest.fixture
-def mocked_result_set() -> mock.Mock:
+def mocked_lookup_expression() -> mock.Mock:
   return mock.Mock()
 
 
@@ -45,7 +45,7 @@ def concrete_lookup_base_class() -> Type[lookup_base.LookupBase]:
     hint = _("mocked_hint_lookup")
     operation = "mocked_operation_lookup"
 
-    def apply(self, controller: "Controller") -> None:
+    def apply(self, state: "LookupState") -> None:
       """Mocked implementation."""
 
   return ConcreteLookup
@@ -69,7 +69,7 @@ def concrete_lookup_encoder_base_class(
     hint = _("mocked_hint_lookup_encoder")
     operation = "mocked_operation_lookup_encoder"
 
-    def apply(self, controller: "Controller") -> None:
+    def apply(self, state: "LookupState") -> None:
       """Mocked implementation."""
 
   return ConcreteLookupEncoder
@@ -80,12 +80,12 @@ def concrete_lookup_base_instance(
     concrete_lookup_base_class: Type[lookup_base.LookupBase],
     mocked_lookup_name: str,
     mocked_requesting_operation_name: str,
-    mocked_result_set: mock.Mock,
+    mocked_lookup_expression: mock.Mock,
 ) -> lookup_base.LookupBase:
 
   return concrete_lookup_base_class(
       mocked_lookup_name,
-      mocked_result_set,
+      mocked_lookup_expression,
       mocked_requesting_operation_name,
   )
 
@@ -96,11 +96,11 @@ def concrete_lookup_encoder_base_instance(
         lookup_encoder_base.LookupEncoderBase],
     mocked_lookup_name: str,
     mocked_requesting_operation_name: str,
-    mocked_result_set: mock.Mock,
+    mocked_lookup_expression: mock.Mock,
 ) -> lookup_encoder_base.LookupEncoderBase:
 
   return concrete_lookup_encoder_base_class(
       mocked_lookup_name,
-      mocked_result_set,
+      mocked_lookup_expression,
       mocked_requesting_operation_name,
   )

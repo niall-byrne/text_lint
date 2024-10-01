@@ -4,14 +4,14 @@ import re
 from typing import TYPE_CHECKING, Any, Dict, Generic, List, Type, TypeVar
 
 from text_lint.exceptions.schema import SplitGroupInvalid
-from text_lint.operations.bases.operation_base import OperationBase
 from text_lint.utilities.translations import _, f
 
 if TYPE_CHECKING:  # pragma: no cover
+  from text_lint.operations.bases.operation_base import OperationBase
   from text_lint.schema import Schema
 
 AliasYamlOperation = Dict[str, Any]
-TypeOperation = TypeVar("TypeOperation", bound=OperationBase)
+TypeOperation = TypeVar("TypeOperation", bound="OperationBase[Any]")
 
 
 class SchemaSectionBase(Generic[TypeOperation]):

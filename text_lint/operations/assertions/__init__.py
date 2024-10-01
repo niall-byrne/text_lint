@@ -1,4 +1,4 @@
-"""Parser assertions for text_lint."""
+"""Assertion operations for text_lint."""
 from typing import Dict, Type
 
 from .assert_blank import AssertBlank

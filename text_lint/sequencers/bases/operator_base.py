@@ -10,7 +10,7 @@ if TYPE_CHECKING:  # pragma: no cover
 
   from text_lint.operations.bases.operation_base import OperationBase
 
-TypeOperation = TypeVar("TypeOperation", bound="OperationBase")
+TypeOperation = TypeVar("TypeOperation", bound="OperationBase[Any]")
 
 
 class OperatorBase(SequencerBase[TypeOperation]):

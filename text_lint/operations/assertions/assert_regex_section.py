@@ -3,12 +3,11 @@
 import re
 from typing import TYPE_CHECKING, List, Match
 
-from text_lint.exceptions.assertions import AssertionViolation
 from text_lint.operations.assertions.bases import assertion_regex_base
 from text_lint.utilities.translations import _
 
 if TYPE_CHECKING:  # pragma: no cover
-  from text_lint.controller import Controller
+  from text_lint.controller.states import AssertionState
 
 YAML_EXAMPLE = """
 
@@ -35,31 +34,30 @@ class AssertRegexSection(assertion_regex_base.AssertionRegexBase):
 
   def apply(
       self,
-      controller: "Controller",
+      state: "AssertionState",
   ) -> None:
     """Apply the AssertRegexSection assertion logic."""
 
-    section_detected = False
     matches: List[Match[str]] = []
 
-    for data in controller.textfile:
+    while True:
+
+      try:
+        data = state.next()
+      except StopIteration:
+        break
 
       match = re.match(self.regex, data)
 
-      if not match and not section_detected:
-        raise AssertionViolation(
-            assertion=self,
-            expected=self.regex.pattern,
-            textfile=controller.textfile,
-        )
+      if match:
+        matches.append(match)
 
       if not match:
-        # Another operation must check this line now.
-        controller.textfile.index -= 1
-        break
+        if not matches:
+          state.fail(self.regex.pattern)
+        else:
+          # Another operation must check this line now.
+          state.rewind()
+          break
 
-      matches.append(match)
-      section_detected = True
-
-    result_tree = self.create_result_tree(matches)
-    controller.forest.add(result_tree)
+    state.save(matches)

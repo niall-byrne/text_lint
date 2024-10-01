@@ -1,4 +1,4 @@
-"""ValidationBase class."""
+"""ValidatorBase class."""
 
 import abc
 from typing import TYPE_CHECKING
@@ -6,14 +6,14 @@ from typing import TYPE_CHECKING
 from text_lint.operations.bases.operation_base import OperationBase
 
 if TYPE_CHECKING:  # pragma: no cover
-  from text_lint.controller import Controller
+  from text_lint.controller import states
 
 
-class ValidationBase(
-    OperationBase,
+class ValidatorBase(
+    OperationBase["states.ValidatorState"],
     abc.ABC,
 ):
-  """Parser validation base class."""
+  """Validation operation base class."""
 
   operation: str
   hint: str
@@ -24,6 +24,6 @@ class ValidationBase(
   @abc.abstractmethod
   def apply(
       self,
-      controller: "Controller",
+      state: "states.ValidatorState",
   ) -> None:
     """Apply the validation logic."""
