@@ -7,6 +7,7 @@ from .. import (
     ValidateEqual,
     ValidateMembership,
     ValidateNotEqual,
+    ValidateNotMembership,
     validator_registry,
 )
 
@@ -25,6 +26,7 @@ class TestValidatorRegistry:
         ValidateEqual.operation,
         ValidateMembership.operation,
         ValidateNotEqual.operation,
+        ValidateNotMembership.operation,
     ]
     validator_registry_key = list(validator_registry.keys())[index]
 
