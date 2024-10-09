@@ -58,20 +58,36 @@ msgstr ""
 msgid "list all available operations"
 msgstr ""
 
-#: text_lint/cli/interface.py:13
+#: text_lint/cli/interface.py:21
 msgid "Generic text file linter."
 msgstr ""
 
-#: text_lint/cli/interface.py:15
+#: text_lint/cli/interface.py:23
 msgid "command"
 msgstr ""
 
-#: text_lint/cli/interface.py:16
+#: text_lint/cli/interface.py:24
 msgid "description"
 msgstr ""
 
-#: text_lint/cli/interface.py:17
+#: text_lint/cli/interface.py:25
 msgid "show this help message and exit"
+msgstr ""
+
+#: text_lint/cli/interface.py:26
+msgid "folder_name"
+msgstr ""
+
+#: text_lint/cli/interface.py:28
+msgid "local folder containing custom extensions"
+msgstr ""
+
+#: text_lint/cli/interface.py:30
+msgid "package_name"
+msgstr ""
+
+#: text_lint/cli/interface.py:32
+msgid "python package containing custom extensions"
 msgstr ""
 
 #: text_lint/exceptions/assertions.py:23
@@ -437,6 +453,16 @@ msgstr ""
 #: text_lint/operations/documentation.py:41
 #, python-brace-format
 msgid "Unknown operation '{0}' !"
+msgstr ""
+
+#: text_lint/operations/external/local.py:17
+#, python-brace-format
+msgid "<< {0} local extension(s) have been loaded! >>"
+msgstr ""
+
+#: text_lint/operations/external/third_party.py:15
+#, python-brace-format
+msgid "<< {0} third-party extension(s) have been loaded! >>"
 msgstr ""
 
 #: text_lint/operations/lookups/as_json.py:14
