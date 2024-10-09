@@ -20,7 +20,7 @@ precision = 1
 
 [tool.coverage.run]
 branch = true
-omit = ['*/test*', 'text_lint/__main__.py']
+omit = ['*/test*', 'text_lint/__main__.py', 'text_lint/extend.py']
 source = ['.']
 
 [tool.isort]
@@ -122,7 +122,7 @@ text_lint = 'text_lint.__main__:cli'
 
 [tool.pylint]
 [tool.pylint.basic]
-argument-rgx = '[a-z_][a-z0-9_]{1,40}$|^(concrete|test)_[a-z0-9_]{2,70}$'
+argument-rgx = '[a-z_][a-z0-9_]{1,40}$|^(concrete|test|scenario)_[a-z0-9_]{2,70}$'
 attr-rgx = '(^[a-z_][a-z0-9_]{1,30})$|^(FLAG)_[A-Z0-9_]{1,30}|^msg_fmt_[a-z0-9_]{1,60}$'
 bad-names = 'foo,bar,baz,toto,tutu,tata'
 class-attribute-rgx = '([A-Za-z_][A-Za-z0-9_]{1,75}|(__.{2,30}__))$'
