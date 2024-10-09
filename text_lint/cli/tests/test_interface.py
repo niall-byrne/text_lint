@@ -1,10 +1,12 @@
 """Test the text_lint command line interface."""
 
 import argparse
+import os
 from typing import Dict, List, Union
 from unittest import mock
 
 import pytest
+from text_lint import env_vars
 from text_lint.__helpers__.translations import (
     as_translation,
     assert_is_translated,
@@ -12,6 +14,7 @@ from text_lint.__helpers__.translations import (
 from text_lint.cli.commands.check_command import CheckCommand
 from text_lint.cli.commands.documentation_command import DocumentationCommand
 from text_lint.cli.commands.list_command import ListCommand
+from text_lint.cli.types.directory_type import directory_type
 from .. import command_classes
 from ..interface import TextLintCli
 from .conftest import (
@@ -21,8 +24,23 @@ from .conftest import (
 )
 
 
+@mock.patch.dict(os.environ, {}, clear=True)
 class TestTextLintCli:
   """Test the text_lint command line interface."""
+
+  def check_extension_loader_mock_calls(
+      self,
+      cli_mocks: CLIMocks,
+  ) -> None:
+    for (loader, dest) in [
+        ("local_extension_loader", "local_folder"),
+        ("third_party_extension_loader", "third_party"),
+    ]:
+      mock_loader = getattr(cli_mocks, loader)
+      mock_loader.assert_called_once_with(
+          getattr(self.get_namespace(cli_mocks.invoke), dest)
+      )
+      mock_loader.return_value.load.assert_called_once_with()
 
   def check_namespace(
       self,
@@ -75,11 +93,57 @@ class TestTextLintCli:
     assert cli_instance.parser.prog == cli_instance.program_name
     assert cli_instance.parser.description == cli_instance.program_description
 
+  @pytest.mark.parametrize(
+      "environment,local_folder,third_party",
+      (
+          ({}, [], []),
+          (
+              {
+                  env_vars.EXTENSIONS_LOCAL_ENV_VAR: "value1"
+              },
+              ["value1"],
+              [],
+          ),
+          (
+              {
+                  env_vars.EXTENSIONS_LOCAL_ENV_VAR: "value1:value2"
+              },
+              ["value1", "value2"],
+              [],
+          ),
+          (
+              {
+                  env_vars.EXTENSIONS_THIRD_PARTY_ENV_VAR: "value1"
+              },
+              [],
+              ["value1"],
+          ),
+          (
+              {
+                  env_vars.EXTENSIONS_THIRD_PARTY_ENV_VAR: "value1:value2"
+              },
+              [],
+              ["value1", "value2"],
+          ),
+          (
+              {
+                  env_vars.EXTENSIONS_LOCAL_ENV_VAR: "value1:value2",
+                  env_vars.EXTENSIONS_THIRD_PARTY_ENV_VAR: "value3:value4"
+              },
+              ["value1", "value2"],
+              ["value3", "value4"],
+          ),
+      ),
+  )
   def test_initialize__parser_args(
       self,
       mocked_argument_parser: mock.Mock,
+      environment: Dict[str, str],
+      local_folder: List[str],
+      third_party: List[str],
   ) -> None:
-    cli = TextLintCli()
+    with mock.patch.dict(os.environ, environment, clear=True):
+      cli = TextLintCli()
 
     assert mocked_argument_parser.return_value.add_argument.mock_calls == [
         mock.call(
@@ -88,6 +152,26 @@ class TestTextLintCli:
             dest="help",
             help=cli.arg_help_help,
             action="store_true",
+        ),
+        mock.call(
+            "-l",
+            "--local-folder",
+            action='append',
+            default=local_folder,
+            dest="local_folder",
+            help=cli.arg_local_folder_help,
+            metavar=cli.arg_local_folder,
+            type=directory_type,
+        ),
+        mock.call(
+            "-t",
+            "--third-party",
+            action='append',
+            default=third_party,
+            dest="third_party",
+            help=cli.arg_third_party_help,
+            metavar=cli.arg_third_party,
+            type=str,
         )
     ]
 
@@ -99,6 +183,10 @@ class TestTextLintCli:
     assert_is_translated(cli_instance.arg_command)
     assert_is_translated(cli_instance.arg_command_help)
     assert_is_translated(cli_instance.arg_help_help)
+    assert_is_translated(cli_instance.arg_local_folder)
+    assert_is_translated(cli_instance.arg_local_folder_help)
+    assert_is_translated(cli_instance.arg_third_party)
+    assert_is_translated(cli_instance.arg_third_party_help)
 
   def test_invoke__no_arguments__displays_help(
       self,
@@ -149,6 +237,7 @@ class TestTextLintCli:
             "filenames": mocked_files[1:],
         },
     )
+    self.check_extension_loader_mock_calls(cli_mocks)
 
   def test_invoke__docs_command__invokes_command_correctly(
       self,
@@ -179,6 +268,7 @@ class TestTextLintCli:
             "operations": ["assert_blank", "assert_equal"],
         },
     )
+    self.check_extension_loader_mock_calls(cli_mocks)
 
   def test_invoke__list_command__invokes_command_correctly(
       self,
@@ -202,3 +292,4 @@ class TestTextLintCli:
             "command": ListCommand.command_name,
         },
     )
+    self.check_extension_loader_mock_calls(cli_mocks)
