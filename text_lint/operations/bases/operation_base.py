@@ -3,6 +3,9 @@
 import abc
 from typing import TYPE_CHECKING, Generic, TypeVar
 
+from text_lint.operations.mixins.parameter_validation import (
+    ParameterValidationMixin,
+)
 from text_lint.utilities.translations import _
 
 if TYPE_CHECKING:  # pragma: no cover
@@ -16,7 +19,7 @@ YAML_EXAMPLE_SECTIONS = {
 }
 
 
-class OperationBase(Generic[TypeState], abc.ABC):
+class OperationBase(Generic[TypeState], ParameterValidationMixin, abc.ABC):
 
   hint: str
   internal_use_only: bool = False
