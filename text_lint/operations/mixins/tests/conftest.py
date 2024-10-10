@@ -24,7 +24,6 @@ def concrete_parameter_class(
       PersonClass,
       parameter_validation.ParameterValidationMixin,
   ):
-
     def __init__(self, name: Any, identifier: Any) -> None:
       super().__init__(name, identifier)
       self.__post_init__()

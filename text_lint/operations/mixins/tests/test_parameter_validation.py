@@ -46,7 +46,7 @@ class TestParameterValidationMixin:
           ],
           ["simple_float_schema", 2.0],
           ["simple_list_schema", ["value"]],
-          ["simple_none_schema", None],
+          ["simple_optional_schema", None],
           ["simple_str_schema", "id"],
           [
               "complex_dict_schema",
@@ -65,7 +65,7 @@ class TestParameterValidationMixin:
       request: pytest.FixtureRequest,
   ) -> None:
     parameter_schema = request.getfixturevalue(fixture_name)
-    setattr(concrete_parameter_class, "parameters", parameter_schema)
+    setattr(concrete_parameter_class, "Schema", parameter_schema)
 
     concrete_parameter_class(name="string", identifier=identifier)
 
@@ -76,7 +76,7 @@ class TestParameterValidationMixin:
           ["simple_dict_schema", "{}", "{}"],
           ["simple_float_schema", "2.0", "2.0"],
           ["simple_list_schema", "[]", "[]"],
-          ["simple_none_schema", "None", "None"],
+          ["simple_optional_schema", 1.0, 1.0],
           ["simple_str_schema", None, None],
           [
               "complex_dict_schema",
@@ -97,7 +97,7 @@ class TestParameterValidationMixin:
       request: pytest.FixtureRequest,
   ) -> None:
     parameter_schema = request.getfixturevalue(fixture_name)
-    setattr(concrete_parameter_class, "parameters", parameter_schema)
+    setattr(concrete_parameter_class, "Schema", parameter_schema)
 
     with pytest.raises(TypeError) as exc:
       concrete_parameter_class(name="string", identifier=identifier)
