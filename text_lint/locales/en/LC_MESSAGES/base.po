@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: text_lint\n"
 "Report-Msgid-Bugs-To: niall@niallbyrne.ca\n"
-"POT-Creation-Date: 2024-10-17 19:23+0000\n"
+"POT-Creation-Date: 2024-10-19 14:20+0000\n"
 "PO-Revision-Date: 2024-07-17 13:54-0400\n"
 "Last-Translator: Niall Byrne <nialL@niallbyrne.ca>\n"
 "Language: en\n"
@@ -209,6 +209,16 @@ msgstr ""
 msgid "to lookup a specific value, prefix the name with '{0}'"
 msgstr ""
 
+#: text_lint/exceptions/operations.py:18 text_lint/exceptions/validators.py:22
+#, python-brace-format
+msgid "  DETAIL: {0}"
+msgstr ""
+
+#: text_lint/exceptions/operations.py:19
+#, python-brace-format
+msgid "  OPERATION CLASS: {0}"
+msgstr ""
+
 #: text_lint/exceptions/results.py:21
 msgid "The save id you've requested does not exist."
 msgstr ""
@@ -241,11 +251,6 @@ msgstr ""
 #: text_lint/exceptions/validators.py:20
 #, python-brace-format
 msgid "  VALIDATION OPERATION: {0}"
-msgstr ""
-
-#: text_lint/exceptions/validators.py:22
-#, python-brace-format
-msgid "  DETAIL: {0}"
 msgstr ""
 
 #: text_lint/exceptions/version.py:15
@@ -415,11 +420,11 @@ msgstr ""
 msgid "a concrete regex hint"
 msgstr ""
 
-#: text_lint/operations/bases/operation_base.py:14
+#: text_lint/operations/bases/operation_base.py:17
 msgid "Notes"
 msgstr ""
 
-#: text_lint/operations/bases/operation_base.py:15
+#: text_lint/operations/bases/operation_base.py:18
 msgid "Options"
 msgstr ""
 
@@ -637,6 +642,56 @@ msgstr ""
 
 #: text_lint/operations/lookups/to_upper.py:30
 msgid "convert a save id's values to uppercase"
+msgstr ""
+
+#: text_lint/operations/mixins/parameter_validation/__init__.py:26
+#, python-brace-format
+msgid "The value '{0}' is not valid for parameter '{1}'"
+msgstr ""
+
+#: text_lint/operations/mixins/parameter_validation/__init__.py:29
+#, python-brace-format
+msgid "The typing schema for parameter '{0}' is invalid."
+msgstr ""
+
+#: text_lint/operations/mixins/parameter_validation/__init__.py:32
+msgid "Valid parameter definitions must take the form of a dictionary:"
+msgstr ""
+
+#: text_lint/operations/mixins/parameter_validation/__init__.py:33
+#, python-brace-format
+msgid "    {2} specifies the expected python type."
+msgstr ""
+
+#: text_lint/operations/mixins/parameter_validation/__init__.py:34
+#, python-brace-format
+msgid "                supported types: {0}."
+msgstr ""
+
+#: text_lint/operations/mixins/parameter_validation/__init__.py:35
+#, python-brace-format
+msgid "    {3} optional type used only with the container types."
+msgstr ""
+
+#: text_lint/operations/mixins/parameter_validation/__init__.py:36
+#, python-brace-format
+msgid "                container types: {1}."
+msgstr ""
+
+#: text_lint/operations/mixins/parameter_validation/__init__.py:38
+msgid ""
+"                (dicts should specify a tuple of types in (key, value) "
+"format.)"
+msgstr ""
+
+#: text_lint/operations/mixins/parameter_validation/__init__.py:41
+#, python-brace-format
+msgid "    {4} optional bool to accept 'None' as a valid value."
+msgstr ""
+
+#: text_lint/operations/mixins/parameter_validation/__init__.py:42
+#, python-brace-format
+msgid "    {5} optional list of validator functions."
 msgstr ""
 
 #: text_lint/operations/validators/args/lookup_expression.py:19
