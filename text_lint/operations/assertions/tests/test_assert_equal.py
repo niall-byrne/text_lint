@@ -9,7 +9,9 @@ from text_lint.__helpers__.assertion import (
 )
 from text_lint.__helpers__.operations import (
     AliasOperationAttributes,
+    AliasParameterDefinitions,
     assert_operation_inheritance,
+    assert_parameter_schema,
 )
 from text_lint.__helpers__.translations import (
     assert_is_translated,
@@ -83,6 +85,27 @@ class TestAssertEqual:
     assert_operation_inheritance(
         assert_equal_instance,
         bases=(AssertionBase, AssertEqual),
+    )
+
+  def test_initialize__parameter_validation(
+      self,
+      assert_equal_instance: AssertEqual,
+      base_parameter_definition: AliasParameterDefinitions,
+  ) -> None:
+    base_parameter_definition.update(
+        {
+            "expected": {
+                "type": str,
+            },
+            "case_sensitive": {
+                "type": bool,
+            },
+        }
+    )
+
+    assert_parameter_schema(
+        instance=assert_equal_instance,
+        parameter_definitions=base_parameter_definition,
     )
 
   @pytest.mark.parametrize(

@@ -40,6 +40,9 @@ class AssertSequenceEnds(AssertionBase):
   ) -> None:
     super().__init__(name, None, None)
 
+  class Parameters:
+    name = {"type": str}
+
   def apply(
       self,
       state: "AssertionState",
