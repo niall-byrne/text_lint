@@ -11,11 +11,17 @@ from text_lint.__helpers__.assertion import (
 from text_lint.__helpers__.operations import (
     AliasOperationAttributes,
     assert_operation_inheritance,
+    assert_parameter_schema,
+    spy_on_validate_parameters,
 )
+from text_lint.config import SAVED_NAME_REGEX
 from text_lint.exceptions.assertions import AssertionCaptureGroupNotFound
 from text_lint.exceptions.results import SplitGroupNotFound
-from text_lint.exceptions.schema import SaveIdInvalid
 from text_lint.operations.assertions.bases.assertion_base import AssertionBase
+from text_lint.operations.mixins.parameter_validation import (
+    ParameterValidationMixin,
+    validators,
+)
 
 
 class TestAssertionBase:
@@ -66,19 +72,51 @@ class TestAssertionBase:
         concrete_assertion_base_instance, bases=(AssertionBase,)
     )
 
+  @spy_on_validate_parameters(AssertionBase)
+  def test_initialize__parameter_validation(
+      self,
+      validate_parameters_spy: mock.Mock,
+      concrete_assertion_base_instance: AssertionBase,
+  ) -> None:
+    assert_parameter_schema(
+        # pylint: disable=duplicate-code
+        instance=concrete_assertion_base_instance,
+        parameter_definitions={
+            "name": {
+                "type": str
+            },
+            "save":
+                {
+                    "type":
+                        str,
+                    "optional":
+                        True,
+                    "validators":
+                        [validators.create_matches_regex(SAVED_NAME_REGEX)],
+                }
+        }
+    )
+    validate_parameters_spy.assert_called_once_with(
+        concrete_assertion_base_instance
+    )
+
   def test_initialize__invalid_save_id__raises_exception(
       self,
       concrete_assertion_base_class: Type[AssertionBase],
   ) -> None:
     invalid_save_id = "invalid save id with spaces and ~ $ # characters"
 
-    with pytest.raises(SaveIdInvalid) as exc:
+    with pytest.raises(TypeError) as exc:
       concrete_assertion_base_class(
           name="assertion with invalid save id",
           save=invalid_save_id,
       )
 
-    assert str(exc.value) == invalid_save_id
+    assert str(
+        exc.value
+    ) == ParameterValidationMixin.msg_fmt_parameter_invalid_value.format(
+        invalid_save_id, "save"
+    )
 
   def test_apply__calls_mocked_implementation(
       self,

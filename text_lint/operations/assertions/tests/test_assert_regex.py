@@ -8,7 +8,10 @@ from text_lint.__helpers__.assertion import (
 )
 from text_lint.__helpers__.operations import (
     AliasOperationAttributes,
+    AliasParameterDefinitions,
     assert_operation_inheritance,
+    assert_parameter_schema,
+    spy_on_validate_parameters,
 )
 from text_lint.__helpers__.translations import (
     assert_is_translated,
@@ -85,6 +88,19 @@ class TestAssertRegex:
             AssertRegex,
         ),
     )
+
+  @spy_on_validate_parameters(AssertRegex)
+  def test_initialize__parameter_validation(
+      self,
+      validate_parameters_spy: mock.Mock,
+      assert_regex_instance: AssertRegex,
+      base_parameter_definitions: AliasParameterDefinitions,
+  ) -> None:
+    assert_parameter_schema(
+        instance=assert_regex_instance,
+        parameter_definitions=base_parameter_definitions,
+    )
+    validate_parameters_spy.assert_called_once_with(assert_regex_instance)
 
   def test_apply__matches__saves_result(
       self,

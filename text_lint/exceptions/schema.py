@@ -58,16 +58,8 @@ class LookupExpressionInvalidSequence(SchemaExceptionBase):
   """Raised when a positional lookup is used after a transformation lookup."""
 
 
-class SaveIdInvalid(SchemaExceptionBase):
-  """Raised when a misconfigured save id is found in the schema."""
-
-
 class SequenceInvalid(SchemaExceptionBase):
   """Raised when a misconfigured sequence control is found in the schema."""
-
-
-class SplitGroupInvalid(SchemaExceptionBase):
-  """Raised when a misconfigured split group is found in the schema."""
 
 
 class UnsupportedSchemaVersion(SchemaExceptionBase):

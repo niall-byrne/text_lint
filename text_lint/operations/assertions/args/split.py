@@ -2,7 +2,10 @@
 
 from typing import Any, Dict, List, Optional
 
-from text_lint.exceptions.schema import SplitGroupInvalid
+from text_lint.operations.mixins.parameter_validation import (
+    ParameterValidationMixin,
+    validators,
+)
 from text_lint.utilities.translations import _
 
 AliasYamlSplit = Optional[List[Dict[str, Any]]]
@@ -39,7 +42,7 @@ class SplitArgs:
     return {split.group: split.separator for split in self.splits}
 
 
-class Split:
+class Split(ParameterValidationMixin):
   """String split definition."""
 
   def __init__(
@@ -47,8 +50,13 @@ class Split:
       group: int,
       separator: Optional[str] = None,
   ) -> None:
-    if group < 1:
-      raise SplitGroupInvalid
-
     self.group = group
     self.separator = separator
+    self.validate_parameters()
+
+  class Parameters:
+    group = {
+        "type": int,
+        "validators": [validators.create_is_greater_than_or_equal(1)],
+    }
+    separator = {"type": str, "optional": True}

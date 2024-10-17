@@ -1,6 +1,12 @@
 """Test the Split class."""
+from unittest import mock
+
 import pytest
-from text_lint.exceptions.schema import SplitGroupInvalid
+from text_lint.__helpers__.operations import (
+    assert_parameter_schema,
+    spy_on_validate_parameters,
+)
+from text_lint.operations.mixins.parameter_validation import validators
 from ..split import Split
 
 
@@ -21,5 +27,30 @@ class TestSplit:
 
   def test_initialize__invalid_split_group__raises_exception(self) -> None:
 
-    with pytest.raises(SplitGroupInvalid):
+    with pytest.raises(TypeError):
       Split(group=-1, separator="-")
+
+  @spy_on_validate_parameters(Split)
+  def test_initialize__parameter_validation(
+      self,
+      validate_parameters_spy: mock.Mock,
+  ) -> None:
+    instance = Split(group=1)
+
+    assert_parameter_schema(
+        instance=instance,
+        parameter_definitions={
+            "group":
+                {
+                    "type":
+                        int,
+                    "validators":
+                        [validators.create_is_greater_than_or_equal(1)],
+                },
+            "separator": {
+                "type": str,
+                "optional": True
+            },
+        },
+    )
+    validate_parameters_spy.assert_called_once_with(instance)

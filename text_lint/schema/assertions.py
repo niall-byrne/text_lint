@@ -8,7 +8,7 @@ from text_lint.operations.assertions import (
     assertion_registry,
 )
 from text_lint.schema.bases.section_base import SchemaSectionBase
-from text_lint.utilities.translations import _, f
+from text_lint.utilities.translations import _
 
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.operations.assertions.bases.assertion_base import (
@@ -23,8 +23,6 @@ class SchemaAssertions(SchemaSectionBase["AssertionBase"]):
   operation_classes: Dict[str, Type["AssertionBase"]] = assertion_registry
   entity_name = "assertion"
   automated_section_end_assertion_name = _("Automated End of Sequence")
-
-  msg_fmt_no_nested_assertions = _("No assertions found")
 
   def hook_load_operation_instances(
       self,
@@ -63,12 +61,6 @@ class SchemaAssertions(SchemaSectionBase["AssertionBase"]):
       self,
       yaml_definition: "AliasYamlOperation",
   ) -> "AliasYamlOperation":
-    if len(yaml_definition["assertions"]) == 0:
-      raise self._schema.create_exception(
-          description=f(self.msg_fmt_no_nested_assertions, nl=1),
-          operation_definition=yaml_definition
-      )
-
     nested_assertion_set = self.load(yaml_definition["assertions"])
     yaml_definition["assertions"] = nested_assertion_set
     return yaml_definition
