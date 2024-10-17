@@ -7,8 +7,6 @@ from text_lint.exceptions.schema import (
     LookupExpressionInvalid,
     LookupExpressionInvalidDuplicatePositional,
     LookupExpressionInvalidSequence,
-    SaveIdInvalid,
-    SplitGroupInvalid,
     ValidatorParametersInvalid,
 )
 from text_lint.utilities.translations import _, f
@@ -28,8 +26,6 @@ class SchemaSectionBase(Generic[TypeOperation]):
   entity_name: "str"
 
   msg_fmt_invalid_regex = _("{0} #{1} Invalid regex")
-  msg_fmt_invalid_save_id = _("{0} #{1} Invalid save id")
-  msg_fmt_invalid_split_group = _("{0} #{1} Invalid split group")
   msg_fmt_invalid_lookup_expression = _(
       "{0} #{1} Invalid lookup expression: '{2}'"
   )
@@ -156,26 +152,6 @@ class SchemaSectionBase(Generic[TypeOperation]):
       raise self._schema.create_exception(
           description=f(
               self.msg_fmt_invalid_regex,
-              self.entity_name,
-              operation_index + 1,
-              nl=1,
-          ),
-          operation_definition=operation_definition,
-      ) from exc
-    except SaveIdInvalid as exc:
-      raise self._schema.create_exception(
-          description=f(
-              self.msg_fmt_invalid_save_id,
-              self.entity_name,
-              operation_index + 1,
-              nl=1,
-          ),
-          operation_definition=operation_definition,
-      ) from exc
-    except SplitGroupInvalid as exc:
-      raise self._schema.create_exception(
-          description=f(
-              self.msg_fmt_invalid_split_group,
               self.entity_name,
               operation_index + 1,
               nl=1,

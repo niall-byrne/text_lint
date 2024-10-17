@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: text_lint\n"
 "Report-Msgid-Bugs-To: niall@niallbyrne.ca\n"
-"POT-Creation-Date: 2024-10-19 14:20+0000\n"
+"POT-Creation-Date: 2024-10-20 01:43+0000\n"
 "PO-Revision-Date: 2024-07-17 13:54-0400\n"
 "Last-Translator: Niall Byrne <nialL@niallbyrne.ca>\n"
 "Language: en\n"
@@ -242,7 +242,7 @@ msgstr ""
 msgid "  OPERATION DEFINITION:"
 msgstr ""
 
-#: text_lint/exceptions/schema.py:77
+#: text_lint/exceptions/schema.py:69
 #, python-brace-format
 msgid ""
 "This version of text_lint only supports schema versions {0} through {1} !"
@@ -315,14 +315,14 @@ msgstr ""
 msgid "mocked_translated_detail"
 msgstr ""
 
-#: text_lint/operations/assertions/args/split.py:15
+#: text_lint/operations/assertions/args/split.py:18
 #, python-brace-format
 msgid "The value '{0}' is not a valid set of string splits"
 msgstr ""
 
 #: text_lint/operations/assertions/assert_blank.py:12
 #: text_lint/operations/assertions/assert_equal.py:15
-#: text_lint/operations/assertions/assert_sequence_begins.py:16
+#: text_lint/operations/assertions/assert_sequence_begins.py:19
 msgid "example assert blank assertion"
 msgstr ""
 
@@ -343,7 +343,7 @@ msgid "this line must match the expected value"
 msgstr ""
 
 #: text_lint/operations/assertions/assert_regex.py:14
-#: text_lint/operations/assertions/assert_sequence_begins.py:17
+#: text_lint/operations/assertions/assert_sequence_begins.py:20
 msgid "example assert regex assertion"
 msgstr ""
 
@@ -359,29 +359,29 @@ msgstr ""
 msgid "one or more adjacent lines (the 'section') must match this regex"
 msgstr ""
 
-#: text_lint/operations/assertions/assert_sequence_begins.py:15
+#: text_lint/operations/assertions/assert_sequence_begins.py:18
 msgid "example assert sequence begins assertion"
 msgstr ""
 
-#: text_lint/operations/assertions/assert_sequence_begins.py:18
+#: text_lint/operations/assertions/assert_sequence_begins.py:21
 msgid "Set count to 0 to disable the nested assertions."
 msgstr ""
 
-#: text_lint/operations/assertions/assert_sequence_begins.py:19
+#: text_lint/operations/assertions/assert_sequence_begins.py:22
 #, python-brace-format
 msgid "Set count to {LOOP_COUNT} to repeat the nested assertions until EOF."
 msgstr ""
 
-#: text_lint/operations/assertions/assert_sequence_begins.py:51
+#: text_lint/operations/assertions/assert_sequence_begins.py:54
 msgid "identify a repeating sequence of assertions"
 msgstr ""
 
-#: text_lint/operations/assertions/assert_sequence_begins.py:56
+#: text_lint/operations/assertions/assert_sequence_begins.py:59
 #, python-brace-format
 msgid "assertion #{0} there is an invalid sequence count"
 msgstr ""
 
-#: text_lint/operations/assertions/assert_sequence_begins.py:59
+#: text_lint/operations/assertions/assert_sequence_begins.py:62
 #, python-brace-format
 msgid ""
 "assertion #{0} there are unexpected additional assertions following this 'to "
@@ -893,56 +893,42 @@ msgstr ""
 msgid "Automated End of Sequence"
 msgstr ""
 
-#: text_lint/schema/assertions.py:27
-msgid "No assertions found"
-msgstr ""
-
-#: text_lint/schema/bases/section_base.py:30
+#: text_lint/schema/bases/section_base.py:28
 #, python-brace-format
 msgid "{0} #{1} Invalid regex"
 msgstr ""
 
-#: text_lint/schema/bases/section_base.py:31
-#, python-brace-format
-msgid "{0} #{1} Invalid save id"
-msgstr ""
-
-#: text_lint/schema/bases/section_base.py:32
-#, python-brace-format
-msgid "{0} #{1} Invalid split group"
-msgstr ""
-
-#: text_lint/schema/bases/section_base.py:34
+#: text_lint/schema/bases/section_base.py:30
 #, python-brace-format
 msgid "{0} #{1} Invalid lookup expression: '{2}'"
 msgstr ""
 
-#: text_lint/schema/bases/section_base.py:37
+#: text_lint/schema/bases/section_base.py:33
 #, python-brace-format
 msgid "{0} #{1} Invalid lookup expression: duplicate use of '{2}'"
 msgstr ""
 
-#: text_lint/schema/bases/section_base.py:40
+#: text_lint/schema/bases/section_base.py:36
 #, python-brace-format
 msgid "{0} #{1} Transformation lookup in wrong sequence: '{2}'"
 msgstr ""
 
-#: text_lint/schema/bases/section_base.py:43
+#: text_lint/schema/bases/section_base.py:39
 #, python-brace-format
 msgid "{0} #{1} Invalid parameters: {2}"
 msgstr ""
 
-#: text_lint/schema/bases/section_base.py:46
+#: text_lint/schema/bases/section_base.py:42
 #, python-brace-format
 msgid "{0} #{1} This operation is for internal use only"
 msgstr ""
 
-#: text_lint/schema/bases/section_base.py:48
+#: text_lint/schema/bases/section_base.py:44
 #, python-brace-format
 msgid "{0} #{1} Unknown operation"
 msgstr ""
 
-#: text_lint/schema/bases/section_base.py:49
+#: text_lint/schema/bases/section_base.py:45
 #, python-brace-format
 msgid "{0} #{1} Unknown syntax"
 msgstr ""

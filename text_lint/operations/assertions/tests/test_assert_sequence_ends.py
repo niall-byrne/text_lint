@@ -1,9 +1,14 @@
 """Test AssertSequenceEnds class."""
 
+from unittest import mock
+
 from text_lint.__helpers__.assertion import assert_assertion_attributes
 from text_lint.__helpers__.operations import (
     AliasOperationAttributes,
+    AliasParameterDefinitions,
     assert_operation_inheritance,
+    assert_parameter_schema,
+    spy_on_validate_parameters,
 )
 from text_lint.__helpers__.translations import (
     assert_is_translated,
@@ -57,4 +62,21 @@ class TestAssertSequenceEnds:
             AssertionBase,
             AssertSequenceEnds,
         ),
+    )
+
+  @spy_on_validate_parameters(AssertSequenceEnds)
+  def test_initialize__parameter_validation(
+      self,
+      validate_parameters_spy: mock.Mock,
+      assert_sequence_ends_instance: AssertSequenceEnds,
+      base_parameter_definitions: AliasParameterDefinitions,
+  ) -> None:
+    del base_parameter_definitions["save"]
+
+    assert_parameter_schema(
+        instance=assert_sequence_ends_instance,
+        parameter_definitions=base_parameter_definitions,
+    )
+    validate_parameters_spy.assert_called_once_with(
+        assert_sequence_ends_instance
     )

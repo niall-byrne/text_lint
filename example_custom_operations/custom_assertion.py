@@ -25,6 +25,9 @@ class CustomAssertion(AssertionBase):
   ) -> None:
     super().__init__(name=name, save=None, splits=None)
 
+  class Parameters:
+    name = {"type": str}
+
   def apply(self, state: "AssertionState") -> None:
 
     data = state.next()

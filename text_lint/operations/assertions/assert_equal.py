@@ -58,6 +58,10 @@ class AssertEqual(assertion_regex_base.AssertionRegexBase):
     self.case_sensitive = case_sensitive
     super().__init__(name, "(.*)", save, splits)
 
+  class Parameters(assertion_regex_base.AssertionRegexBase.Parameters):
+    expected = {"type": str}
+    case_sensitive = {"type": bool}
+
   def apply(
       self,
       state: "AssertionState",
