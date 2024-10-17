@@ -18,10 +18,12 @@ from text_lint.__helpers__.validators import (
     assert_is_validation_failure,
     validate_expression_with_numeric_lookup_results,
 )
-from text_lint.exceptions.schema import ValidatorParametersInvalid
 from text_lint.exceptions.validators import (
     ValidationFailure,
     ValidationInvalidComparison,
+)
+from text_lint.operations.mixins.parameter_validation import (
+    ParameterValidationMixin,
 )
 from text_lint.operations.validators.args.lookup_expression import (
     LookupExpressionSetArg,
@@ -73,7 +75,6 @@ class TestValidateExpression:
     assert_is_translated(
         validate_expression_instance.msg_fmt_invalid_comparison_detail
     )
-    assert_is_translated(ValidateExpression.msg_fmt_invalid_operator)
     assert_is_translated_yaml_example(
         validate_expression_instance.yaml_example,
         YAML_EXAMPLE_COMPONENTS,
@@ -163,7 +164,7 @@ class TestValidateExpression:
       mocked_validator_name: str,
       invalid_operator: str,
   ) -> None:
-    with pytest.raises(ValidatorParametersInvalid) as exc:
+    with pytest.raises(TypeError) as exc:
       ValidateExpression(
           mocked_validator_name,
           operator=invalid_operator,
@@ -173,7 +174,10 @@ class TestValidateExpression:
       )
 
     assert str(exc.value) == \
-        ValidateExpression.msg_fmt_invalid_operator.format(invalid_operator)
+        ParameterValidationMixin.msg_fmt_parameter_invalid_value.format(
+          invalid_operator,
+          "operator",
+        )
 
   @validate_expression_with_numeric_lookup_results
   @pytest.mark.parametrize("validate_expression_instance", ["+"], indirect=True)
