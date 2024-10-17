@@ -13,6 +13,7 @@ pytest_plugins = [
     "text_lint.__fixtures__.lookup_expressions",
     "text_lint.__fixtures__.lookup_params",
     "text_lint.__fixtures__.mocks",
+    "text_lint.__fixtures__.operations",
 ]
 
 mocked_t = mock.Mock(side_effect=lambda text: TRANSLATION_MARKER + text)

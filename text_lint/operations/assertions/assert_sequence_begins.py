@@ -5,6 +5,9 @@ from typing import TYPE_CHECKING, List
 from text_lint.config import LOOP_COUNT
 from text_lint.operations.assertions.bases.assertion_base import AssertionBase
 from text_lint.operations.bases.operation_base import YAML_EXAMPLE_SECTIONS
+from text_lint.operations.mixins.parameter_validation import (
+    validator_factories,
+)
 from text_lint.utilities.translations import _, f
 
 if TYPE_CHECKING:  # pragma: no cover
@@ -70,6 +73,23 @@ class AssertSequenceBegins(AssertionBase):
     self.assertions = assertions
     super().__init__(name, None, None)
 
+  class Parameters(AssertionBase.Parameters):
+    assertions = {
+        "type":
+            list,
+        "validators":
+            [
+                validator_factories.create_is_greater_than_or_equal(
+                    1,
+                    conversion_function=len,
+                )
+            ],
+    }
+    count = {
+        "type": int,
+        "validators": [validator_factories.create_is_greater_than_or_equal(-1)],
+    }
+
   def apply(
       self,
       state: "AssertionState",
@@ -86,18 +106,6 @@ class AssertSequenceBegins(AssertionBase):
       schema: "Schema",
   ) -> None:
     """Optional additional schema level validation for this assertion."""
-
-    if self.count != LOOP_COUNT and self.count < 0:
-      raise schema.create_exception(
-          description=f(
-              self.msg_fmt_invalid_sequence_count,
-              schema_assertion_index,
-              nl=1,
-          ),
-          operation_definition=self._simplify_yaml_definition(
-              schema_assertion_definitions[schema_assertion_index],
-          )
-      )
 
     if (
         self.count == LOOP_COUNT

@@ -9,9 +9,13 @@ from text_lint.__helpers__.translations import (
 )
 from text_lint.exceptions.operations import InvalidParameterValidation
 from text_lint.operations.bases.operation_base import OperationBase
+from text_lint.operations.mixins.parameter_validation import (
+    ParameterValidationMixin,
+)
 from text_lint.utilities.translations import f as translation_f
 
 AliasOperationAttributes = Dict[str, Any]
+AliasParameterDefinitions = Dict[str, Dict[str, Any]]
 
 REQUIRED_ATTRIBUTES = [
     "internal_use_only",
@@ -82,3 +86,36 @@ def assert_operation_inheritance(
         operation_instance,
         base,
     )
+
+
+def assert_parameter_schema(
+    instance: "ParameterValidationMixin",
+    parameter_definitions: AliasParameterDefinitions,
+) -> None:
+  parameter_schema_class = getattr(
+      instance,
+      ParameterValidationMixin.parameter_schema_class_name,
+  )
+
+  defined_schema_parameters = [
+      attribute_name for attribute_name in dir(parameter_schema_class)
+      if not attribute_name.startswith("__")
+  ]
+
+  assert len(defined_schema_parameters) == len(parameter_definitions)
+
+  for parameter_name, expected_parameter_schema in (
+      parameter_definitions.items()
+  ):
+    schema_parameter = getattr(parameter_schema_class, parameter_name)
+    assert schema_parameter == expected_parameter_schema
+
+
+def spy_on_validate_parameters(
+    klass: Type[ParameterValidationMixin]
+) -> pytest.MarkDecorator:
+  return pytest.mark.parametrize(
+      "validate_parameters_spy",
+      [klass],
+      indirect=True,
+  )

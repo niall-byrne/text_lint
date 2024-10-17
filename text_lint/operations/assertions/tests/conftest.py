@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING, List, NamedTuple
 from unittest import mock
 
 import pytest
+from text_lint.operations.assertions.bases.assertion_base import AssertionBase
 from .. import (
     assert_blank,
     assert_equal,
@@ -15,15 +16,21 @@ from .. import (
 )
 
 if TYPE_CHECKING:  # pragma: no cover
-  from text_lint.operations.assertions.bases.assertion_base import (
-      AssertionBase,
-  )
+  from text_lint.__helpers__.operations import AliasParameterDefinitions
   from text_lint.schema import AliasYamlOperation
 
 
 class CaseSensitivityScenario(NamedTuple):
   sensitive: bool
   text: str
+
+
+@pytest.fixture
+def base_parameter_definitions() -> "AliasParameterDefinitions":
+  return {
+      "name": AssertionBase.Parameters.name,
+      "save": AssertionBase.Parameters.save,
+  }
 
 
 @pytest.fixture

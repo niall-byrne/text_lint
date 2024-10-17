@@ -1,11 +1,14 @@
 """Test the AssertionRegexBase class."""
 
 from typing import Type
+from unittest import mock
 
 from text_lint.__helpers__.assertion import assert_assertion_attributes
 from text_lint.__helpers__.operations import (
     AliasOperationAttributes,
     assert_operation_inheritance,
+    assert_parameter_schema,
+    spy_on_validate_parameters,
 )
 from text_lint.operations.assertions.bases.assertion_base import AssertionBase
 from text_lint.operations.assertions.bases.assertion_regex_base import (
@@ -66,4 +69,21 @@ class TestAssertionRegexBase:
     assert_operation_inheritance(
         concrete_assertion_regex_base_instance,
         bases=(AssertionBase, AssertionRegexBase),
+    )
+
+  @spy_on_validate_parameters(AssertionRegexBase)
+  def test_initialize__parameter_validation(
+      self,
+      validate_parameters_spy: mock.Mock,
+      concrete_assertion_regex_base_instance: AssertionRegexBase,
+  ) -> None:
+    assert_parameter_schema(
+        instance=concrete_assertion_regex_base_instance,
+        parameter_definitions={
+            "name": AssertionBase.Parameters.name,
+            "save": AssertionBase.Parameters.save,
+        }
+    )
+    validate_parameters_spy.assert_called_once_with(
+        concrete_assertion_regex_base_instance
     )
