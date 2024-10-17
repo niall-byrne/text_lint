@@ -6,11 +6,14 @@ from text_lint.__helpers__.assertion import assert_assertion_attributes
 from text_lint.__helpers__.operations import (
     AliasOperationAttributes,
     assert_operation_inheritance,
+    assert_parameter_schema,
 )
+from text_lint.config import SAVED_NAME_REGEX
 from text_lint.operations.assertions.bases.assertion_base import AssertionBase
 from text_lint.operations.assertions.bases.assertion_regex_base import (
     AssertionRegexBase,
 )
+from text_lint.operations.mixins.parameter_validation import validators
 
 
 class TestAssertionRegexBase:
@@ -66,4 +69,26 @@ class TestAssertionRegexBase:
     assert_operation_inheritance(
         concrete_assertion_regex_base_instance,
         bases=(AssertionBase, AssertionRegexBase),
+    )
+
+  def test_initialize__parameter_validation(
+      self,
+      concrete_assertion_regex_base_instance: AssertionRegexBase,
+  ) -> None:
+    assert_parameter_schema(
+        instance=concrete_assertion_regex_base_instance,
+        parameter_definitions={
+            "name": {
+                "type": str
+            },
+            "save":
+                {
+                    "type":
+                        str,
+                    "optional":
+                        True,
+                    "validators":
+                        [validators.create_matches_regex(SAVED_NAME_REGEX),],
+                }
+        }
     )

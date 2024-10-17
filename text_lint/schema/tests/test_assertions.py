@@ -3,7 +3,6 @@
 from typing import TYPE_CHECKING, List
 from unittest import mock
 
-import pytest
 from text_lint.__fixtures__.mocks import AliasMethodMocker
 from text_lint.__helpers__.translations import (
     as_translation,
@@ -14,7 +13,6 @@ from text_lint.operations.assertions import (
     AssertSequenceEnds,
     assertion_registry,
 )
-from text_lint.utilities.translations import f
 from ..assertions import SchemaAssertions
 from .fixtures import schemas
 
@@ -36,7 +34,6 @@ class TestSchemaAssertions:
 
   def test_translated_attributes(self,) -> None:
     assert_is_translated(SchemaAssertions.automated_section_end_assertion_name)
-    assert_is_translated(SchemaAssertions.msg_fmt_no_nested_assertions)
 
   def test_hook_load_operation_instances__calls_schema_validator(
       self,
@@ -101,26 +98,6 @@ class TestSchemaAssertions:
 
     assert result == {"assertions": mocked_load_method.return_value}
     mocked_load_method.assert_called_once_with(["mocked_yaml_content"])
-
-  def test_hook_create_operation_instance__empty_nested__raises_exception(
-      self,
-      mocked_schema: mock.Mock,
-  ) -> None:
-    mocked_schema.create_exception.side_effect = Exception
-    mocked_operation_class = mock.Mock()
-    mocked_operation_class.operation = AssertSequenceBegins.operation
-    instance = SchemaAssertions(mocked_schema)
-
-    with pytest.raises(Exception):
-      instance.hook_create_operation_instance(
-          mocked_operation_class,
-          {"assertions": []},
-      )
-
-    mocked_schema.create_exception.assert_called_once_with(
-        description=f(instance.msg_fmt_no_nested_assertions, nl=1),
-        operation_definition={"assertions": []}
-    )
 
   def test_hook_create_operation_instance__non_nested__does_not_append(
       self,

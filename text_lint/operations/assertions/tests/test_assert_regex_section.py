@@ -9,7 +9,9 @@ from text_lint.__helpers__.assertion import (
 )
 from text_lint.__helpers__.operations import (
     AliasOperationAttributes,
+    AliasParameterDefinitions,
     assert_operation_inheritance,
+    assert_parameter_schema,
 )
 from text_lint.__helpers__.translations import (
     assert_is_translated,
@@ -97,6 +99,16 @@ class TestAssertRegexSection:
             AssertionRegexBase,
             AssertRegexSection,
         )
+    )
+
+  def test_initialize__parameter_validation(
+      self,
+      assert_regex_section_instance: AssertRegexSection,
+      base_parameter_definitions: AliasParameterDefinitions,
+  ) -> None:
+    assert_parameter_schema(
+        instance=assert_regex_section_instance,
+        parameter_definitions=base_parameter_definitions,
     )
 
   def test_apply__one_line__matches__saves_result(

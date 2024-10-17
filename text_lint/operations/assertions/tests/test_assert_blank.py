@@ -5,7 +5,9 @@ from unittest import mock
 from text_lint.__helpers__.assertion import assert_assertion_attributes
 from text_lint.__helpers__.operations import (
     AliasOperationAttributes,
+    AliasParameterDefinitions,
     assert_operation_inheritance,
+    assert_parameter_schema,
 )
 from text_lint.__helpers__.translations import (
     assert_is_translated,
@@ -51,6 +53,18 @@ class TestAssertBlank:
     assert_operation_inheritance(
         assert_blank_instance,
         bases=(AssertionBase, AssertBlank),
+    )
+
+  def test_initialize__parameter_validation(
+      self,
+      assert_blank_instance: AssertBlank,
+      base_parameter_definitions: AliasParameterDefinitions,
+  ) -> None:
+    del base_parameter_definitions["save"]
+
+    assert_parameter_schema(
+        instance=assert_blank_instance,
+        parameter_definitions=base_parameter_definitions,
     )
 
   def test_apply__matches__does_not_save_result(
