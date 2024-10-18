@@ -1,7 +1,7 @@
 """Shared test fixtures for the validator classes."""
 # pylint: disable=redefined-outer-name
 
-from typing import List
+from typing import TYPE_CHECKING, List
 from unittest import mock
 
 import pytest
@@ -16,6 +16,18 @@ from .. import (
 )
 # pylint: disable=wildcard-import,unused-wildcard-import
 from .scenarios import *
+
+if TYPE_CHECKING:  # pragma: no cover
+  from text_lint.__helpers__.operations import AliasParameterDefinitions
+
+
+@pytest.fixture
+def base_parameter_definitions() -> "AliasParameterDefinitions":
+  return {
+      "name": {
+          "type": str
+      },
+  }
 
 
 @pytest.fixture

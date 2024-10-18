@@ -6,8 +6,10 @@ from unittest import mock
 
 from text_lint.__helpers__.operations import (
     AliasOperationAttributes,
+    AliasParameterDefinitions,
     assert_operation_attributes,
     assert_operation_inheritance,
+    assert_parameter_schema,
 )
 from text_lint.__helpers__.translations import (
     assert_is_translated,
@@ -63,6 +65,16 @@ class TestValidateDebug:
     assert_operation_inheritance(
         validate_debug_instance,
         bases=(ValidatorBase, ValidateDebug),
+    )
+
+  def test_initialize__parameters(
+      self,
+      validate_debug_instance: ValidateDebug,
+      base_parameter_definitions: AliasParameterDefinitions,
+  ) -> None:
+    assert_parameter_schema(
+        instance=validate_debug_instance,
+        parameter_definitions=base_parameter_definitions,
     )
 
   def test_initialize__creates_lookup_expression_set_arg_instance(

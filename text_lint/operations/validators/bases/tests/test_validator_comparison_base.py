@@ -8,6 +8,7 @@ from text_lint.__helpers__.operations import (
     AliasOperationAttributes,
     assert_operation_attributes,
     assert_operation_inheritance,
+    assert_parameter_schema,
 )
 from text_lint.__helpers__.translations import assert_is_translated
 from text_lint.__helpers__.validators import (
@@ -83,6 +84,17 @@ class TestValidationComparisonBase:
             ValidatorBase,
             ValidationComparisonBase,
         ),
+    )
+
+  def test_initialize__parameters(
+      self,
+      concrete_validator_comparison_base_instance: ValidatorBase,
+  ) -> None:
+    assert_parameter_schema(
+        instance=concrete_validator_comparison_base_instance,
+        parameter_definitions={"name": {
+            "type": str
+        }}
     )
 
   def test_initialize__creates_result_set_arg_a_instance(

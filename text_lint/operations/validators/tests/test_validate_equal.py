@@ -6,8 +6,10 @@ from unittest import mock
 import pytest
 from text_lint.__helpers__.operations import (
     AliasOperationAttributes,
+    AliasParameterDefinitions,
     assert_operation_attributes,
     assert_operation_inheritance,
+    assert_parameter_schema,
 )
 from text_lint.__helpers__.translations import (
     assert_is_translated,
@@ -63,6 +65,16 @@ class TestValidateEqual:
     assert_operation_inheritance(
         validate_equal_instance,
         bases=(ValidatorBase, ValidateEqual),
+    )
+
+  def test_initialize__parameters(
+      self,
+      validate_equal_instance: ValidateEqual,
+      base_parameter_definitions: AliasParameterDefinitions,
+  ) -> None:
+    assert_parameter_schema(
+        instance=validate_equal_instance,
+        parameter_definitions=base_parameter_definitions,
     )
 
   @pytest.mark.usefixtures("scenario__comparison__lookup_results_equal")

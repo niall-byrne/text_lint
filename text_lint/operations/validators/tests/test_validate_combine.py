@@ -5,13 +5,17 @@ from unittest import mock
 
 from text_lint.__helpers__.operations import (
     AliasOperationAttributes,
+    AliasParameterDefinitions,
     assert_operation_attributes,
     assert_operation_inheritance,
+    assert_parameter_schema,
 )
 from text_lint.__helpers__.translations import (
     assert_is_translated,
     assert_is_translated_yaml_example,
 )
+from text_lint.config import SAVED_NAME_REGEX
+from text_lint.operations.mixins.parameter_validation import validators
 from text_lint.operations.validators.args.lookup_expression import (
     LookupExpressionSetArg,
 )
@@ -63,6 +67,29 @@ class TestValidateCombine:
     assert_operation_inheritance(
         validate_combine_instance,
         bases=(ValidatorBase, ValidateCombine),
+    )
+
+  def test_initialize__parameters(
+      self,
+      validate_combine_instance: ValidatorBase,
+      base_parameter_definitions: AliasParameterDefinitions,
+  ) -> None:
+    # pylint: disable=duplicate-code
+    base_parameter_definitions.update(
+        {
+            "new_saved":
+                {
+                    "type":
+                        str,
+                    "validators":
+                        [validators.create_matches_regex(SAVED_NAME_REGEX)],
+                }
+        }
+    )
+
+    assert_parameter_schema(
+        instance=validate_combine_instance,
+        parameter_definitions=base_parameter_definitions,
     )
 
   def test_initialize__creates_result_set_arg_instance(

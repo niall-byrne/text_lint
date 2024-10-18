@@ -4,6 +4,7 @@ from text_lint.__helpers__.operations import (
     AliasOperationAttributes,
     assert_operation_attributes,
     assert_operation_inheritance,
+    assert_parameter_schema,
 )
 from ..validator_base import ValidatorBase
 
@@ -33,6 +34,22 @@ class TestValidatorBase:
       self,
       concrete_validator_base_instance: ValidatorBase,
   ) -> None:
+    assert_operation_inheritance(
+        concrete_validator_base_instance,
+        bases=(ValidatorBase,),
+    )
+
+  def test_initialize__parameters(
+      self,
+      concrete_validator_base_instance: ValidatorBase,
+  ) -> None:
+    assert_parameter_schema(
+        instance=concrete_validator_base_instance,
+        parameter_definitions={"name": {
+            "type": str
+        }}
+    )
+
     assert_operation_inheritance(
         concrete_validator_base_instance,
         bases=(ValidatorBase,),
