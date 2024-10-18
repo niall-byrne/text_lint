@@ -6,8 +6,11 @@ from unittest import mock
 import pytest
 from text_lint.__helpers__.operations import (
     AliasOperationAttributes,
+    AliasParameterDefinitions,
     assert_operation_attributes,
     assert_operation_inheritance,
+    assert_parameter_schema,
+    spy_on_validate_parameters,
 )
 from text_lint.__helpers__.translations import (
     assert_is_translated,
@@ -64,6 +67,19 @@ class TestValidateNotEqual:
         validate_not_equal_instance,
         bases=(ValidatorBase, ValidateNotEqual),
     )
+
+  @spy_on_validate_parameters(ValidateNotEqual)
+  def test_initialize__parameter_validation(
+      self,
+      validate_parameters_spy: mock.Mock,
+      validate_not_equal_instance: ValidateNotEqual,
+      base_parameter_definitions: AliasParameterDefinitions,
+  ) -> None:
+    assert_parameter_schema(
+        instance=validate_not_equal_instance,
+        parameter_definitions=base_parameter_definitions,
+    )
+    validate_parameters_spy.assert_called_once_with(validate_not_equal_instance)
 
   @pytest.mark.usefixtures("scenario__comparison__lookup_results_not_equal")
   def test_apply__not_equal_lookup_results__does_not_raise_exception(

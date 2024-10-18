@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: text_lint\n"
 "Report-Msgid-Bugs-To: niall@niallbyrne.ca\n"
-"POT-Creation-Date: 2024-10-19 20:19+0000\n"
+"POT-Creation-Date: 2024-10-19 20:29+0000\n"
 "Last-Translator: Niall Byrne <nialL@niallbyrne.ca>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -692,7 +692,7 @@ msgstr ""
 msgid "    {5} optional list of validator functions."
 msgstr ""
 
-#: text_lint/operations/validators/args/lookup_expression.py:19
+#: text_lint/operations/validators/args/lookup_expression.py:22
 #, python-brace-format
 msgid "The value '{0}' is not a valid set of lookup expressions"
 msgstr ""
@@ -735,15 +735,15 @@ msgstr ""
 msgid "Mismatched result set counts are being compared."
 msgstr ""
 
-#: text_lint/operations/validators/validate_combine.py:20
+#: text_lint/operations/validators/validate_combine.py:22
 msgid "combine validator example"
 msgstr ""
 
-#: text_lint/operations/validators/validate_combine.py:38
+#: text_lint/operations/validators/validate_combine.py:40
 msgid "combines a set of lookups into a new save id"
 msgstr ""
 
-#: text_lint/operations/validators/validate_combine.py:42
+#: text_lint/operations/validators/validate_combine.py:44
 #, python-brace-format
 msgid "COMBINE: '{0}' into '{1}'"
 msgstr ""
@@ -774,37 +774,32 @@ msgstr ""
 msgid "EQUAL: '{0}' == '{1}'"
 msgstr ""
 
-#: text_lint/operations/validators/validate_expression.py:23
+#: text_lint/operations/validators/validate_expression.py:24
 msgid "expression validator example"
 msgstr ""
 
-#: text_lint/operations/validators/validate_expression.py:49
+#: text_lint/operations/validators/validate_expression.py:50
 msgid "perform math on save ids to create a new save id"
-msgstr ""
-
-#: text_lint/operations/validators/validate_expression.py:53
-#, python-brace-format
-msgid "'{0}' {2} '{1}'"
 msgstr ""
 
 #: text_lint/operations/validators/validate_expression.py:54
 #, python-brace-format
+msgid "'{0}' {2} '{1}'"
+msgstr ""
+
+#: text_lint/operations/validators/validate_expression.py:55
+#, python-brace-format
 msgid "EXPRESSION: '{0}' {2} '{1}'"
 msgstr ""
 
-#: text_lint/operations/validators/validate_expression.py:56
+#: text_lint/operations/validators/validate_expression.py:57
 #, python-brace-format
 msgid "Cannot perform operation: '{0}' {2} '{1}'"
 msgstr ""
 
-#: text_lint/operations/validators/validate_expression.py:59
+#: text_lint/operations/validators/validate_expression.py:60
 #, python-brace-format
 msgid "Cannot convert both '{0}' and '{1}' to numeric values."
-msgstr ""
-
-#: text_lint/operations/validators/validate_expression.py:61
-#, python-brace-format
-msgid "operator '{0}'"
 msgstr ""
 
 #: text_lint/operations/validators/validate_membership.py:17
@@ -891,42 +886,37 @@ msgstr ""
 msgid "Automated End of Sequence"
 msgstr ""
 
-#: text_lint/schema/bases/section_base.py:28
+#: text_lint/schema/bases/section_base.py:27
 #, python-brace-format
 msgid "{0} #{1} Invalid regex"
 msgstr ""
 
-#: text_lint/schema/bases/section_base.py:30
+#: text_lint/schema/bases/section_base.py:29
 #, python-brace-format
 msgid "{0} #{1} Invalid lookup expression: '{2}'"
 msgstr ""
 
-#: text_lint/schema/bases/section_base.py:33
+#: text_lint/schema/bases/section_base.py:32
 #, python-brace-format
 msgid "{0} #{1} Invalid lookup expression: duplicate use of '{2}'"
 msgstr ""
 
-#: text_lint/schema/bases/section_base.py:36
+#: text_lint/schema/bases/section_base.py:35
 #, python-brace-format
 msgid "{0} #{1} Transformation lookup in wrong sequence: '{2}'"
 msgstr ""
 
-#: text_lint/schema/bases/section_base.py:39
-#, python-brace-format
-msgid "{0} #{1} Invalid parameters: {2}"
-msgstr ""
-
-#: text_lint/schema/bases/section_base.py:42
+#: text_lint/schema/bases/section_base.py:38
 #, python-brace-format
 msgid "{0} #{1} This operation is for internal use only"
 msgstr ""
 
-#: text_lint/schema/bases/section_base.py:44
+#: text_lint/schema/bases/section_base.py:40
 #, python-brace-format
 msgid "{0} #{1} Unknown operation"
 msgstr ""
 
-#: text_lint/schema/bases/section_base.py:45
+#: text_lint/schema/bases/section_base.py:41
 #, python-brace-format
 msgid "{0} #{1} Unknown syntax"
 msgstr ""
