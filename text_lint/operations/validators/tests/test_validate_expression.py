@@ -6,8 +6,11 @@ from unittest import mock
 import pytest
 from text_lint.__helpers__.operations import (
     AliasOperationAttributes,
+    AliasParameterDefinitions,
     assert_operation_attributes,
     assert_operation_inheritance,
+    assert_parameter_schema,
+    spy_on_validate_parameters,
 )
 from text_lint.__helpers__.translations import (
     assert_is_translated,
@@ -18,10 +21,14 @@ from text_lint.__helpers__.validators import (
     assert_is_validation_failure,
     validate_expression_with_numeric_lookup_results,
 )
-from text_lint.exceptions.schema import ValidatorParametersInvalid
+from text_lint.config import SAVED_NAME_REGEX
 from text_lint.exceptions.validators import (
     ValidationFailure,
     ValidationInvalidComparison,
+)
+from text_lint.operations.mixins.parameter_validation import (
+    ParameterValidationMixin,
+    validator_factories,
 )
 from text_lint.operations.validators.args.lookup_expression import (
     LookupExpressionSetArg,
@@ -73,7 +80,6 @@ class TestValidateExpression:
     assert_is_translated(
         validate_expression_instance.msg_fmt_invalid_comparison_detail
     )
-    assert_is_translated(ValidateExpression.msg_fmt_invalid_operator)
     assert_is_translated_yaml_example(
         validate_expression_instance.yaml_example,
         YAML_EXAMPLE_COMPONENTS,
@@ -107,6 +113,49 @@ class TestValidateExpression:
     assert_operation_inheritance(
         validate_expression_instance,
         bases=(ValidatorBase, ValidateExpression),
+    )
+
+  @spy_on_validate_parameters(ValidateExpression)
+  @pytest.mark.parametrize("validate_expression_instance", ["+"], indirect=True)
+  def test_initialize__parameter_validation(
+      self,
+      validate_parameters_spy: mock.Mock,
+      validate_expression_instance: ValidateExpression,
+      base_parameter_definitions: AliasParameterDefinitions,
+  ) -> None:
+    # pylint: disable=duplicate-code
+    base_parameter_definitions.update(
+        {
+            "new_saved":
+                {
+                    "type":
+                        str,
+                    "validators":
+                        [
+                            validator_factories.
+                            create_matches_regex(SAVED_NAME_REGEX)
+                        ],
+                },
+            "operator":
+                {
+                    "type":
+                        str,
+                    "validators":
+                        [
+                            validator_factories.create_is_in(
+                                tuple(expressions_registry.keys())
+                            ),
+                        ],
+                }
+        }
+    )
+
+    assert_parameter_schema(
+        instance=validate_expression_instance,
+        parameter_definitions=base_parameter_definitions,
+    )
+    validate_parameters_spy.assert_called_once_with(
+        validate_expression_instance
     )
 
   @pytest.mark.parametrize("validate_expression_instance", ["+"], indirect=True)
@@ -163,7 +212,7 @@ class TestValidateExpression:
       mocked_validator_name: str,
       invalid_operator: str,
   ) -> None:
-    with pytest.raises(ValidatorParametersInvalid) as exc:
+    with pytest.raises(TypeError) as exc:
       ValidateExpression(
           mocked_validator_name,
           operator=invalid_operator,
@@ -173,7 +222,10 @@ class TestValidateExpression:
       )
 
     assert str(exc.value) == \
-        ValidateExpression.msg_fmt_invalid_operator.format(invalid_operator)
+        ParameterValidationMixin.msg_fmt_parameter_invalid_value.format(
+          invalid_operator,
+          "operator",
+        )
 
   @validate_expression_with_numeric_lookup_results
   @pytest.mark.parametrize("validate_expression_instance", ["+"], indirect=True)

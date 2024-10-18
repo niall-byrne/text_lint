@@ -2,8 +2,11 @@
 
 from typing import TYPE_CHECKING, Union
 
-from text_lint.exceptions.schema import ValidatorParametersInvalid
+from text_lint.config import SAVED_NAME_REGEX
 from text_lint.operations.bases.operation_base import YAML_EXAMPLE_SECTIONS
+from text_lint.operations.mixins.parameter_validation import (
+    validator_factories,
+)
 from text_lint.operations.validators.bases.validator_comparison_base import (
     ValidationComparisonBase,
 )
@@ -58,7 +61,6 @@ class ValidateExpression(ValidationComparisonBase):
   msg_fmt_invalid_comparison_detail = _(
       "Cannot convert both '{0}' and '{1}' to numeric values."
   )
-  msg_fmt_invalid_operator = _("operator '{0}'")
 
   def __init__(
       self,
@@ -68,9 +70,10 @@ class ValidateExpression(ValidationComparisonBase):
       saved_a: "AliasYamlLookupExpressionSet",
       saved_b: "AliasYamlLookupExpressionSet",
   ):
+    self.new_saved = new_saved
+    self.operator = operator
     super().__init__(name, saved_a, saved_b)
     self.new_tree = ResultTree.create(value=new_saved)
-    self.operator = self._validate_operator(operator)
     self.msg_fmt_comparison_failure = self.msg_fmt_comparison_failure.replace(
         "{2}",
         self.operator,
@@ -86,12 +89,23 @@ class ValidateExpression(ValidationComparisonBase):
         )
     )
 
-  def _validate_operator(self, operator: str) -> str:
-    if operator not in expressions_registry:
-      raise ValidatorParametersInvalid(
-          self.msg_fmt_invalid_operator.format(operator)
-      )
-    return operator
+  class Parameters(ValidationComparisonBase.Parameters):
+    new_saved = {
+        "type":
+            str,
+        "validators":
+            [validator_factories.create_matches_regex(SAVED_NAME_REGEX)],
+    }
+    operator = {
+        "type":
+            str,
+        "validators":
+            [
+                validator_factories.create_is_in(
+                    tuple(expressions_registry.keys())
+                )
+            ],
+    }
 
   def apply(self, state: "ValidatorState") -> None:
     """Apply the ValidateCombine validator logic."""

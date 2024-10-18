@@ -2,6 +2,10 @@
 
 from typing import TYPE_CHECKING, List
 
+from text_lint.config import SAVED_NAME_REGEX
+from text_lint.operations.mixins.parameter_validation import (
+    validator_factories,
+)
 from text_lint.operations.validators.args.lookup_expression import (
     LookupExpressionSetArg,
 )
@@ -47,9 +51,18 @@ class ValidateCombine(ValidatorBase):
       new_saved: str,
       saved: "AliasYamlLookupExpressionSet",
   ):
+    self.new_saved = new_saved
     super().__init__(name)
     self.new_tree = ResultTree.create(value=new_saved)
     self.saved_results = LookupExpressionSetArg.create(saved)
+
+  class Parameters(ValidatorBase.Parameters):
+    new_saved = {
+        "type":
+            str,
+        "validators":
+            [validator_factories.create_matches_regex(SAVED_NAME_REGEX)],
+    }
 
   def apply(self, state: "ValidatorState") -> None:
     """Apply the ValidateCombine validator logic."""

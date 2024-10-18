@@ -6,6 +6,9 @@ from text_lint.operations.lookups.parsers.lookup_expressions import (
     ParsedLookup,
     parse_lookup_expression,
 )
+from text_lint.operations.mixins.parameter_validation import (
+    ParameterValidationMixin,
+)
 from text_lint.utilities.translations import _
 
 AliasYamlLookupExpressionSet = List[str]
@@ -46,7 +49,7 @@ class LookupExpressionSetArg:
     return cls(lookup_expression_set=created_set)
 
 
-class LookupExpression:
+class LookupExpression(ParameterValidationMixin):
   """A lookup expression definition."""
 
   lookups: List[ParsedLookup]
@@ -58,4 +61,8 @@ class LookupExpression:
       lookup_expression: str,
   ) -> None:
     self.name = lookup_expression
+    self.validate_parameters()
     self.source, self.lookups = parse_lookup_expression(lookup_expression)
+
+  class Parameters:
+    name = {"type": str}

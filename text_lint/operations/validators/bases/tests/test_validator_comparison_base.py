@@ -8,6 +8,8 @@ from text_lint.__helpers__.operations import (
     AliasOperationAttributes,
     assert_operation_attributes,
     assert_operation_inheritance,
+    assert_parameter_schema,
+    spy_on_validate_parameters,
 )
 from text_lint.__helpers__.translations import assert_is_translated
 from text_lint.__helpers__.validators import (
@@ -83,6 +85,20 @@ class TestValidationComparisonBase:
             ValidatorBase,
             ValidationComparisonBase,
         ),
+    )
+
+  @spy_on_validate_parameters(ValidationComparisonBase)
+  def test_initialize__parameter_validation(
+      self,
+      validate_parameters_spy: mock.Mock,
+      concrete_validator_comparison_base_instance: ValidationComparisonBase,
+  ) -> None:
+    assert_parameter_schema(
+        instance=concrete_validator_comparison_base_instance,
+        parameter_definitions={"name": ValidatorBase.Parameters.name},
+    )
+    validate_parameters_spy.assert_called_once_with(
+        concrete_validator_comparison_base_instance
     )
 
   def test_initialize__creates_result_set_arg_a_instance(
