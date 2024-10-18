@@ -7,7 +7,6 @@ from text_lint.exceptions.schema import (
     LookupExpressionInvalid,
     LookupExpressionInvalidDuplicatePositional,
     LookupExpressionInvalidSequence,
-    ValidatorParametersInvalid,
 )
 from text_lint.utilities.translations import _, f
 
@@ -34,9 +33,6 @@ class SchemaSectionBase(Generic[TypeOperation]):
   )
   msg_fmt_invalid_lookup_expression_sequence = _(
       "{0} #{1} Transformation lookup in wrong sequence: '{2}'"
-  )
-  msg_fmt_invalid_validator_parameters = _(
-      "{0} #{1} Invalid parameters: {2}"
   )
   msg_fmt_restricted_operation = _(
       "{0} #{1} This operation is for internal use only"
@@ -154,17 +150,6 @@ class SchemaSectionBase(Generic[TypeOperation]):
               self.msg_fmt_invalid_regex,
               self.entity_name,
               operation_index + 1,
-              nl=1,
-          ),
-          operation_definition=operation_definition,
-      ) from exc
-    except ValidatorParametersInvalid as exc:
-      raise self._schema.create_exception(
-          description=f(
-              self.msg_fmt_invalid_validator_parameters,
-              self.entity_name,
-              operation_index + 1,
-              exc.args[0],
               nl=1,
           ),
           operation_definition=operation_definition,

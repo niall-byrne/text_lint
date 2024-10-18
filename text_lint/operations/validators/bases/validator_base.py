@@ -20,6 +20,10 @@ class ValidatorBase(
 
   def __init__(self, name: str) -> None:
     self.name = name
+    self.validate_parameters()
+
+  class Parameters:
+    name = {"type": str}
 
   @abc.abstractmethod
   def apply(
