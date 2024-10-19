@@ -1,9 +1,12 @@
 """CaptureLookup class."""
 
-from typing import TYPE_CHECKING, List, Union
+from typing import TYPE_CHECKING, List, Union, cast
 
 from text_lint.exceptions.lookups import LookupFailure
 from text_lint.operations.bases.operation_base import YAML_EXAMPLE_SECTIONS
+from text_lint.operations.mixins.parameter_validation import (
+    validator_factories,
+)
 from text_lint.results.tree import ResultTree
 from text_lint.utilities.translations import _, f
 from .bases.lookup_base import LookupBase
@@ -53,8 +56,7 @@ class CaptureLookup(LookupBase):
   operation = "capture"
   yaml_example = YAML_EXAMPLE
 
-  msg_fmg_invalid_capture_group = _("Invalid capture group '{0}' !")
-  msg_fmg_invalid_parameters = _("Invalid lookup parameters!")
+  msg_fmt_capture_group_not_found = _("Capture group '{0}' not found!")
 
   def __init__(
       self,
@@ -69,34 +71,27 @@ class CaptureLookup(LookupBase):
         lookup_params,
         requesting_operation_name,
     )
-    self.index = self._parse_capture_group()
+    self.index = cast(int, self.lookup_params[0])
 
-  def validate_params(self) -> None:
-    if len(self.lookup_params) != 1:
-      raise LookupFailure(
-          translated_description=f(
-              self.msg_fmg_invalid_parameters,
-              [],
-              nl=1,
-          ),
-          lookup=self,
-      )
-
-  def _parse_capture_group(self) -> int:
-    try:
-      assert isinstance(self.lookup_params[0], int)
-      index = self.lookup_params[0]
-      assert index > 0
-      return index
-    except AssertionError as exc:
-      raise LookupFailure(
-          translated_description=f(
-              self.msg_fmg_invalid_capture_group,
-              self.lookup_params[0],
-              nl=1,
-          ),
-          lookup=self,
-      ) from exc
+  class Parameters(LookupBase.Parameters):
+    lookup_params = {
+        "type":
+            list,
+        "of":
+            int,
+        "validators":
+            [
+                validator_factories.create_is_equal(
+                    1,
+                    conversion_function=len,
+                ),
+                validator_factories.create_is_greater_than_or_equal(
+                    1,
+                    conversion_function=validator_factories.
+                    convert_to_selection(0),
+                ),
+            ],
+    }
 
   def apply(
       self,
@@ -116,7 +111,7 @@ class CaptureLookup(LookupBase):
     )
 
     if not state.results:
-      raise self._create_lookup_failure()
+      raise self._create_capture_group_not_found()
 
   def _update_location(
       self,
@@ -135,10 +130,10 @@ class CaptureLookup(LookupBase):
       for grove in forest_location:
         self._update_results(grove, thicket)
 
-  def _create_lookup_failure(self) -> LookupFailure:
+  def _create_capture_group_not_found(self) -> LookupFailure:
     return LookupFailure(
         translated_description=f(
-            self.msg_fmg_invalid_capture_group,
+            self.msg_fmt_capture_group_not_found,
             self.lookup_params[0],
             nl=1,
         ),

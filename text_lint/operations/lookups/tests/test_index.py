@@ -7,8 +7,11 @@ import pytest
 from text_lint.__helpers__.lookups import assert_is_lookup_failure
 from text_lint.__helpers__.operations import (
     AliasOperationAttributes,
+    AliasParameterDefinitions,
     assert_operation_attributes,
     assert_operation_inheritance,
+    assert_parameter_schema,
+    spy_on_validate_parameters,
 )
 from text_lint.__helpers__.translations import assert_is_translated
 from text_lint.exceptions.lookups import LookupFailure
@@ -53,6 +56,19 @@ class TestIndexLookup:
         index_lookup_instance,
         bases=(LookupBase, IndexLookup),
     )
+
+  @spy_on_validate_parameters(IndexLookup)
+  def test_initialize__parameter_validation(
+      self,
+      validate_parameters_spy: mock.Mock,
+      index_lookup_instance: IndexLookup,
+      base_parameter_definitions: "AliasParameterDefinitions",
+  ) -> None:
+    assert_parameter_schema(
+        instance=index_lookup_instance,
+        parameter_definitions=base_parameter_definitions,
+    )
+    validate_parameters_spy.assert_called_once_with(index_lookup_instance)
 
   def test_apply__valid_lookup__simple_location__successful__updates_cursor(
       self,

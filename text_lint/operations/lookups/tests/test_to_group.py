@@ -5,8 +5,11 @@ from unittest import mock
 import pytest
 from text_lint.__helpers__.operations import (
     AliasOperationAttributes,
+    AliasParameterDefinitions,
     assert_operation_attributes,
     assert_operation_inheritance,
+    assert_parameter_schema,
+    spy_on_validate_parameters,
 )
 from text_lint.__helpers__.translations import (
     assert_is_translated,
@@ -59,6 +62,19 @@ class TestGroupLookup:
         to_group_lookup_instance,
         bases=(LookupBase, GroupLookup),
     )
+
+  @spy_on_validate_parameters(GroupLookup)
+  def test_initialize__parameter_validation(
+      self,
+      validate_parameters_spy: mock.Mock,
+      to_group_lookup_instance: GroupLookup,
+      base_parameter_definitions: "AliasParameterDefinitions",
+  ) -> None:
+    assert_parameter_schema(
+        instance=to_group_lookup_instance,
+        parameter_definitions=base_parameter_definitions,
+    )
+    validate_parameters_spy.assert_called_once_with(to_group_lookup_instance)
 
   @pytest.mark.parametrize(
       "fixture_name", ["mocked_trees_grove", "mocked_trees_woods"]

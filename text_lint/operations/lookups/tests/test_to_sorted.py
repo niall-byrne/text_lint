@@ -6,8 +6,11 @@ from unittest import mock
 from text_lint.__helpers__.lookups import result_sorting_test_cases
 from text_lint.__helpers__.operations import (
     AliasOperationAttributes,
+    AliasParameterDefinitions,
     assert_operation_attributes,
     assert_operation_inheritance,
+    assert_parameter_schema,
+    spy_on_validate_parameters,
 )
 from text_lint.__helpers__.translations import (
     assert_is_translated,
@@ -70,6 +73,19 @@ class TestSortedLookup:
             SortedLookup,
         ),
     )
+
+  @spy_on_validate_parameters(SortedLookup)
+  def test_initialize__parameter_validation(
+      self,
+      validate_parameters_spy: mock.Mock,
+      to_sorted_lookup_instance: SortedLookup,
+      base_parameter_definitions: "AliasParameterDefinitions",
+  ) -> None:
+    assert_parameter_schema(
+        instance=to_sorted_lookup_instance,
+        parameter_definitions=base_parameter_definitions,
+    )
+    validate_parameters_spy.assert_called_once_with(to_sorted_lookup_instance)
 
   @result_sorting_test_cases
   def test_apply__vary_forest_lookup_results__updates_forest_lookup_results(
