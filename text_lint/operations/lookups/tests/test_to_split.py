@@ -11,8 +11,11 @@ from text_lint.__helpers__.lookups import (
 )
 from text_lint.__helpers__.operations import (
     AliasOperationAttributes,
+    AliasParameterDefinitions,
     assert_operation_attributes,
     assert_operation_inheritance,
+    assert_parameter_schema,
+    spy_on_validate_parameters,
 )
 from text_lint.__helpers__.translations import (
     assert_is_translated,
@@ -21,6 +24,9 @@ from text_lint.__helpers__.translations import (
 from text_lint.config import LOOKUP_TRANSFORMATION_PREFIX
 from text_lint.exceptions.lookups import LookupFailure
 from text_lint.operations.lookups.encoders.split import SplitEncoder
+from text_lint.operations.mixins.parameter_validation import (
+    validator_factories,
+)
 from ..bases.lookup_base import LookupBase
 from ..bases.lookup_encoder_base import LookupEncoderBase
 from ..to_split import YAML_EXAMPLE, YAML_EXAMPLE_COMPONENTS, SplitLookup
@@ -60,7 +66,6 @@ class TestSplitLookup:
       to_split_lookup_instance: SplitLookup,
   ) -> None:
     assert_is_translated(to_split_lookup_instance.hint)
-    assert_is_translated(to_split_lookup_instance.msg_fmg_invalid_parameters)
     assert_is_translated_yaml_example(
         to_split_lookup_instance.yaml_example,
         YAML_EXAMPLE_COMPONENTS,
@@ -78,6 +83,42 @@ class TestSplitLookup:
             SplitLookup,
         ),
     )
+
+  @spy_on_validate_parameters(SplitLookup)
+  def test_initialize__parameter_validation(
+      self,
+      validate_parameters_spy: mock.Mock,
+      to_split_lookup_instance: SplitLookup,
+      base_parameter_definitions: "AliasParameterDefinitions",
+  ) -> None:
+    base_parameter_definitions.update(
+        {
+            "lookup_params":
+                {
+                    "type":
+                        list,
+                    "of":
+                        str,
+                    "validators":
+                        [
+                            validator_factories.create_is_greater_than_or_equal(
+                                0,
+                                conversion_function=len,
+                            ),
+                            validator_factories.create_is_less_than_or_equal(
+                                1,
+                                conversion_function=len,
+                            ),
+                        ],
+                }
+        }
+    )
+
+    assert_parameter_schema(
+        instance=to_split_lookup_instance,
+        parameter_definitions=base_parameter_definitions,
+    )
+    validate_parameters_spy.assert_called_once_with(to_split_lookup_instance)
 
   def test_initialize__default_seperator__attribute(
       self,
@@ -135,8 +176,8 @@ class TestSplitLookup:
     assert_is_lookup_failure(
         exc=exc,
         description_t=(
-            SplitLookup.msg_fmg_invalid_parameters,
-            [],
+            SplitLookup.msg_fmt_invalid_parameters,
+            lookup_params,
         ),
         lookup=to_split_lookup_instance
     )

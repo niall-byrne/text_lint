@@ -5,8 +5,11 @@ from unittest import mock
 
 from text_lint.__helpers__.operations import (
     AliasOperationAttributes,
+    AliasParameterDefinitions,
     assert_operation_attributes,
     assert_operation_inheritance,
+    assert_parameter_schema,
+    spy_on_validate_parameters,
 )
 from text_lint.__helpers__.translations import (
     assert_is_translated,
@@ -58,6 +61,19 @@ class TestNoopLookup:
         noop_lookup_instance,
         bases=(LookupBase, NoopLookup),
     )
+
+  @spy_on_validate_parameters(NoopLookup)
+  def test_initialize__parameter_validation(
+      self,
+      validate_parameters_spy: mock.Mock,
+      noop_lookup_instance: NoopLookup,
+      base_parameter_definitions: "AliasParameterDefinitions",
+  ) -> None:
+    assert_parameter_schema(
+        instance=noop_lookup_instance,
+        parameter_definitions=base_parameter_definitions,
+    )
+    validate_parameters_spy.assert_called_once_with(noop_lookup_instance)
 
   def test_apply__does_not_modify_forest_cursor(
       self,

@@ -9,8 +9,13 @@ from text_lint.__helpers__.operations import (
     AliasOperationAttributes,
     assert_operation_attributes,
     assert_operation_inheritance,
+    assert_parameter_schema,
+    spy_on_validate_parameters,
 )
 from text_lint.exceptions.lookups import LookupFailure
+from text_lint.operations.mixins.parameter_validation import (
+    ParameterValidationMixin,
+)
 from ..lookup_base import AliasLookupParams, LookupBase
 from ..lookup_encoder_base import LookupEncoderBase
 
@@ -49,9 +54,30 @@ class TestLookupEncoderBase:
       self,
       concrete_lookup_encoder_base_instance: LookupEncoderBase,
   ) -> None:
+    assert isinstance(
+        concrete_lookup_encoder_base_instance,
+        ParameterValidationMixin,
+    )
     assert_operation_inheritance(
         concrete_lookup_encoder_base_instance,
         bases=(LookupBase, LookupEncoderBase),
+    )
+
+  @spy_on_validate_parameters(LookupEncoderBase)
+  def test_initialize__parameter_validation(
+      self,
+      validate_parameters_spy: mock.Mock,
+      concrete_lookup_encoder_base_instance: LookupEncoderBase,
+  ) -> None:
+    assert_parameter_schema(
+        instance=concrete_lookup_encoder_base_instance,
+        parameter_definitions={
+            "lookup_name": LookupBase.Parameters.lookup_name,
+            "lookup_params": LookupBase.Parameters.lookup_params,
+        }
+    )
+    validate_parameters_spy.assert_called_once_with(
+        concrete_lookup_encoder_base_instance
     )
 
   @pytest.mark.parametrize("invalid_params", (["1"], ["A", "B"]))
@@ -72,7 +98,7 @@ class TestLookupEncoderBase:
     assert_is_lookup_failure(
         exc=exc,
         description_t=(
-            LookupEncoderBase.msg_fmt_unexpected_parameters,
+            LookupEncoderBase.msg_fmt_invalid_parameters,
             invalid_params,
         ),
         lookup=concrete_lookup_encoder_base_instance

@@ -12,8 +12,11 @@ from text_lint.__helpers__.lookups import (
 )
 from text_lint.__helpers__.operations import (
     AliasOperationAttributes,
+    AliasParameterDefinitions,
     assert_operation_attributes,
     assert_operation_inheritance,
+    assert_parameter_schema,
+    spy_on_validate_parameters,
 )
 from text_lint.__helpers__.translations import (
     assert_is_translated,
@@ -98,6 +101,29 @@ class TestDefaultLookup:
         instance,
         bases=(LookupBase, DefaultLookup),
     )
+
+  @generated_valid_default_lookup_test_cases
+  @spy_on_validate_parameters(DefaultLookup)
+  def test_initialize__vary_lookup_name__parameter_validation(
+      self,
+      validate_parameters_spy: mock.Mock,
+      base_parameter_definitions: "AliasParameterDefinitions",
+      mocked_lookup_expression: mock.Mock,
+      lookup_name: str,
+      mocked_requesting_operation_name: str,
+  ) -> None:
+    instance = DefaultLookup(
+        lookup_name,
+        mocked_lookup_expression,
+        [],
+        mocked_requesting_operation_name,
+    )
+
+    assert_parameter_schema(
+        instance=instance,
+        parameter_definitions=base_parameter_definitions,
+    )
+    validate_parameters_spy.assert_called_once_with(instance)
 
   def test_apply__result_index__applies_index_lookup(
       self,

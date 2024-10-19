@@ -10,14 +10,20 @@ from text_lint.__helpers__.lookups import (
 )
 from text_lint.__helpers__.operations import (
     AliasOperationAttributes,
+    AliasParameterDefinitions,
     assert_operation_attributes,
     assert_operation_inheritance,
+    assert_parameter_schema,
+    spy_on_validate_parameters,
 )
 from text_lint.__helpers__.translations import (
     assert_is_translated,
     assert_is_translated_yaml_example,
 )
 from text_lint.exceptions.lookups import LookupFailure
+from text_lint.operations.mixins.parameter_validation import (
+    validator_factories,
+)
 from ..bases.lookup_base import AliasLookupParams, LookupBase
 from ..capture import YAML_EXAMPLE, YAML_EXAMPLE_COMPONENTS, CaptureLookup
 
@@ -53,8 +59,9 @@ class TestCaptureLookup:
       capture_lookup_instance: CaptureLookup,
   ) -> None:
     assert_is_translated(capture_lookup_instance.hint)
-    assert_is_translated(capture_lookup_instance.msg_fmg_invalid_capture_group)
-    assert_is_translated(capture_lookup_instance.msg_fmg_invalid_parameters)
+    assert_is_translated(
+        capture_lookup_instance.msg_fmt_capture_group_not_found
+    )
     assert_is_translated_yaml_example(
         capture_lookup_instance.yaml_example,
         YAML_EXAMPLE_COMPONENTS,
@@ -69,6 +76,44 @@ class TestCaptureLookup:
         capture_lookup_instance,
         bases=(LookupBase, CaptureLookup),
     )
+
+  @spy_on_validate_parameters(CaptureLookup)
+  def test_initialize__parameter_validation(
+      self,
+      validate_parameters_spy: mock.Mock,
+      capture_lookup_instance: CaptureLookup,
+      base_parameter_definitions: "AliasParameterDefinitions",
+  ) -> None:
+    base_parameter_definitions.update(
+        {
+            "lookup_params":
+                # pylint: disable=duplicate-code
+                {
+                    "type":
+                        list,
+                    "of":
+                        int,
+                    "validators":
+                        [
+                            validator_factories.create_is_equal(
+                                1,
+                                conversion_function=len,
+                            ),
+                            validator_factories.create_is_greater_than_or_equal(
+                                1,
+                                conversion_function=validator_factories.
+                                convert_to_selection(0),
+                            ),
+                        ],
+                }
+        }
+    )
+
+    assert_parameter_schema(
+        instance=capture_lookup_instance,
+        parameter_definitions=base_parameter_definitions,
+    )
+    validate_parameters_spy.assert_called_once_with(capture_lookup_instance)
 
   @pytest.mark.parametrize("invalid_params", ([], [1, 2]))
   def test_initialize__invalid_params__raises_exception(
@@ -86,11 +131,14 @@ class TestCaptureLookup:
 
     assert_is_lookup_failure(
         exc=exc,
-        description_t=(CaptureLookup.msg_fmg_invalid_parameters,),
+        description_t=(
+            CaptureLookup.msg_fmt_invalid_parameters,
+            invalid_params,
+        ),
         lookup=capture_lookup_instance
     )
 
-  @pytest.mark.parametrize("invalid_params", ([-1], ["a"]))
+  @pytest.mark.parametrize("invalid_params", ([-1], [0]))
   def test_initialize__invalid_capture_group__raises_exception(
       self,
       capture_lookup_instance: CaptureLookup,
@@ -107,8 +155,8 @@ class TestCaptureLookup:
     assert_is_lookup_failure(
         exc=exc,
         description_t=(
-            CaptureLookup.msg_fmg_invalid_capture_group,
-            invalid_params[0],
+            CaptureLookup.msg_fmt_invalid_parameters,
+            invalid_params,
         ),
         lookup=capture_lookup_instance
     )
@@ -178,7 +226,7 @@ class TestCaptureLookup:
 
     assert mocked_state.results == expected_result
 
-  def test_apply__invalid_capture_group__updates_forest_lookup_results(
+  def test_apply__capture_group_not_found__updates_forest_lookup_results(
       self,
       capture_lookup_instance: CaptureLookup,
       mocked_state: mock.Mock,
@@ -191,7 +239,7 @@ class TestCaptureLookup:
     assert_is_lookup_failure(
         exc=exc,
         description_t=(
-            CaptureLookup.msg_fmg_invalid_capture_group,
+            CaptureLookup.msg_fmt_capture_group_not_found,
             capture_lookup_instance.lookup_params[0],
         ),
         lookup=capture_lookup_instance
