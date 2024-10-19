@@ -3,8 +3,8 @@
 from typing import TYPE_CHECKING, Optional, cast
 
 from text_lint.config import LOOKUP_TRANSFORMATION_PREFIX
-from text_lint.exceptions.lookups import LookupFailure
-from text_lint.utilities.translations import _, f
+from text_lint.operations.mixins.parameter_validation import validators
+from text_lint.utilities.translations import _
 from .bases.lookup_encoder_base import LookupEncoderBase
 from .encoders.split import SplitEncoder
 
@@ -38,8 +38,6 @@ class SplitLookup(LookupEncoderBase):
   operation = LOOKUP_TRANSFORMATION_PREFIX + "split"
   yaml_example = YAML_EXAMPLE
 
-  msg_fmg_invalid_parameters = _("Invalid split lookup parameters!")
-
   def __init__(
       self,
       lookup_name: str,
@@ -55,20 +53,24 @@ class SplitLookup(LookupEncoderBase):
     )
     self.seperator = self._parse_seperator()
 
-  def validate_params(self) -> None:
-    try:
-      assert len(self.lookup_params) < 2
-      if len(self.lookup_params) == 1:
-        assert isinstance(self.lookup_params[0], str)
-    except AssertionError as exc:
-      raise LookupFailure(
-          translated_description=f(
-              self.msg_fmg_invalid_parameters,
-              [],
-              nl=1,
-          ),
-          lookup=self,
-      ) from exc
+  class Parameters(LookupEncoderBase.Parameters):
+    lookup_params = {
+        "type":
+            list,
+        "of":
+            str,
+        "validators":
+            [
+                validators.create_is_greater_than_or_equal(
+                    0,
+                    conversion_function=len,
+                ),
+                validators.create_is_less_than_or_equal(
+                    1,
+                    conversion_function=len,
+                ),
+            ],
+    }
 
   def _parse_seperator(self) -> Optional[str]:
     if self.lookup_params:

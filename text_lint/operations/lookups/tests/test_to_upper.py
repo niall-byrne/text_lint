@@ -3,8 +3,11 @@ from unittest import mock
 
 from text_lint.__helpers__.operations import (
     AliasOperationAttributes,
+    AliasParameterDefinitions,
     assert_operation_attributes,
     assert_operation_inheritance,
+    assert_parameter_schema,
+    spy_on_validate_parameters,
 )
 from text_lint.__helpers__.translations import (
     assert_is_translated,
@@ -66,6 +69,19 @@ class TestUpperLookup:
             UpperLookup,
         ),
     )
+
+  @spy_on_validate_parameters(UpperLookup)
+  def test_initialize__parameter_validation(
+      self,
+      validate_parameters_spy: mock.Mock,
+      to_upper_lookup_instance: UpperLookup,
+      base_parameter_definitions: "AliasParameterDefinitions",
+  ) -> None:
+    assert_parameter_schema(
+        instance=to_upper_lookup_instance,
+        parameter_definitions=base_parameter_definitions,
+    )
+    validate_parameters_spy.assert_called_once_with(to_upper_lookup_instance)
 
   def test_apply__calls_encode_method(
       self,

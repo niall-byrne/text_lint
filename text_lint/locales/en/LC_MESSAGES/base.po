@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: text_lint\n"
 "Report-Msgid-Bugs-To: niall@niallbyrne.ca\n"
-"POT-Creation-Date: 2024-10-19 20:29+0000\n"
+"POT-Creation-Date: 2024-10-19 20:32+0000\n"
 "PO-Revision-Date: 2024-07-17 13:54-0400\n"
 "Last-Translator: Niall Byrne <nialL@niallbyrne.ca>\n"
 "Language: en\n"
@@ -484,9 +484,9 @@ msgstr ""
 msgid "create a JSON representation of a save id"
 msgstr ""
 
-#: text_lint/operations/lookups/bases/lookup_base.py:24
+#: text_lint/operations/lookups/bases/lookup_base.py:32
 #, python-brace-format
-msgid "Received unexpected parameters: '{0}' !"
+msgid "Received invalid parameters: '{0}' !"
 msgstr ""
 
 #: text_lint/operations/lookups/bases/tests/conftest.py:45
@@ -497,37 +497,33 @@ msgstr ""
 msgid "mocked_hint_lookup_encoder"
 msgstr ""
 
-#: text_lint/operations/lookups/capture.py:20
+#: text_lint/operations/lookups/capture.py:21
 msgid "capture group lookup example"
 msgstr ""
 
-#: text_lint/operations/lookups/capture.py:21
+#: text_lint/operations/lookups/capture.py:22
 msgid "Capture groups are indexed and need a parameter"
 msgstr ""
 
-#: text_lint/operations/lookups/capture.py:22
+#: text_lint/operations/lookups/capture.py:23
 msgid "1st regex capture group"
 msgstr ""
 
-#: text_lint/operations/lookups/capture.py:23
+#: text_lint/operations/lookups/capture.py:24
 msgid "2nd regex capture group"
 msgstr ""
 
-#: text_lint/operations/lookups/capture.py:24
+#: text_lint/operations/lookups/capture.py:25
 msgid "3rd regex capture group"
 msgstr ""
 
-#: text_lint/operations/lookups/capture.py:51
+#: text_lint/operations/lookups/capture.py:52
 msgid "select the next capture group of a save id"
 msgstr ""
 
-#: text_lint/operations/lookups/capture.py:56
-#, python-brace-format
-msgid "Invalid capture group '{0}' !"
-msgstr ""
-
 #: text_lint/operations/lookups/capture.py:57
-msgid "Invalid lookup parameters!"
+#, python-brace-format
+msgid "Capture group '{0}' not found!"
 msgstr ""
 
 #: text_lint/operations/lookups/default.py:16
@@ -622,10 +618,6 @@ msgstr ""
 
 #: text_lint/operations/lookups/to_split.py:37
 msgid "split the values of a save id"
-msgstr ""
-
-#: text_lint/operations/lookups/to_split.py:41
-msgid "Invalid split lookup parameters!"
 msgstr ""
 
 #: text_lint/operations/lookups/to_unique.py:14

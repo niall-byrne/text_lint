@@ -1,10 +1,11 @@
 """Test fixtures for the text_lint lookup operations."""
 # pylint: disable=redefined-outer-name
 
-from typing import Callable, Dict, List
+from typing import TYPE_CHECKING, Callable, Dict, List
 from unittest import mock
 
 import pytest
+from text_lint.operations.mixins.parameter_validation import validators
 from text_lint.results.tree import ResultTree
 from .. import (
     as_json,
@@ -22,10 +23,33 @@ from .. import (
     to_unique,
     to_upper,
 )
-from ..bases.lookup_base import AliasLookupParams
 from ..bases.lookup_encoder_base import LookupEncoderBase
 # pylint: disable=wildcard-import,unused-wildcard-import
 from .scenarios import *
+
+if TYPE_CHECKING:  # no cover
+  from text_lint.__helpers__.operations import AliasParameterDefinitions
+  from ..bases.lookup_base import AliasLookupParams
+
+
+@pytest.fixture
+def base_parameter_definitions() -> "AliasParameterDefinitions":
+  # pylint: disable=duplicate-code
+  return {
+      "lookup_name": {
+          "type": str
+      },
+      "lookup_params":
+          {
+              "type":
+                  list,
+              "validators":
+                  [validators.create_is_equal(
+                      0,
+                      conversion_function=len,
+                  ),],
+          },
+  }
 
 
 def create_result_tree_mock(value: str, children_count: int) -> mock.Mock:

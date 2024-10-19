@@ -9,9 +9,15 @@ from text_lint.__helpers__.operations import (
     AliasOperationAttributes,
     assert_operation_attributes,
     assert_operation_inheritance,
+    assert_parameter_schema,
+    spy_on_validate_parameters,
 )
 from text_lint.__helpers__.translations import assert_is_translated
 from text_lint.exceptions.lookups import LookupFailure
+from text_lint.operations.mixins.parameter_validation import (
+    ParameterValidationMixin,
+    validators,
+)
 from ..lookup_base import AliasLookupParams, LookupBase
 
 
@@ -46,9 +52,44 @@ class TestLookupBase:
       self,
       concrete_lookup_base_instance: LookupBase,
   ) -> None:
+    assert isinstance(
+        concrete_lookup_base_instance,
+        ParameterValidationMixin,
+    )
     assert_operation_inheritance(
         concrete_lookup_base_instance,
         bases=(LookupBase,),
+    )
+
+  @spy_on_validate_parameters(LookupBase)
+  def test_initialize__parameter_validation(
+      self,
+      validate_parameters_spy: mock.Mock,
+      concrete_lookup_base_instance: LookupBase,
+  ) -> None:
+    assert_parameter_schema(
+        # pylint: disable=duplicate-code
+        instance=concrete_lookup_base_instance,
+        parameter_definitions={
+            "lookup_name": {
+                "type": str
+            },
+            "lookup_params":
+                {
+                    "type":
+                        list,
+                    "validators":
+                        [
+                            validators.create_is_equal(
+                                0,
+                                conversion_function=len,
+                            ),
+                        ],
+                }
+        }
+    )
+    validate_parameters_spy.assert_called_once_with(
+        concrete_lookup_base_instance
     )
 
   def test_initialize__translations(
@@ -56,7 +97,7 @@ class TestLookupBase:
       concrete_lookup_base_instance: LookupBase,
   ) -> None:
     assert_is_translated(
-        concrete_lookup_base_instance.msg_fmt_unexpected_parameters
+        concrete_lookup_base_instance.msg_fmt_invalid_parameters
     )
 
   @pytest.mark.parametrize("invalid_params", (["1"], ["A", "B"]))
@@ -77,7 +118,7 @@ class TestLookupBase:
     assert_is_lookup_failure(
         exc=exc,
         description_t=(
-            LookupBase.msg_fmt_unexpected_parameters,
+            LookupBase.msg_fmt_invalid_parameters,
             invalid_params,
         ),
         lookup=concrete_lookup_base_instance
