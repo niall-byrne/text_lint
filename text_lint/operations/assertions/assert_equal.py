@@ -54,11 +54,22 @@ class AssertEqual(assertion_regex_base.AssertionRegexBase):
       splits: Optional["AliasYamlSplit"] = None,
       case_sensitive: Optional[bool] = True,
   ) -> None:
+    """Initialize AssertEqual instances.
+
+    :param name: The configured name of this assertion.
+    :param expected: The expected value to match with this assertion.
+    :param save: An optional save id to create for matched values.
+    :param splits: Optional text splitting configuration for matched values.
+    :param case_sensitive: Controls case sensitivity during matches.
+    :raises: TypeError
+    """
     self.expected = expected
     self.case_sensitive = case_sensitive
     super().__init__(name, "(.*)", save, splits)
 
   class Parameters(assertion_regex_base.AssertionRegexBase.Parameters):
+    """Parameter validation for this operation."""
+
     expected = {"type": str}
     case_sensitive = {"type": bool}
 
@@ -67,7 +78,6 @@ class AssertEqual(assertion_regex_base.AssertionRegexBase):
       state: "AssertionState",
   ) -> None:
     """Apply the AssertEqual assertion logic."""
-
     data = state.next()
     match = re.match(self.regex, data)
 

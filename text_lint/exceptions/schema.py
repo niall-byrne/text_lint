@@ -1,4 +1,4 @@
-"""Exceptions for the text_lint schema."""
+"""Exceptions for the linter schema."""
 import os.path
 from typing import TYPE_CHECKING, Any, Dict, Optional
 
@@ -27,6 +27,12 @@ class SchemaError(SchemaExceptionBase):
       schema: "Schema",
       operation_definition: Optional[Dict[str, Any]] = None,
   ) -> None:
+    """Initialize SchemaError exceptions.
+
+    :param description:  A description of the exception.
+    :param schema:  The schema instance that encountered the exception.
+    :param operation_definition:  The configuration related to this exception.
+    """
     message = description
     message += f(
         self.msg_fmt_schema_file,
@@ -71,6 +77,7 @@ class UnsupportedSchemaVersion(SchemaExceptionBase):
   )
 
   def __init__(self) -> None:
+    """Initialize UnsupportedSchemaVersion exceptions."""
     super().__init__(
         self.msg_fmt_unsupported.format(
             version_tuple_to_string(config.MINIMUM_SUPPORTED_SCHEMA_VERSION),

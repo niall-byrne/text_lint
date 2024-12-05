@@ -5,9 +5,14 @@ from typing import Any, Dict
 
 
 class ReversedEncoder(json.JSONEncoder):
-  """Encode JSON data while reversing dictionaries, lists and tuples."""
+  """JSON encoder that reverses dictionaries, lists and tuples."""
 
   def encode(self, o: Any) -> Any:
+    """Encode as JSON while reversing dictionaries, lists and tuples.
+
+    :param o: The object being converted.
+    :returns: The converted object.
+    """
     value = self._recursive_reversed(o)
     return super().encode(value)
 

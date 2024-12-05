@@ -1,4 +1,4 @@
-"""Exceptions for the text_lint results."""
+"""Exceptions for linter results."""
 from typing import TYPE_CHECKING
 
 from text_lint.utilities.translations import _, f
@@ -36,6 +36,11 @@ class ResultDoesNotExist(ResultExceptionBase):
       lookup_expression: "LookupExpression",
       requesting_operation_name: str,
   ) -> None:
+    """Initialize ResultDoesNotExist exceptions.
+
+    :param lookup_expression:  The instance referencing this result.
+    :param requesting_operation_name:  The operation performing this lookup.
+    """
     message = f(
         self.msg_fmt_does_not_exist,
         nl=1,
@@ -78,5 +83,9 @@ class SplitGroupNotFound(ResultExceptionBase):
   """Raised when a non-existent split group is referenced."""
 
   def __init__(self, group: int) -> None:
+    """Initialize SplitGroupNotFound exceptions.
+
+    :param group:  The split group index number.
+    """
     super().__init__()
     self.group = group

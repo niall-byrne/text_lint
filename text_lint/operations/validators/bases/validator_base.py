@@ -19,10 +19,17 @@ class ValidatorBase(
   hint: str
 
   def __init__(self, name: str) -> None:
+    """Initialize ValidatorBase instances.
+
+    :param name: The configured name of this validator.
+    :raises: TypeError
+    """
     self.name = name
     self.validate_parameters()
 
   class Parameters:
+    """Parameter validation for this operation."""
+
     name = {"type": str}
 
   @abc.abstractmethod
@@ -30,4 +37,7 @@ class ValidatorBase(
       self,
       state: "states.ValidatorState",
   ) -> None:
-    """Base method for applying a validator."""
+    """Apply this operation to the given state object.
+
+    :param state: The state object to apply this operation to.
+    """

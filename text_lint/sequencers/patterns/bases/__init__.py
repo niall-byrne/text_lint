@@ -1,0 +1,1 @@
+"""Sequencer pattern base classes."""

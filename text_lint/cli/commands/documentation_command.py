@@ -20,7 +20,6 @@ class DocumentationCommand(CLICommandBase):
 
   def create_parser(self, command_parser: "ArgumentParser") -> None:
     """Create an argument parser for this CLI command."""
-
     command_parser.add_argument(
         dest="operations",
         help=self.arg_operations_help,
@@ -31,7 +30,6 @@ class DocumentationCommand(CLICommandBase):
 
   def invoke(self, args: "Namespace") -> None:
     """Invoke this CLI command."""
-
     documentation = deferred_operation_documentation()()
 
     for operation in args.operations:

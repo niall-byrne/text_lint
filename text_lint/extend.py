@@ -1,4 +1,4 @@
-"""Expose classes for external extension."""
+"""External extension support."""
 # pylint: disable=unused-import
 
 from text_lint.linter.states import AssertionState, LookupState, ValidatorState

@@ -3,12 +3,14 @@
 from typing import TYPE_CHECKING, Optional, cast
 
 from text_lint.config import LOOKUP_TRANSFORMATION_PREFIX
+from text_lint.operations.lookups.bases.lookup_encoder_base import (
+    LookupEncoderBase,
+)
+from text_lint.operations.lookups.encoders.split import SplitEncoder
 from text_lint.operations.mixins.parameter_validation import (
     validator_factories,
 )
 from text_lint.utilities.translations import _
-from .bases.lookup_encoder_base import LookupEncoderBase
-from .encoders.split import SplitEncoder
 
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.linter.states import LookupState
@@ -47,6 +49,14 @@ class SplitLookup(LookupEncoderBase):
       lookup_params: "AliasLookupParams",
       requesting_operation_name: str,
   ) -> None:
+    """Initialize SplitLookup instances.
+
+    :param lookup_name: The name of this lookup operation.
+    :param lookup_expression: The lookup expression this lookup is a part of.
+    :param lookup_params: The parameters being used with this lookup operation.
+    :param requesting_operation_name: The name of the validation operation.
+    :raises: LookupFailure
+    """
     super().__init__(
         lookup_name,
         lookup_expression,
@@ -56,6 +66,8 @@ class SplitLookup(LookupEncoderBase):
     self.seperator = self._parse_seperator()
 
   class Parameters(LookupEncoderBase.Parameters):
+    """Parameter validation for this operation."""
+
     lookup_params = {
         "type":
             list,
@@ -84,7 +96,6 @@ class SplitLookup(LookupEncoderBase):
       state: "LookupState",
   ) -> None:
     """Split all values at current location and in the lookup results."""
-
     self.encoder_params = {"seperator": self.seperator}
 
     state.results = self.encode(state.results)

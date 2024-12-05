@@ -3,9 +3,11 @@
 from typing import TYPE_CHECKING
 
 from text_lint.config import LOOKUP_TRANSFORMATION_PREFIX
+from text_lint.operations.lookups.bases.lookup_encoder_base import (
+    LookupEncoderBase,
+)
+from text_lint.operations.lookups.encoders.sorted import SortedEncoder
 from text_lint.utilities.translations import _
-from .bases.lookup_encoder_base import LookupEncoderBase
-from .encoders.sorted import SortedEncoder
 
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.linter.states import LookupState
@@ -36,7 +38,6 @@ class SortedLookup(LookupEncoderBase):
       state: "LookupState",
   ) -> None:
     """Sort the current lookup results."""
-
     if isinstance(state.results, str):
       state.results = "".join(sorted(list(state.results)))
     else:

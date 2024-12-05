@@ -5,9 +5,14 @@ from typing import Any, List
 
 
 class UniqueEncoder(json.JSONEncoder):
-  """Encode JSON data while ensuring all lists contain unique values."""
+  """JSON encoder that ensures all lists contain unique values."""
 
   def encode(self, o: Any) -> Any:
+    """Encode as JSON while ensuring all lists contain unique values.
+
+    :param o: The object being converted.
+    :returns: The converted object.
+    """
     value = self._recursive_unique(o)
     return super().encode(value)
 

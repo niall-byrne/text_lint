@@ -47,7 +47,6 @@ class AssertRegexSection(assertion_regex_base.AssertionRegexBase):
       state: "AssertionState",
   ) -> None:
     """Apply the AssertRegexSection assertion logic."""
-
     matches: List[Match[str]] = []
 
     while True:

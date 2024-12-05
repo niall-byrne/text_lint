@@ -5,9 +5,14 @@ from typing import Any, List
 
 
 class SortedEncoder(json.JSONEncoder):
-  """Encode JSON data while sorting dictionaries, lists and tuples."""
+  """JSON encoder that sorts dictionaries, lists and tuples."""
 
   def encode(self, o: Any) -> Any:
+    """Encode as JSON while sorting dictionaries, lists and tuples.
+
+    :param o: The object being converted.
+    :returns: The converted object.
+    """
     value = self._recursive_sorted(o)
     return super().encode(value)
 

@@ -26,6 +26,11 @@ msg_log_section_validators = _("validators")
 
 @contextmanager
 def main(linter: "Linter") -> Generator[None, None, None]:
+  """Wrap the main linter sequence in logging statements.
+
+  :param linter:  The linter instance being logged.
+  :returns: A logging context manager.
+  """
   linter.log(
       msg_log_section_start,
       indent=False,
@@ -56,6 +61,12 @@ def assertion(
     linter: "Linter",
     operation: "AssertionBase",
 ) -> Generator[None, None, None]:
+  """Wrap the linter's individual assertion operations in logging statements.
+
+  :param linter:  The linter instance being logged.
+  :param operation: The individual assertion operation being logged.
+  :returns: A logging context manager.
+  """
   start_index = linter.textfile.index
   yield None
   linter.log(
@@ -66,6 +77,11 @@ def assertion(
 
 @contextmanager
 def assertion_section(linter: "Linter") -> Generator[None, None, None]:
+  """Wrap all the linter's assertion operations in a logged section header.
+
+  :param linter:  The linter instance being logged.
+  :returns: A logging context manager.
+  """
   linter.log(
       msg_log_section_assertions,
       indent=False,
@@ -79,12 +95,23 @@ def validator(
     linter: "Linter",
     operation: "ValidatorBase",
 ) -> Generator[None, None, None]:
+  """Wrap the linter's individual validator operations in logging statements.
+
+  :param linter:  The linter instance being logged.
+  :param operation: The individual validator operation being logged.
+  :returns: A logging context manager.
+  """
   linter.log(operation)
   yield None
 
 
 @contextmanager
 def validator_section(linter: "Linter") -> Generator[None, None, None]:
+  """Wrap all the linter's validator operations in a logged section header.
+
+  :param linter:  The linter validator being logged.
+  :returns: A logging context manager.
+  """
   linter.log(
       msg_log_section_validators,
       indent=False,

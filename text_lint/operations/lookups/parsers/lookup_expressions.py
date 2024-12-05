@@ -26,6 +26,11 @@ class ParsedLookup:
       name: str,
       params: "AliasLookupParams",
   ) -> None:
+    """Instantiate ParsedLookup instances.
+
+    :param name: The name of the lookup operation.
+    :param params: A list of parameters for this lookup operation.
+    """
     self.name = name
     self.params = params
 
@@ -34,8 +39,13 @@ LOOKUPS_SENTINEL_VALUE = [ParsedLookup(name=LOOKUP_SENTINEL, params=[])]
 
 
 def parse_lookup_expression(value: str) -> Tuple[str, List["ParsedLookup"]]:
-  """Extract the save ids, lookups and parameters from a lookup expression."""
+  """Extract the save ids, lookups and parameters from a lookup expression.
 
+  :param value: The lookup expression to parse.
+  :returns: A tuple of the data source and lookup operation instances.
+  :raises: LookupExpressionInvalid, LookupExpressionInvalidSequence,
+      LookupExpressionInvalidDuplicatePositional
+  """
   if value.startswith(LOOKUP_STATIC_VALUE_MARKER):
     return value, LOOKUPS_SENTINEL_VALUE
 

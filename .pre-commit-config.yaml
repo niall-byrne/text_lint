@@ -4,7 +4,7 @@ default_install_hook_types:
   - commit-msg
 repos:
   - repo: https://github.com/Lucas-C/pre-commit-hooks-safety
-    rev: v1.3.3
+    rev: 74cf4f59d6c934ffddf5adf1fc2198efd9162e18
     hooks:
       - id: python-safety-dependencies-check
         # 72132: zipp is not being used, dependency of importlib_metadata
@@ -17,6 +17,11 @@ repos:
           - "-c"
           - "./.yamllint.yml"
         stages: [commit]
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.2
+    hooks:
+      - id: ruff
+        exclude: "testing_shim"
   - repo: https://github.com/cicd-tools-org/pre-commit.git
     rev: 0.6.0
     hooks:
@@ -88,6 +93,12 @@ repos:
         require_serial: true
         stages: [commit]
         types: []
+  - repo: https://github.com/jshwi/docsig
+    rev: v0.65.0
+    hooks:
+      - id: docsig
+        entry: bash -c "if [[ $# -ne 0 ]]; then PYTHONPATH=$PWD docsig $@; fi"
+        require_serial: true
   - repo: https://github.com/pycqa/isort
     rev: 5.12.0
     hooks:
@@ -110,7 +121,7 @@ repos:
     hooks:
       - id: lint-makefile
         name: lint-makefile
-        entry: poetry run text_lint check -s schemas/makefile.yml
+        entry: poetry run ./testing_shim check -s schemas/makefile.yml
         files: "^(.+/)*Makefile$"
         language: system
         pass_filenames: true

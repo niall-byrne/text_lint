@@ -27,13 +27,19 @@ class AssertionState(StateBase):
   )
 
   def __init__(self, linter: "Linter") -> None:
+    """Initialize AssertionState instances.
+
+    :param linter:  The linter instance being encapsulated.
+    """
     super().__init__(linter)
     self.rewound = -1
     self.operation = linter.assertions.last
 
   def fail(self, expected: str) -> None:
-    """Raise an exception indicating this operation has failed."""
+    """Raise an exception indicating this operation has failed.
 
+    :param expected: The value the assertion operation was expecting.
+    """
     raise AssertionViolation(
         assertion=self.operation,
         expected=expected,
@@ -41,18 +47,26 @@ class AssertionState(StateBase):
     )
 
   def loop(self, assertions: List["AssertionBase"], count: int) -> None:
-    """Start a looped sequence of assertions after the current operation."""
+    """Start a looped sequence of assertions after the current operation.
 
+    :param assertions: A list of assertion operations to loop over.
+    :param count: The number of times to repeat these operations.
+    """
     self._linter.assertions.insert(assertions, count)
 
   def next(self) -> str:
-    """Read the next line from the text file."""
+    """Read the next line from the text file.
 
+    :returns: The next line from the text file.
+    """
     return next(self._linter.textfile)
 
   def rewind(self) -> str:
-    """Rewind the text file so another assertion can try matching."""
+    """Rewind the text file so another assertion can try matching.
 
+    :returns: The previous line the text file has been rewound to.
+    :raises: AssertionLogicError (if invoked twice in a row)
+    """
     if self._linter.textfile.index == self.rewound:
       raise AssertionLogicError(
           assertion=self.operation,
@@ -64,8 +78,10 @@ class AssertionState(StateBase):
     return self._linter.textfile.current
 
   def save(self, matches: Union[Match[str], Sequence[Match[str]]]) -> None:
-    """Save the given regex match group(s)."""
+    """Save the given regex match group(s).
 
+    :param matches: A list or individual regex match object to save.
+    """
     if self.operation.save and matches:
 
       if not isinstance(matches, Iterable):

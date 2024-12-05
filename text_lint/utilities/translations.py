@@ -16,14 +16,16 @@ def f_string(string: str, *args: Any, nl: int = 0, **kwargs: Any) -> str:
   :param args: The positional arguments for format.
   :param nl: The number of newlines to add to the end of the string.
   :param kwargs: The keyword arguments for format.
+  :returns: The interpolated string.
   """
-
   return string.format(*args, **kwargs) + (NEW_LINE * nl)
 
 
 def initialize() -> gettext.NullTranslations:
-  """Initialize localization support."""
+  """Initialize localization support.
 
+  :returns: A gettext translation class.
+  """
   if os.getenv('LANG') is None:
     default_locale = locale.getdefaultlocale()
     os.environ['LANG'] = str(default_locale[0])

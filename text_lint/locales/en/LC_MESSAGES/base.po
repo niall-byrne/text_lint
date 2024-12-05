@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: text_lint\n"
 "Report-Msgid-Bugs-To: niall@niallbyrne.ca\n"
-"POT-Creation-Date: 2024-10-20 01:44+0000\n"
+"POT-Creation-Date: 2025-01-24 19:23+0000\n"
 "PO-Revision-Date: 2024-07-17 13:54-0400\n"
 "Last-Translator: Niall Byrne <nialL@niallbyrne.ca>\n"
 "Language: en\n"
@@ -97,14 +97,14 @@ msgstr ""
 msgid "ASSERTION VIOLATION: {0}"
 msgstr ""
 
-#: text_lint/exceptions/assertions.py:24 text_lint/exceptions/assertions.py:78
+#: text_lint/exceptions/assertions.py:24 text_lint/exceptions/assertions.py:89
 #: text_lint/exceptions/linter.py:21
 #, python-brace-format
 msgid "  SOURCE FILE: {0}"
 msgstr ""
 
-#: text_lint/exceptions/assertions.py:25 text_lint/exceptions/assertions.py:58
-#: text_lint/exceptions/assertions.py:79 text_lint/exceptions/linter.py:22
+#: text_lint/exceptions/assertions.py:25 text_lint/exceptions/assertions.py:64
+#: text_lint/exceptions/assertions.py:90 text_lint/exceptions/linter.py:22
 #, python-brace-format
 msgid "  ASSERTION: '{0}'"
 msgstr ""
@@ -114,39 +114,39 @@ msgstr ""
 msgid "  EXPECTED: '{0}'"
 msgstr ""
 
-#: text_lint/exceptions/assertions.py:27 text_lint/exceptions/assertions.py:80
+#: text_lint/exceptions/assertions.py:27 text_lint/exceptions/assertions.py:91
 #: text_lint/exceptions/linter.py:23
 #, python-brace-format
 msgid "  FILE LINE: '{0}'"
 msgstr ""
 
-#: text_lint/exceptions/assertions.py:28 text_lint/exceptions/assertions.py:81
+#: text_lint/exceptions/assertions.py:28 text_lint/exceptions/assertions.py:92
 #: text_lint/exceptions/linter.py:24
 #, python-brace-format
 msgid "  FILE LINE NUMBER: {0}"
 msgstr ""
 
-#: text_lint/exceptions/assertions.py:29 text_lint/exceptions/assertions.py:82
+#: text_lint/exceptions/assertions.py:29 text_lint/exceptions/assertions.py:93
 #: text_lint/exceptions/validators.py:23
 #, python-brace-format
 msgid "  HINT: '{0}'"
 msgstr ""
 
-#: text_lint/exceptions/assertions.py:57
+#: text_lint/exceptions/assertions.py:63
 #, python-brace-format
 msgid "CAPTURE GROUP NOT FOUND: {0}"
 msgstr ""
 
-#: text_lint/exceptions/assertions.py:59
+#: text_lint/exceptions/assertions.py:65
 #, python-brace-format
 msgid "  CAPTURE GROUP: '{0}'"
 msgstr ""
 
-#: text_lint/exceptions/assertions.py:60
+#: text_lint/exceptions/assertions.py:66
 msgid "  HINT: 'This capture group does not seem to exist.'"
 msgstr ""
 
-#: text_lint/exceptions/assertions.py:77
+#: text_lint/exceptions/assertions.py:88
 #, python-brace-format
 msgid "ASSERTION LOGIC ERROR: {0}"
 msgstr ""
@@ -161,50 +161,50 @@ msgid ""
 "assertions.'"
 msgstr ""
 
-#: text_lint/exceptions/lookups.py:19 text_lint/exceptions/lookups.py:86
+#: text_lint/exceptions/lookups.py:19 text_lint/exceptions/lookups.py:91
 #, python-brace-format
 msgid "  LOOKUP OPERATION: {0}"
 msgstr ""
 
-#: text_lint/exceptions/lookups.py:20 text_lint/exceptions/lookups.py:87
+#: text_lint/exceptions/lookups.py:20 text_lint/exceptions/lookups.py:92
 #: text_lint/exceptions/results.py:24 text_lint/exceptions/validators.py:21
 #, python-brace-format
 msgid "  SCHEMA OPERATION NAME: {0}"
 msgstr ""
 
-#: text_lint/exceptions/lookups.py:21 text_lint/exceptions/lookups.py:88
+#: text_lint/exceptions/lookups.py:21 text_lint/exceptions/lookups.py:93
 #: text_lint/exceptions/results.py:25
 msgid "  LOOKUP DEFINITION:"
 msgstr ""
 
-#: text_lint/exceptions/lookups.py:22 text_lint/exceptions/lookups.py:89
+#: text_lint/exceptions/lookups.py:22 text_lint/exceptions/lookups.py:94
 #: text_lint/exceptions/results.py:26
 #, python-brace-format
 msgid "    SAVE ID: '{0}'"
 msgstr ""
 
-#: text_lint/exceptions/lookups.py:23 text_lint/exceptions/lookups.py:90
+#: text_lint/exceptions/lookups.py:23 text_lint/exceptions/lookups.py:95
 #: text_lint/exceptions/results.py:27
 #, python-brace-format
 msgid "    LOOKUPS: {0}"
 msgstr ""
 
-#: text_lint/exceptions/lookups.py:24 text_lint/exceptions/lookups.py:91
+#: text_lint/exceptions/lookups.py:24 text_lint/exceptions/lookups.py:96
 #, python-brace-format
 msgid "    FAILED LOOKUP: '{0}'"
 msgstr ""
 
-#: text_lint/exceptions/lookups.py:25 text_lint/exceptions/lookups.py:92
+#: text_lint/exceptions/lookups.py:25 text_lint/exceptions/lookups.py:97
 #: text_lint/exceptions/results.py:28
 #, python-brace-format
 msgid "    HINT: '{0}'"
 msgstr ""
 
-#: text_lint/exceptions/lookups.py:84
+#: text_lint/exceptions/lookups.py:89
 msgid "Could not process this unknown lookup."
 msgstr ""
 
-#: text_lint/exceptions/lookups.py:94
+#: text_lint/exceptions/lookups.py:99
 #, python-brace-format
 msgid "to lookup a specific value, prefix the name with '{0}'"
 msgstr ""
@@ -242,7 +242,7 @@ msgstr ""
 msgid "  OPERATION DEFINITION:"
 msgstr ""
 
-#: text_lint/exceptions/schema.py:69
+#: text_lint/exceptions/schema.py:75
 #, python-brace-format
 msgid ""
 "This version of text_lint only supports schema versions {0} through {1} !"
@@ -472,15 +472,15 @@ msgstr ""
 msgid "<< {0} third-party extension(s) have been loaded! >>"
 msgstr ""
 
-#: text_lint/operations/lookups/as_json.py:14
+#: text_lint/operations/lookups/as_json.py:16
 msgid "save id as json representation example"
 msgstr ""
 
-#: text_lint/operations/lookups/as_json.py:15
+#: text_lint/operations/lookups/as_json.py:17
 msgid "This lookup is intended to help debug capture groups in complex loops."
 msgstr ""
 
-#: text_lint/operations/lookups/as_json.py:34
+#: text_lint/operations/lookups/as_json.py:36
 msgid "create a JSON representation of a save id"
 msgstr ""
 
@@ -588,51 +588,51 @@ msgstr ""
 msgid "group the values of a save id"
 msgstr ""
 
-#: text_lint/operations/lookups/to_lower.py:14
+#: text_lint/operations/lookups/to_lower.py:16
 msgid "lowercase save id transformation lookup example"
 msgstr ""
 
-#: text_lint/operations/lookups/to_lower.py:30
+#: text_lint/operations/lookups/to_lower.py:32
 msgid "convert a save id's values to lowercase"
 msgstr ""
 
-#: text_lint/operations/lookups/to_reversed.py:14
+#: text_lint/operations/lookups/to_reversed.py:16
 msgid "reversed transformation lookup example"
 msgstr ""
 
-#: text_lint/operations/lookups/to_reversed.py:30
+#: text_lint/operations/lookups/to_reversed.py:32
 msgid "reverse the order of a save id"
 msgstr ""
 
-#: text_lint/operations/lookups/to_sorted.py:14
+#: text_lint/operations/lookups/to_sorted.py:16
 msgid "sorted transformation lookup example"
 msgstr ""
 
-#: text_lint/operations/lookups/to_sorted.py:30
+#: text_lint/operations/lookups/to_sorted.py:32
 msgid "sort the values of a save id"
 msgstr ""
 
-#: text_lint/operations/lookups/to_split.py:22
+#: text_lint/operations/lookups/to_split.py:24
 msgid "split lookup example"
 msgstr ""
 
-#: text_lint/operations/lookups/to_split.py:39
+#: text_lint/operations/lookups/to_split.py:41
 msgid "split the values of a save id"
 msgstr ""
 
-#: text_lint/operations/lookups/to_unique.py:14
+#: text_lint/operations/lookups/to_unique.py:16
 msgid "unique save id transformation lookup example"
 msgstr ""
 
-#: text_lint/operations/lookups/to_unique.py:30
+#: text_lint/operations/lookups/to_unique.py:32
 msgid "select only unique values from a save id"
 msgstr ""
 
-#: text_lint/operations/lookups/to_upper.py:14
+#: text_lint/operations/lookups/to_upper.py:16
 msgid "uppercase save id transformation lookup example"
 msgstr ""
 
-#: text_lint/operations/lookups/to_upper.py:30
+#: text_lint/operations/lookups/to_upper.py:32
 msgid "convert a save id's values to uppercase"
 msgstr ""
 

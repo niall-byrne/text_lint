@@ -3,7 +3,7 @@
 from typing import TYPE_CHECKING
 
 from text_lint.operations.lookups import lookup_registry
-from .bases.operator_base import OperatorBase
+from text_lint.sequencers.bases.operator_base import OperatorBase
 
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.operations.lookups.bases.lookup_base import LookupBase
@@ -20,6 +20,11 @@ class LookupsSequencer(OperatorBase["LookupBase"]):
       lookup_expression: "LookupExpression",
       requesting_operation_name: str,
   ) -> None:
+    """Initialize LookupsSequencer instances.
+
+    :param lookup_expression: The lookup expression being evaluated.
+    :param requesting_operation_name: The validator for this lookup expression.
+    """
     instances = [
         lookup_registry[lookup.name](
             lookup.name,

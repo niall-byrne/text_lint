@@ -11,4 +11,9 @@ class ExpressionBase(abc.ABC):
 
   @abc.abstractmethod
   def apply(self, value_a: float, value_b: float) -> Union[float, bool]:
-    """Apply the mathematical operator to these two values."""
+    """Apply the mathematical operator to these two values.
+
+    :param value_a: The first value the operator will apply to.
+    :param value_b: The second value the operator will apply to.
+    :returns: The result of the operation.
+    """

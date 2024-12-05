@@ -4,8 +4,8 @@ import importlib.util
 from types import ModuleType
 from typing import List
 
+from text_lint.operations.external.bases.loader_base import ExternalLoaderBase
 from text_lint.utilities.translations import _
-from .bases.loader_base import ExternalLoaderBase
 
 
 class ThirdPartyExtensionsLoader(ExternalLoaderBase):
@@ -16,12 +16,15 @@ class ThirdPartyExtensionsLoader(ExternalLoaderBase):
   )
 
   def __init__(self, modules: List[str]) -> None:
+    """Initialize ThirdPartyExtensionsLoader instances.
+
+    :param modules: A list of module names to load extensions from.
+    """
     super().__init__()
     self.modules = modules
 
   def load_modules(self) -> List[ModuleType]:
-    """Generate a list of modules to import assertions from."""
-
+    """Generate a list of modules to import extensions from."""
     custom_modules: List[ModuleType] = []
 
     for target_file in self.modules:

@@ -30,9 +30,16 @@ class AssertBlank(AssertionBase):
       self,
       name: str,
   ) -> None:
+    """Initialize AssertBlank instances.
+
+    :param name: The configured name of this assertion.
+    :raises: TypeError
+    """
     super().__init__(name, None, None)
 
   class Parameters:
+    """Parameter validation for this operation."""
+
     name = {"type": str}
 
   def apply(
@@ -40,7 +47,6 @@ class AssertBlank(AssertionBase):
       state: "AssertionState",
   ) -> None:
     """Apply the AssertBlank assertion logic."""
-
     data = state.next()
 
     if data != "":

@@ -51,12 +51,22 @@ class ValidateCombine(ValidatorBase):
       new_saved: str,
       saved: "AliasYamlLookupExpressionSet",
   ) -> None:
+    """Initialize ValidateCombine instances.
+
+    :param name: The configured name of this validator.
+    :param new_saved: The new saved id to create.
+    :param saved: A list of YAML lookup expressions to evaluate.
+    :raises: TypeError
+    """
     self.new_saved = new_saved
     super().__init__(name)
     self.new_tree = ResultTree.create(value=new_saved)
     self.saved_results = LookupExpressionSetArg.create(saved)
 
   class Parameters(ValidatorBase.Parameters):
+    """Parameter validation for this operation."""
+
+    # pylint: disable=duplicate-code
     new_saved = {
         "type":
             str,
@@ -66,7 +76,6 @@ class ValidateCombine(ValidatorBase):
 
   def apply(self, state: "ValidatorState") -> None:
     """Apply the ValidateCombine validator logic."""
-
     for requested_lookup_to_combine in self.saved_results:
 
       result = state.lookup_expression(requested_lookup_to_combine)

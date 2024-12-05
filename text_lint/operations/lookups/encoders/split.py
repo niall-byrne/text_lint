@@ -5,7 +5,7 @@ from typing import Any, List, Optional
 
 
 class SplitEncoder(json.JSONEncoder):
-  """Encode JSON data while splitting strings with a seperator."""
+  """JSON encoder that splits strings with a seperator."""
 
   def __init__(
       self,
@@ -13,10 +13,24 @@ class SplitEncoder(json.JSONEncoder):
       seperator: Optional[str] = None,
       **kwargs: Any,
   ) -> None:
+    """Instantiate SplitEncoder instances.
+
+    It should be noted that by default text is split by whitespace unless a
+    seperator is defined.
+
+    :param args: A list of arguments for the base class.
+    :param seperator: An optional (non-default) seperator string.
+    :param kwargs: A list of keyword arguments for the base class.
+    """
     super().__init__(*args, **kwargs)
     self.seperator = seperator
 
   def encode(self, o: Any) -> Any:
+    """Encode as JSON while splitting strings with a seperator.
+
+    :param o: The object being converted.
+    :returns: The converted object.
+    """
     value = self._recursive_split(o)
     return super().encode(value)
 

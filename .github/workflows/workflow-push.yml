@@ -135,7 +135,7 @@ jobs:
             platform: "ubuntu-20.04"
             constraint: true
           - version: "3.7"
-            platform: "ubuntu-latest"
+            platform: "ubuntu-20.04"
             constraint: true
           - version: "3.8"
             platform: "ubuntu-latest"
@@ -242,6 +242,28 @@ jobs:
       CONCURRENCY: ${{ fromJSON(needs.configuration.outputs.JSON_FILE_DATA).ci_concurrency_limit }}
       PRECOMMIT_HOOK_ID: "poetry-lint-python"
       PRECOMMIT_HOOK_NAME: "Pylint"
+      PYTHON_VERSIONS: ${{ toJSON(fromJSON(needs.configuration.outputs.JSON_FILE_DATA).ci_python_versions) }}
+      VERBOSE_NOTIFICATIONS: ${{ fromJSON(needs.configuration.outputs.JSON_FILE_DATA).ci_verbose_notifications }}
+
+  python-docstrings:
+    needs:
+      - configuration
+    secrets:
+      SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+    strategy:
+      fail-fast: true
+      matrix:
+        hook:
+          - id: "ruff"
+            name: "Docstrings Format Linting"
+          - id: "docsig"
+            name: "Docstrings Signature Linting"
+      max-parallel: ${{ fromJSON(needs.configuration.outputs.JSON_FILE_DATA).ci_concurrency_limit }}
+    uses: cicd-tools-org/cicd-tools/.github/workflows/job-80-poetry-precommit_commit_stage_hook.yml@main
+    with:
+      CONCURRENCY: ${{ fromJSON(needs.configuration.outputs.JSON_FILE_DATA).ci_concurrency_limit }}
+      PRECOMMIT_HOOK_ID: ${{ matrix.hook.id }}
+      PRECOMMIT_HOOK_NAME: ${{ matrix.hook.name }}
       PYTHON_VERSIONS: ${{ toJSON(fromJSON(needs.configuration.outputs.JSON_FILE_DATA).ci_python_versions) }}
       VERBOSE_NOTIFICATIONS: ${{ fromJSON(needs.configuration.outputs.JSON_FILE_DATA).ci_verbose_notifications }}
 
@@ -372,6 +394,7 @@ jobs:
       - pre-commit_hooks
       - pylint
       - pytest
+      - python-docstrings
       - security_audit
       - security_leaks
       - shell_lint

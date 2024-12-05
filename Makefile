@@ -79,6 +79,8 @@ lint-markdown:
 
 lint-python:
 	@echo "Checking Python files ..."
+	@poetry run bash -c "pre-commit run ruff --verbose --all-files"
+	@poetry run bash -c "pre-commit run docsig --verbose --all-files"
 	@poetry run bash -c "pre-commit run isort --verbose --all-files"
 	@poetry run bash -c "pre-commit run poetry-lint-python --verbose --all-files"
 	@echo "Done."

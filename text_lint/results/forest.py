@@ -26,16 +26,23 @@ class ResultForest:
   """A composite of TreeResult instances."""
 
   def __init__(self) -> None:
+    """Initialize ResultForest instances."""
     self._trees: Dict["AliasTreesKey", "ResultTree"] = {}
     self.cursor = ResultTreeCursor()
     self.lookup_results: AliasLookupResult = []
 
   def __len__(self) -> int:
+    """Implement the len operator for ResultForest instances.
+
+    :returns: The number of trees in this forest.
+    """
     return len(self._trees)
 
   def add(self, tree: Optional["ResultTree"]) -> None:
-    """Add a TreeResult instance to the ForestResults."""
+    """Add a ResultTree instance to the ResultForest.
 
+    :param tree: The instance to add.
+    """
     if tree is not None:
       value = self._hash_tree_value(tree.value)
       if value in self._trees:
@@ -44,8 +51,11 @@ class ResultForest:
         self._trees[value] = tree
 
   def get(self, key: "AliasTreeValue") -> "ResultTree":
-    """Retrieve a TreeResult instance from the ForestResults."""
+    """Retrieve a ResultTree instance from the ResultForest.
 
+    :param key: The value of the ResultTree required.
+    :returns: The ResultTree matching the specified key.
+    """
     return self._trees[self._hash_tree_value(key)]
 
   def _hash_tree_value(self, value: "AliasTreeValue") -> "AliasTreesKey":
@@ -58,8 +68,12 @@ class ResultForest:
       linter: "Linter",
       lookup_expression: "LookupExpression",
   ) -> "AliasLookupResult":
-    """Perform a lookup against the ResultForest."""
+    """Perform a lookup against the ResultForest.
 
+    :param linter:  The linter instance calling this lookup expression.
+    :param lookup_expression:  The lookup expression to execute.
+    :returns: The evaluated lookup result.
+    """
     if lookup_expression.source.startswith(LOOKUP_STATIC_VALUE_MARKER):
       return lookup_expression.source[1:]
 

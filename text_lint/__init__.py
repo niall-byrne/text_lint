@@ -1,1 +1,1 @@
-"""Generic text file linter."""
+"""A generic text file linter."""

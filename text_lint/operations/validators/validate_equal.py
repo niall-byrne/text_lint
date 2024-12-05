@@ -40,6 +40,5 @@ class ValidateEqual(ValidationComparisonBase):
       result_a: "AliasLookupResult",
       result_b: "AliasLookupResult",
   ) -> bool:
-    """Perform the result comparison between each result element."""
-
+    """Determine if two evaluated lookup expression results are equal."""
     return bool(result_a == result_b)

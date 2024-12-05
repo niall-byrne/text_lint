@@ -47,6 +47,13 @@ class ValidateMembership(ValidationComparisonBase):
       saved_container: "AliasYamlLookupExpressionSet",
       saved_value: "AliasYamlLookupExpressionSet",
   ) -> None:
+    """Initialize ValidateMembership instances.
+
+    :param name: The configured name of this validator.
+    :param saved_container: A list of lookup expressions yielding value sets.
+    :param saved_value: A list of lookup expressions yielding single values.
+    :raises: TypeError
+    """
     super().__init__(name, saved_container, saved_value)
 
   def comparison(
@@ -54,6 +61,5 @@ class ValidateMembership(ValidationComparisonBase):
       result_a: "AliasLookupResult",
       result_b: "AliasLookupResult",
   ) -> bool:
-    """Perform the result comparison between each result element."""
-
+    """Determine if result_b is in the evaluated result_a value set."""
     return result_b in result_a

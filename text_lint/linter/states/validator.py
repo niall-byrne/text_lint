@@ -24,6 +24,10 @@ class ValidatorState(StateBase):
   operation: "ValidatorBase"
 
   def __init__(self, linter: "Linter") -> None:
+    """Initialize ValidatorState instances.
+
+    :param linter:  The linter instance being encapsulated.
+    """
     super().__init__(linter)
     self.operation = self._linter.validators.last
 
@@ -32,8 +36,11 @@ class ValidatorState(StateBase):
       translated_description: str,
       translated_detail: str,
   ) -> None:
-    """Raise an exception indicating an operation has failed."""
+    """Raise an exception indicating an operation has failed.
 
+    :param translated_description:  A translated description of the failure.
+    :param translated_detail:  Translated details of the failure.
+    """
     raise ValidationFailure(
         description=new_line(translated_description),
         detail=new_line(translated_detail),
@@ -44,14 +51,19 @@ class ValidatorState(StateBase):
       self,
       lookup_expression: "LookupExpression",
   ) -> "AliasLookupResult":
-    """Perform the given lookup expression."""
+    """Perform the given lookup expression.
 
+    :param lookup_expression:  The lookup expression to execute.
+    :returns: The calculated lookup result.
+    """
     return self._linter.forest.lookup_expression(
         self._linter,
         lookup_expression,
     )
 
   def save(self, tree: "ResultTree") -> None:
-    """Save the given result tree."""
+    """Save the given result tree.
 
+    :param tree:  The result tree to save in the result forest.
+    """
     self._linter.forest.add(tree)

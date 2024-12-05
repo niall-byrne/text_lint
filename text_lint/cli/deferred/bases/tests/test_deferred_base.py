@@ -6,6 +6,7 @@ from text_lint.cli.deferred.bases.deferred_base import DeferredModuleLoaderBase
 
 
 class TestDeferredModuleLoaderBase:
+  """Test the DeferredModuleLoaderBase class."""
 
   def test_initialize__attributes(
       self,

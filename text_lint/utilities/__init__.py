@@ -1,1 +1,1 @@
-"""Various utility functions for text_lint."""
+"""Shared utility functions."""

@@ -1,4 +1,4 @@
-"""Version information for text_lint."""
+"""Core application version details."""
 
 from typing import List, Tuple
 
@@ -13,8 +13,12 @@ AliasVersionTuple = Tuple[int, int, int]
 
 
 def string_to_version_tuple(version_string: str) -> AliasVersionTuple:
-  """Convert dot separated version strings into a 3 element version tuples."""
+  """Convert dot separated version strings into a 3 element version tuples.
 
+  :param version_string: A string containing a semantic version.
+  :returns: The version object extracted from the version_string.
+  :raises: InvalidVersion
+  """
   version_digits: List[int] = []
 
   if isinstance(version_string, str):
@@ -30,8 +34,12 @@ def string_to_version_tuple(version_string: str) -> AliasVersionTuple:
 
 
 def version_tuple_to_string(version_tuple: AliasVersionTuple) -> str:
-  """Convert a 3 element version tuple into a dot separated version string."""
+  """Convert a 3 element version tuple into a dot separated version string.
 
+  :param version_tuple: The version object to convert.
+  :returns: A string representation of the version_tuple.
+  :raises: InvalidVersion
+  """
   if not isinstance(version_tuple, tuple) or len(version_tuple) != 3:
     raise InvalidVersion(version_tuple)
 

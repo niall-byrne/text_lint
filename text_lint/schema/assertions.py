@@ -30,7 +30,6 @@ class SchemaAssertions(SchemaSectionBase["AssertionBase"]):
       operation_definitions: List["AliasYamlOperation"],
   ) -> List["AssertionBase"]:
     """Modify the operation instances prior to returning them all."""
-
     for operation_index, operation_instance in enumerate(operation_instances):
       operation_instance.schema_validator(
           operation_index,
@@ -51,7 +50,6 @@ class SchemaAssertions(SchemaSectionBase["AssertionBase"]):
       yaml_definition: "AliasYamlOperation",
   ) -> "AliasYamlOperation":
     """Modify the yaml definition prior to creating each operation instance."""
-
     if operation_class.operation == AssertSequenceBegins.operation:
       yaml_definition = self._append_nested_yaml_assertions(yaml_definition)
 

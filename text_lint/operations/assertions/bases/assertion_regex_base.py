@@ -30,5 +30,13 @@ class AssertionRegexBase(AssertionBase, abc.ABC):
       save: Optional[str] = None,
       splits: Optional["AliasYamlSplit"] = None,
   ) -> None:
+    """Initialize AssertionRegexBase instances.
+
+    :param name: The name of the configured assertion.
+    :param regex: A string containing a valid regular expression.
+    :param save: An optional save id to create for matched values.
+    :param splits: Optional text splitting configuration for matched values.
+    :raises: TypeError
+    """
     self.regex = re.compile(regex, self.__regex_flags)
     super().__init__(name, save, splits)

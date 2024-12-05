@@ -15,10 +15,14 @@ class ResultTreeCursor:
   """Represents a location within a ResultForest instance."""
 
   def __init__(self) -> None:
+    """Initialize ResultTreeCursor instances."""
     self._location: "AliasResultForestCursor" = []
 
   def clone(self) -> "ResultTreeCursor":
-    """Create a nested copy of all trees at the specified location."""
+    """Create a nested copy of all trees at the specified location.
+
+    :returns: A cloned copy of the current cursor object.
+    """
     cloned_result_tree = ResultTreeCursor()
     cloned_result_tree.location = self._cloned_location(self.location, [])
     return cloned_result_tree
@@ -45,7 +49,10 @@ class ResultTreeCursor:
       self,
       position: "AliasResultForestCursor",
   ) -> None:
-    """Reposition the cursor within the ResultForest instance."""
+    """Reposition the cursor within the ResultForest instance.
+
+    :param position: The new location to select in the ResultForest instance.
+    """
     self._location = position
 
   def flatten(self) -> None:

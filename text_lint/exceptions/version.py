@@ -1,4 +1,4 @@
-"""Version exceptions."""
+"""Exceptions for application version details."""
 
 from typing import Any
 
@@ -15,4 +15,8 @@ class InvalidVersion(VersionExceptionBase):
   msg_fmt_invalid = _("The value '{0}' is not a valid version!")
 
   def __init__(self, invalid_version_value: Any) -> None:
+    """Initialize InvalidVersion exceptions.
+
+    :param invalid_version_value:  The invalid value causing this exception.
+    """
     super().__init__(self.msg_fmt_invalid.format(str(invalid_version_value)))

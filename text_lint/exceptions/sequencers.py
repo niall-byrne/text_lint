@@ -1,4 +1,4 @@
-"""Exceptions for the text_lint sequencers."""
+"""Exceptions for sequencers."""
 
 
 class SequencerExceptionBase(Exception):

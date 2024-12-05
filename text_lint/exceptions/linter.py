@@ -28,6 +28,10 @@ class LinterRecursionLimitExceeded(LinterExceptionBase):
   )
 
   def __init__(self, linter: "Linter") -> None:
+    """Initialize LinterRecursionLimitExceeded exceptions.
+
+    :param linter:  The linter instance encountering the limit.
+    """
     message = f(self.msg_fmt_description, nl=1)
     message += f(
         self.msg_fmt_source_file,

@@ -1,4 +1,4 @@
-"""Linter class."""
+"""Core text file linter."""
 
 from typing import TYPE_CHECKING
 
@@ -30,6 +30,10 @@ class Linter:
   )
 
   def __init__(self, settings: "LinterSettings") -> None:
+    """Initialize Linter instances.
+
+    :param settings:  The settings object being used.
+    """
     self.settings = settings
 
     schema = Schema(
@@ -53,7 +57,6 @@ class Linter:
 
   def start(self) -> None:
     """Start the text file linting process."""
-
     with logging_contexts.main(self):
       with logging_contexts.assertion_section(self):
         self._run_assertions()

@@ -16,27 +16,43 @@ AliasResultOptions = Dict[str, Optional["AliasResultOptions"]]
 
 
 class LookupExpressionSetArg:
-  """"A set of YAML argument definitions for lookup expressions."""
+  """A set of YAML argument definitions for lookup expressions."""
 
   msg_fmt_invalid_lookup_expression_set = _(
       "The value '{0}' is not a valid set of lookup expressions"
   )
 
   def __init__(self, lookup_expression_set: List["LookupExpression"]) -> None:
+    """Instantiate LookupExpressionSetArg instances.
+
+    :param lookup_expression_set: A list of LookupExpression instances.
+    """
     self._lookup_expression_set = lookup_expression_set
 
   def __iter__(self) -> Iterator["LookupExpression"]:
+    """Implement the iter operator for LookupExpressionSetArg instances.
+
+    :returns: An iterable traversing each contained lookup expression.
+    """
     return iter(self._lookup_expression_set)
 
   def __len__(self) -> int:
+    """Implement the len operator for LookupExpressionSetArg instances.
+
+    :returns: The number of lookup expressions in this set.
+    """
     return len(self._lookup_expression_set)
 
   @classmethod
   def create(
-      cls, yaml_input: AliasYamlLookupExpressionSet
+      cls,
+      yaml_input: AliasYamlLookupExpressionSet,
   ) -> "LookupExpressionSetArg":
-    """Create an instance from YAML input."""
+    """Create an instance from YAML input.
 
+    :param yaml_input: A list of lookup expressions from YAML.
+    :returns: The created instance.
+    """
     created_set = []
     for yaml_set in yaml_input:
       created_set.append(LookupExpression(yaml_set))
@@ -60,9 +76,15 @@ class LookupExpression(ParameterValidationMixin):
       self,
       lookup_expression: str,
   ) -> None:
+    """Instantiate LookupExpression instances.
+
+    :param lookup_expression: A string representation of a lookup expression.
+    """
     self.name = lookup_expression
     self.validate_parameters()
     self.source, self.lookups = parse_lookup_expression(lookup_expression)
 
   class Parameters:
+    """Validation configuration for this lookup expression's parameters."""
+
     name = {"type": str}

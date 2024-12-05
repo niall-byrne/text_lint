@@ -1,4 +1,4 @@
-""""Test fixtures for injecting lookup parameters."""
+"""Test fixtures for injecting lookup parameters."""
 # pylint: disable=redefined-outer-name
 
 from dataclasses import dataclass, field

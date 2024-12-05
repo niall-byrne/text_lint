@@ -1,1 +1,1 @@
-"""Discrete operations for text_lint."""
+"""Core linter operations."""

@@ -2,7 +2,9 @@
 
 from typing import TYPE_CHECKING, Any
 
-from .bases.pattern_base import SequencerPatternBase
+from text_lint.sequencers.patterns.bases.pattern_base import (
+    SequencerPatternBase,
+)
 
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.sequencers.bases.sequencer_base import SequencerBase
@@ -13,7 +15,6 @@ class LinearPattern(SequencerPatternBase):
 
   def increment(self, sequencer: "SequencerBase[Any]") -> None:
     """Advance the index for the given sequencer instance."""
-
     if sequencer.index < len(sequencer):
       sequencer.index += 1
     else:

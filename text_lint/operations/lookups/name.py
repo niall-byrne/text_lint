@@ -4,9 +4,9 @@ from typing import TYPE_CHECKING, Dict, List, Optional, Tuple, Union
 
 from text_lint.config import LOOKUP_STATIC_VALUE_MARKER
 from text_lint.operations.bases.operation_base import YAML_EXAMPLE_SECTIONS
+from text_lint.operations.lookups.bases.lookup_base import LookupBase
 from text_lint.results.tree import ResultTree
 from text_lint.utilities.translations import _, f
-from .bases.lookup_base import LookupBase
 
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.linter.states import LookupState
@@ -48,7 +48,6 @@ class NameLookup(LookupBase):
       state: "LookupState",
   ) -> None:
     """Select the specified tree from the current ResultForest location."""
-
     search_string = self.lookup_name[len(LOOKUP_STATIC_VALUE_MARKER):]
 
     state.cursor.flatten()

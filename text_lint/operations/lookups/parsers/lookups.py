@@ -14,8 +14,12 @@ from text_lint.operations.lookups.bases.lookup_base import AliasLookupParams
 
 
 def parse_lookup(value: str) -> Tuple[str, "AliasLookupParams"]:
-  """Extract both a lookup name and it's parameters from a string value."""
+  """Extract both a lookup name and it's parameters from a string value.
 
+  :param value: A string representation of a lookup with optional parameters.
+  :returns: A tuple separating the lookup name from the parameters.
+  :raises: LookupSyntaxInvalid
+  """
   if (
       value == LOOKUP_SENTINEL or value.isdigit()
       or value.startswith(LOOKUP_STATIC_VALUE_MARKER)

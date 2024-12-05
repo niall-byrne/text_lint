@@ -1,4 +1,4 @@
-"""Exceptions for the external operations loader."""
+"""Exceptions for the external operations loaders."""
 
 
 class ExternalLoaderExceptionBase(OSError):

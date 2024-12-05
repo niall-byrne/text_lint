@@ -3,29 +3,37 @@
 import re
 from typing import TYPE_CHECKING, Optional, Pattern
 
-from .bases.sequencer_base import SequencerBase
+from text_lint.sequencers.bases.sequencer_base import SequencerBase
 
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.schema import Schema
 
 
 class TextFileSequencer(SequencerBase[str]):
-  """Iterator that returns the lines of a generic text file."""
+  """Iterator that returns the lines of a text file."""
 
   _comment_regex: Optional[Pattern[str]] = None
 
   def __init__(self, file_path: str) -> None:
+    """Initialize TextFileSequencer instances.
+
+    :param file_path: The text file to load lines from.
+    """
     with open(file_path, "r", encoding='utf-8') as fh:
       super().__init__(fh.read().splitlines())
 
     self.path = file_path
 
   def configure(self, schema: "Schema") -> None:
-    """Apply schema configuration to the text file."""
+    """Apply schema configuration to the text file.
+
+    :param schema: The schema containing the required configuration.
+    """
     if schema.settings.comment_regex:
       self._comment_regex = re.compile(schema.settings.comment_regex, re.DOTALL)
 
   def __next__(self) -> str:
+    """Return the next line in the text file."""
     if self.index < len(self._entities):
       next_line = self.current
       self.index += 1

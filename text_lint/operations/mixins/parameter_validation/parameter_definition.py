@@ -11,7 +11,7 @@ from .constants import (
 
 
 class ParameterDefinition:
-  """Container for parsed parameters definitions."""
+  """Encapsulate a class attribute with validation constraints."""
 
   # pylint: disable=too-many-arguments,too-many-positional-arguments
   def __init__(
@@ -23,6 +23,15 @@ class ParameterDefinition:
       of: AliasParameterOfType = None,
       validators: AliasParameterValidator = ()
   ) -> None:
+    """Instantiate ParameterDefinition instances.
+
+    :param attribute: The value of the attribute being encapsulated.
+    :param attribute_name: The name of the attribute being encapsulated.
+    :param expected_type: The type the attribute should conform to.
+    :param optional: A boolean which allows the attribute to be optional.
+    :param of: Required for container types, defines the nested value types.
+    :param validators: A tuple of validator functions for this attribute.
+    """
     assert isinstance(attribute_name, str)
     assert isinstance(optional, bool)
     assert expected_type in TYPES_ALL

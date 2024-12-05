@@ -4,10 +4,10 @@ from typing import TYPE_CHECKING, Type
 
 from text_lint.config import LOOKUP_STATIC_VALUE_MARKER
 from text_lint.exceptions.lookups import LookupUnknown
+from text_lint.operations.lookups.bases.lookup_base import LookupBase
+from text_lint.operations.lookups.index import IndexLookup
+from text_lint.operations.lookups.name import NameLookup
 from text_lint.utilities.translations import _
-from .bases.lookup_base import LookupBase
-from .index import IndexLookup
-from .name import NameLookup
 
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.linter.states import LookupState
@@ -41,8 +41,11 @@ class DefaultLookup(LookupBase):
       self,
       state: "LookupState",
   ) -> None:
-    """Handle unknown lookups by selecting a LookupBase subclass."""
+    """Apply this operation to the given state object.
 
+    :param state: The state object to apply this operation to.
+    :raises: LookupUnknown
+    """
     lookup_class: Type[LookupBase]
 
     if self.lookup_name.isdigit():

@@ -1,1 +1,1 @@
-"""Base classes for validator operations."""
+"""Validator operation base classes."""

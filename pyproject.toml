@@ -23,6 +23,13 @@ branch = true
 omit = ['*/test*', 'text_lint/__main__.py', 'text_lint/extend.py']
 source = ['.']
 
+[tool.docsig]
+check-class_constructor = true
+check-dunders = false
+check-overridden = false
+check-protected = false
+exclude = '.*/__.+__/.*|.*/tests/.*|.*/conftest.py'
+
 [tool.isort]
 default_section = 'FIRSTPARTY'
 include_trailing_comma = true
@@ -117,6 +124,9 @@ path = 'text_lint/locales/**/LC_MESSAGES/*.mo'
 format = ['sdist', 'wheel']
 path = 'text_lint/locales/**/LC_MESSAGES/*.mo'
 
+[tool.poetry.requires-plugins]
+poetry-plugin-export = '>=1.8'
+
 [tool.poetry.scripts]
 text_lint = 'text_lint.__main__:cli'
 
@@ -208,6 +218,22 @@ init-import = 'no'
 [tool.pytest]
 [tool.pytest.ini_options]
 python_files = ['test_*.py', '__helpers__/*.py']
+
+[tool.ruff]
+target-version = 'py39'
+
+[tool.ruff.lint]
+ignore = ['D107']
+select = ['D']
+
+[tool.ruff.lint.per-file-ignores]
+'**/__*__/*' = ['D']
+'**/conftest.py' = ['D101', 'D102', 'D103', 'D104', 'D401']
+'**/scenarios.py' = ['D101']
+'**/tests/*' = ['D102', 'D103', 'D104']
+
+[tool.ruff.lint.pydocstyle]
+convention = 'pep257'
 
 [tool.yapf]
 align_closing_bracket_with_visual_indent = false

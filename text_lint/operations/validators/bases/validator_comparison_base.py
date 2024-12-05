@@ -44,6 +44,13 @@ class ValidationComparisonBase(ValidatorBase, abc.ABC):
       saved_a: "AliasYamlLookupExpressionSet",
       saved_b: "AliasYamlLookupExpressionSet",
   ) -> None:
+    """Initialize ValidationComparisonBase instances.
+
+    :param name: The configured name of this validator.
+    :param saved_a: A list of YAML lookup expressions to evaluate.
+    :param saved_b: A second list of YAML lookup expressions to compare with.
+    :raises: TypeError
+    """
     super().__init__(name)
     self.lookup_expression_set_a = LookupExpressionSetArg.create(saved_a)
     self.lookup_expression_set_b = LookupExpressionSetArg.create(saved_b)
@@ -54,7 +61,13 @@ class ValidationComparisonBase(ValidatorBase, abc.ABC):
       result_a: "AliasLookupResult",
       result_b: "AliasLookupResult",
   ) -> bool:
-    """Perform the result comparison between each result element."""
+    """Perform the comparison between each pair of lookup expression results.
+
+    :param result_a: A lookup expression result to compare.
+    :param result_b: A second lookup expression result to compare against.
+    :returns: Whether the comparison
+    :raises: TypeError
+    """
 
   def create_invalid_comparison_exception(
       self,
@@ -63,8 +76,14 @@ class ValidationComparisonBase(ValidatorBase, abc.ABC):
       lookup_expression_a: "LookupExpression",
       lookup_expression_b: "LookupExpression",
   ) -> ValidationInvalidComparison:
-    """Create an exception for an invalid comparison."""
+    """Create an exception for an invalid comparison.
 
+    :param result_a: A lookup expression result to compare.
+    :param result_b: A second lookup expression result to compare against.
+    :param lookup_expression_a: The first lookup expression evaluated.
+    :param lookup_expression_b: The second lookup expression evaluated.
+    :returns: A properly formatted invalid comparison exception.
+    """
     return ValidationInvalidComparison(
         description=f(
             self.msg_fmt_invalid_comparison_description,
@@ -88,8 +107,14 @@ class ValidationComparisonBase(ValidatorBase, abc.ABC):
       requested_result_a: "LookupExpression",
       requested_result_b: "LookupExpression",
   ) -> ValidationFailure:
-    """Create the appropriate validation failure exception."""
+    """Create the appropriate validation failure exception.
 
+    :param result_a: A lookup expression result to compare.
+    :param result_b: A second lookup expression result to compare against.
+    :param requested_result_a: The first lookup expression evaluated.
+    :param requested_result_b: The second lookup expression evaluated.
+    :returns: A properly formatted validation failure exception.
+    """
     return ValidationFailure(
         description=f(
             self.msg_fmt_comparison_failure,
@@ -107,8 +132,11 @@ class ValidationComparisonBase(ValidatorBase, abc.ABC):
     )
 
   def apply(self, state: "ValidatorState") -> None:
-    """Apply the Validator logic."""
+    """Apply this operation to the given state object.
 
+    :param state: The state object to apply this operation to.
+    :raises: TypeError, ValidationInvalidComparison, ValidationFailure
+    """
     self._validate_result_set_counts()
 
     for lookup_expression_a, lookup_expression_b in zip(

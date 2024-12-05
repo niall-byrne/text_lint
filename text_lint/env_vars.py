@@ -1,4 +1,4 @@
-""""Environment variable definitions for text_lint."""
+"""Core environment variable definitions."""
 
 EXTENSIONS_LOCAL_ENV_VAR = "TEXT_LINT_EXTENSIONS_LOCAL_FOLDER"
 EXTENSIONS_LOCAL_VAR_SEPERATOR = ":"

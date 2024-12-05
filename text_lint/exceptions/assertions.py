@@ -1,4 +1,4 @@
-"""Exceptions for text file parser assertions."""
+"""Exceptions for linter assertion operations."""
 
 import os
 from typing import TYPE_CHECKING
@@ -34,6 +34,12 @@ class AssertionViolation(AssertionExceptionBase):
       expected: str,
       textfile: "TextFileSequencer",
   ) -> None:
+    """Initialize AssertionViolation exceptions.
+
+    :param assertion:  The assertion operation with the violation.
+    :param expected:  The expected string content.
+    :param textfile:  The textfile sequencer object being used.
+    """
     textfile.index -= 1
 
     message = f(self.msg_fmt_assertion_operation, assertion.operation, nl=1)
@@ -64,6 +70,11 @@ class AssertionCaptureGroupNotFound(AssertionExceptionBase):
       assertion: "AssertionBase",
       capture_group: int,
   ) -> None:
+    """Initialize AssertionCaptureGroupNotFound exceptions.
+
+    :param assertion:  The assertion operation referencing the capture group.
+    :param capture_group:  The referenced regex capture group number.
+    """
     message = f(self.msg_fmt_assertion_operation, assertion.operation, nl=1)
     message += f(self.msg_fmt_assertion_name, assertion.name, nl=1)
     message += f(self.msg_fmt_capture_group, make_visible(capture_group), nl=1)
@@ -87,6 +98,12 @@ class AssertionLogicError(AssertionExceptionBase):
       hint: str,
       textfile: "TextFileSequencer",
   ) -> None:
+    """Initialize AssertionLogicError exceptions.
+
+    :param assertion:  The assertion operation with the logic error.
+    :param hint:  A description of the specific logic error encountered.
+    :param textfile:  The textfile sequencer object being used.
+    """
     message = f(self.msg_fmt_assertion_operation, assertion.operation, nl=1)
     message += f(
         self.msg_fmt_source_file,

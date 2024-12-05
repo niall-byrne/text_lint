@@ -1,4 +1,4 @@
-"""Exceptions for the text_lint result lookups."""
+"""Exceptions for the linter lookup operations."""
 from typing import TYPE_CHECKING
 
 from text_lint.config import LOOKUP_STATIC_VALUE_MARKER
@@ -29,6 +29,11 @@ class LookupFailure(LookupExceptionBase):
       translated_description: str,
       lookup: "LookupBase",
   ) -> None:
+    """Initialize LookupFailure exceptions.
+
+    :param translated_description:  A translated description of the failure.
+    :param lookup:  The lookup operation encountering the failure.
+    """
     message = translated_description
     message += f(
         self.msg_fmt_lookup_operation,
@@ -98,6 +103,10 @@ class LookupUnknown(LookupExceptionBase):
       self,
       lookup: "LookupBase",
   ) -> None:
+    """Initialize LookupUnknown exceptions.
+
+    :param lookup:  The lookup operation encountering the unknown lookup type.
+    """
     message = f(
         self.msg_fmt_lookup_unknown_description,
         nl=1,

@@ -1,4 +1,4 @@
-"""Mathematical expression registry"""
+"""Mathematical expression registry."""
 
 from typing import Dict, Type
 

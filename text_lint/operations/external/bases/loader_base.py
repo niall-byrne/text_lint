@@ -40,6 +40,7 @@ class ExternalLoaderBase(abc.ABC):
   msg_fmt_load_indicator: str
 
   def __init__(self) -> None:
+    """Initialize ExternalLoaderBase instances."""
     self.loaded_extensions = 0
     self.mappings_registry = (
         (AssertionBase, assertion_registry, "operation"),
@@ -50,7 +51,6 @@ class ExternalLoaderBase(abc.ABC):
 
   def load(self) -> None:
     """Load extensions from a list of loaded python modules."""
-
     for module in self.load_modules():
       for available_import_name in dir(module):
         available_import = getattr(module, available_import_name)
@@ -60,7 +60,10 @@ class ExternalLoaderBase(abc.ABC):
 
   @abc.abstractmethod
   def load_modules(self) -> Sequence[ModuleType]:
-    """Generate an iterable of modules to import extensions from."""
+    """Generate an iterable of modules to import extensions from.
+
+    :returns: An iterable containing loaded modules.
+    """
 
   def _import_to_registry(
       self,

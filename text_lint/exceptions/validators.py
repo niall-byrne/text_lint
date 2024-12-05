@@ -1,4 +1,4 @@
-"""Exceptions for the text_lint result validators."""
+"""Exceptions for the linter validator operations."""
 from typing import TYPE_CHECKING
 
 from text_lint.utilities.translations import _, f
@@ -28,6 +28,12 @@ class ValidationFailure(ValidationExceptionBase):
       detail: str,
       validator: "ValidatorBase",
   ) -> None:
+    """Initialize ValidationFailure exceptions.
+
+    :param description:  A description of the exception.
+    :param detail:  Details relating to the exception.
+    :param validator:  The validation operation that has failed.
+    """
     message = description
     message += f(
         self.msg_fmt_validation_operation,

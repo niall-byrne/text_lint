@@ -1,4 +1,4 @@
-"""LinterRecursionDetection class."""
+"""Linter recursion detection class."""
 
 from typing import TYPE_CHECKING
 
@@ -13,11 +13,19 @@ class RecursionDetection:
   """Linter recursion detector."""
 
   def __init__(self, linter: "Linter") -> None:
+    """Initialize RecursionDetection instances.
+
+    :param linter:  The linter instance being monitored.
+    """
     self._linter = linter
     self.index = -1
     self.count = 0
 
-  def detect(self,) -> None:
+  def detect(self) -> None:
+    """Detect whether the linter has reached the recursion limit.
+
+    :raises: LinterRecursionLimitExceeded
+    """
     if self._linter.textfile.index != self.index:
       self.count = 0
     if self._linter.textfile.index == self.index:

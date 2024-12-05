@@ -1,1 +1,1 @@
-"""Result encapsulation classes for parser assertions."""
+"""Core linter result encapsulation."""

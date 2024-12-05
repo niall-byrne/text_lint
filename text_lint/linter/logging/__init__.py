@@ -1,4 +1,4 @@
-"""Logger class."""
+"""Linter logger class."""
 
 import sys
 from typing import TYPE_CHECKING, Optional, Union, overload
@@ -27,6 +27,10 @@ class Logger:
   msf_fmt_log_unsupported_object = _("ERROR: Cannot log object '{0}'")
 
   def __init__(self, linter: "Linter") -> None:
+    """Initialize Logger instances.
+
+    :param linter: The linter instance being logged.
+    """
     self.linter = linter
 
   @overload
@@ -66,6 +70,13 @@ class Logger:
       indent: bool = False,
       section: bool = False,
   ) -> None:
+    """Log the given object to the console.
+
+    :param obj:  The object being logged.
+    :param index: The assertion index when logging assertion operations.
+    :param index: Optionally indent when logging strings.
+    :param section: Optionally format as a section header logging strings.
+    """
     if isinstance(obj, str):
       self._log_string(obj, indent, section)
     elif isinstance(obj, AssertionBase) and index is not None:

@@ -41,14 +41,22 @@ class SchemaSectionBase(Generic[TypeOperation]):
   msg_fmt_unknown_syntax = _("{0} #{1} Unknown syntax")
 
   def __init__(self, schema: "Schema") -> None:
+    """Initialize SchemaSectionBase instances.
+
+    :param schema: The schema instance this section is found in.
+    """
     self._schema = schema
 
   def load(
       self,
       source: List[AliasYamlOperation],
   ) -> List["TypeOperation"]:
-    """Load the operation instances from the schema."""
+    """Load the operation instances from the schema.
 
+    :param source: The YAML source that defines the section's operations.
+    :returns: The new operation instances.
+    :raises: SchemaError
+    """
     operation_instances: List["TypeOperation"] = []
     operation_definitions: List["AliasYamlOperation"] = []
 
@@ -161,8 +169,12 @@ class SchemaSectionBase(Generic[TypeOperation]):
       # pylint: disable=unused-argument
       operation_definitions: List["AliasYamlOperation"],
   ) -> List["TypeOperation"]:
-    """Modify the operation instances prior to returning loaded results."""
+    """Modify the operation instances prior to returning loaded results.
 
+    :param operation_instances: The newly created operation instances.
+    :param operation_definitions: The YAML config for the operations.
+    :returns: The modified operation instances.
+    """
     return operation_instances
 
   # pylint: disable=unused-argument
@@ -171,6 +183,10 @@ class SchemaSectionBase(Generic[TypeOperation]):
       operation_class: Type["TypeOperation"],
       yaml_definition: "AliasYamlOperation",
   ) -> "AliasYamlOperation":
-    """Modify the yaml definition prior to creating the operation instance."""
+    """Modify the yaml definition prior to creating the operation instance.
 
+    :param operation_class: The operation class being created.
+    :param yaml_definition: The YAML config for this operation.
+    :returns: The modified YAML config.
+    """
     return yaml_definition

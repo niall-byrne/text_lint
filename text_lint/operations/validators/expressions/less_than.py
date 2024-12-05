@@ -1,7 +1,7 @@
 """LessThan class."""
 from typing import Union
 
-from .bases import expression_base
+from text_lint.operations.validators.expressions.bases import expression_base
 
 
 class LessThan(expression_base.ExpressionBase):
@@ -11,5 +11,4 @@ class LessThan(expression_base.ExpressionBase):
 
   def apply(self, value_a: float, value_b: float) -> Union[float, bool]:
     """Apply the mathematical operator to these two values."""
-
     return value_a < value_b

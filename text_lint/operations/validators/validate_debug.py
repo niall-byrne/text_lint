@@ -39,12 +39,17 @@ class ValidateDebug(ValidatorBase):
   msg_fmt_debug = _("DEBUG: '{0}'")
 
   def __init__(self, name: str, saved: "AliasYamlLookupExpressionSet") -> None:
+    """Initialize ValidateDebug instances.
+
+    :param name: The configured name of this validator.
+    :param saved: A list of YAML lookup expressions to evaluate.
+    :raises: TypeError
+    """
     super().__init__(name)
     self.lookup_expressions = LookupExpressionSetArg.create(saved)
 
   def apply(self, state: "ValidatorState") -> None:
     """Apply the ValidateDebug validator logic."""
-
     for requested_lookup_to_debug in self.lookup_expressions:
 
       result = state.lookup_expression(requested_lookup_to_debug)

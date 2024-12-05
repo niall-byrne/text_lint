@@ -69,11 +69,20 @@ class AssertSequenceBegins(AssertionBase):
       assertions: List[AssertionBase],
       count: int,
   ) -> None:
+    """Initialize AssertSequenceBegins instances.
+
+    :param name: The configured name of this assertion.
+    :param assertions: The sequence of assertions that is starting.
+    :param count: The number of times the sequence should repeat.
+    :raises: TypeError
+    """
     self.count = count
     self.assertions = assertions
     super().__init__(name, None, None)
 
   class Parameters(AssertionBase.Parameters):
+    """Parameter validation for this operation."""
+
     assertions = {
         "type":
             list,
@@ -86,8 +95,10 @@ class AssertSequenceBegins(AssertionBase):
             ],
     }
     count = {
-        "type": int,
-        "validators": [validator_factories.create_is_greater_than_or_equal(-1)],
+        "type":
+            int,
+        "validators":
+            [validator_factories.create_is_greater_than_or_equal(LOOP_COUNT)],
     }
 
   def apply(
@@ -95,7 +106,6 @@ class AssertSequenceBegins(AssertionBase):
       state: "AssertionState",
   ) -> None:
     """Apply the AssertSequenceBegins assertion logic."""
-
     state.loop(self.assertions, self.count)
 
   def schema_validator(
@@ -105,8 +115,7 @@ class AssertSequenceBegins(AssertionBase):
       schema_assertion_definitions: List["AliasYamlOperation"],
       schema: "Schema",
   ) -> None:
-    """Optional additional schema level validation for this assertion."""
-
+    """Validate this operation in the context of an entire loaded schema."""
     if (
         self.count == LOOP_COUNT
         and schema_assertion_index + 1 != len(schema_assertion_instances)

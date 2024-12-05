@@ -28,7 +28,6 @@ class CheckCommand(CLICommandBase):
 
   def create_parser(self, command_parser: "ArgumentParser") -> None:
     """Create an argument parser for this CLI command."""
-
     command_parser.add_argument(
         dest="filenames",
         help=self.arg_filenames_help,
@@ -60,7 +59,6 @@ class CheckCommand(CLICommandBase):
 
   def invoke(self, args: "Namespace") -> None:
     """Invoke this CLI command."""
-
     for filename in args.filenames:
       settings = deferred_linter_settings()(
           file_path=filename,

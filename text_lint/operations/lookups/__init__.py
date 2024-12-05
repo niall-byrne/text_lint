@@ -1,4 +1,4 @@
-"""Lookup operations for text_lint."""
+"""Lookup operations."""
 
 from collections import defaultdict
 from typing import Dict, Type

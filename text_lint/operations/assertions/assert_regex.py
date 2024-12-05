@@ -45,7 +45,6 @@ class AssertRegex(assertion_regex_base.AssertionRegexBase):
       state: "AssertionState",
   ) -> None:
     """Apply the AssertRegex assertion logic."""
-
     data = state.next()
     match = re.match(self.regex, data)
 

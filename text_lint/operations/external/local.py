@@ -6,8 +6,8 @@ from types import ModuleType
 from typing import List
 
 from text_lint.exceptions.external import ExternalLoaderFailedImport
+from text_lint.operations.external.bases.loader_base import ExternalLoaderBase
 from text_lint.utilities.translations import _
-from .bases.loader_base import ExternalLoaderBase
 
 
 class LocalFolderExtensionsLoader(ExternalLoaderBase):
@@ -18,12 +18,15 @@ class LocalFolderExtensionsLoader(ExternalLoaderBase):
   )
 
   def __init__(self, paths: List[str]) -> None:
+    """Initialize ThirdPartyExtensionsLoader instances.
+
+    :param paths: A list of local file paths to load extensions from.
+    """
     super().__init__()
     self.local_paths = paths
 
   def load_modules(self) -> List[ModuleType]:
     """Generate a list of modules to import assertions from."""
-
     custom_modules: List[ModuleType] = []
 
     for target_file in self._get_local_python_sources():

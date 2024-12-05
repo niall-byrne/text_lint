@@ -70,6 +70,15 @@ class ValidateExpression(ValidationComparisonBase):
       saved_a: "AliasYamlLookupExpressionSet",
       saved_b: "AliasYamlLookupExpressionSet",
   ) -> None:
+    """Initialize ValidateExpression instances.
+
+    :param name: The configured name of this validator.
+    :param new_saved: The new saved id to create.
+    :param operator: An operator applied to the lookup expression result pairs.
+    :param saved_a: A list of YAML lookup expressions to evaluate.
+    :param saved_b: A second list of YAML lookup expressions to evaluate.
+    :raises: TypeError
+    """
     self.new_saved = new_saved
     self.operator = operator
     super().__init__(name, saved_a, saved_b)
@@ -90,6 +99,9 @@ class ValidateExpression(ValidationComparisonBase):
     )
 
   class Parameters(ValidationComparisonBase.Parameters):
+    """Parameter validation for this operation."""
+
+    # pylint: disable=duplicate-code
     new_saved = {
         "type":
             str,
@@ -109,7 +121,6 @@ class ValidateExpression(ValidationComparisonBase):
 
   def apply(self, state: "ValidatorState") -> None:
     """Apply the ValidateCombine validator logic."""
-
     super().apply(state)
 
     state.save(self.new_tree)
@@ -119,9 +130,15 @@ class ValidateExpression(ValidationComparisonBase):
       result_a: "AliasLookupResult",
       result_b: "AliasLookupResult",
   ) -> bool:
-    """Perform the result comparison between each result element."""
+    """Apply the operator to each pair of lookup expression results.
 
-    # TypeError is caught by ValidationComparisonBase
+    A new result tree will be created with the expression result.
+
+    :param result_a: A lookup expression result to operate on.
+    :param result_b: A second lookup expression result to operate on.
+    :returns: Whether the operation could be applied to the result pair.
+    :raises: TypeError (which is handled by the base class)
+    """
     try:
       float_a = float(result_a)  # type: ignore[arg-type]
       float_b = float(result_b)  # type: ignore[arg-type]

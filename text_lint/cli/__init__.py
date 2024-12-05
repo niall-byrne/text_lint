@@ -1,4 +1,4 @@
-"""The text_lint CLI."""
+"""Core application CLI."""
 
 from typing import Sequence, Type
 

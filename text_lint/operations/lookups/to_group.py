@@ -4,8 +4,8 @@ from itertools import chain
 from typing import TYPE_CHECKING
 
 from text_lint.config import LOOKUP_TRANSFORMATION_PREFIX
+from text_lint.operations.lookups.bases.lookup_base import LookupBase
 from text_lint.utilities.translations import _
-from .bases.lookup_base import LookupBase
 
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.linter.states import LookupState
@@ -35,5 +35,4 @@ class GroupLookup(LookupBase):
       state: "LookupState",
   ) -> None:
     """Group the current result set into a flat list."""
-
     state.results = list(chain.from_iterable(state.results))

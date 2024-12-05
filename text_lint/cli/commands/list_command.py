@@ -20,7 +20,6 @@ class ListCommand(CLICommandBase):
 
   def invoke(self, args: "Namespace") -> None:
     """Invoke this CLI command."""
-
     documentation = deferred_operation_documentation()()
     documentation.list()
     documentation.print()

@@ -23,13 +23,19 @@ class CustomAssertion(AssertionBase):
       self,
       name: str,
   ) -> None:
+    """Initialize CustomAssertion instances.
+
+    :param name: The configured name of this assertion.
+    """
     super().__init__(name=name, save=None, splits=None)
 
   class Parameters:
+    """Parameter validation for this operation."""
+
     name = {"type": str}
 
   def apply(self, state: "AssertionState") -> None:
-
+    """Apply the CustomAssertion assertion logic."""
     data = state.next()
 
     if data == self.magic_string:

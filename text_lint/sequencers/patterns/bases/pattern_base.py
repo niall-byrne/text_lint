@@ -12,8 +12,14 @@ class SequencerPatternBase(abc.ABC):
 
   # pylint: disable=unused-argument
   def adjust(self, offset: int) -> None:
-    """Adjust the pattern based on inserted data."""
+    """Adjust the pattern based on inserted data.
+
+    :param offset: An index to adjust the pattern by.
+    """
 
   @abc.abstractmethod
   def increment(self, sequencer: "SequencerBase[Any]") -> None:
-    """Advance the index for the given sequencer instance."""
+    """Advance the index for the given sequencer instance.
+
+    :param sequencer: The sequencer instance to advance.
+    """

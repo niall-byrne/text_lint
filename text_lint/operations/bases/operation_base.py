@@ -20,6 +20,7 @@ YAML_EXAMPLE_SECTIONS = {
 
 
 class OperationBase(Generic[TypeState], ParameterValidationMixin, abc.ABC):
+  """Operation base class."""
 
   hint: str
   internal_use_only: bool = False
@@ -31,4 +32,7 @@ class OperationBase(Generic[TypeState], ParameterValidationMixin, abc.ABC):
       self,
       state: "TypeState",
   ) -> None:
-    """Override this method to type narrow state."""
+    """Override this method to type narrow state.
+
+    :param state: The state object to apply this operation to.
+    """

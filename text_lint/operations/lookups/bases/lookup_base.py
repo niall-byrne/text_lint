@@ -38,6 +38,14 @@ class LookupBase(
       lookup_params: "AliasLookupParams",
       requesting_operation_name: str,
   ) -> None:
+    """Initialize LookupBase instances.
+
+    :param lookup_name: The name of this lookup operation.
+    :param lookup_expression: The lookup expression this lookup is a part of.
+    :param lookup_params: The parameters being used with this lookup operation.
+    :param requesting_operation_name: The name of the validation operation.
+    :raises: LookupFailure
+    """
     self.lookup_name = lookup_name
     self.lookup_expression = lookup_expression
     self.lookup_params = lookup_params
@@ -45,6 +53,8 @@ class LookupBase(
     self.validate_parameters()
 
   class Parameters:
+    """Parameter validation for this operation."""
+
     lookup_name = {"type": str}
     lookup_params = {
         "type":
@@ -61,9 +71,17 @@ class LookupBase(
       self,
       state: "states.LookupState",
   ) -> None:
-    """Base method for applying a lookup."""
+    """Apply this operation to the given state object.
+
+    :param state: The state object to apply this operation to.
+    :raises: LookupFailure
+    """
 
   def validate_parameters(self) -> None:
+    """Validate the operation's parameters.
+
+    :raises: LookupFailure
+    """
     try:
       super().validate_parameters()
     except TypeError as exc:

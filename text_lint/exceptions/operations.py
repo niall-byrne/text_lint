@@ -1,4 +1,4 @@
-"""Exceptions for the text_lint generic operation classes."""
+"""Exceptions for generic linter operations."""
 
 from typing import TYPE_CHECKING
 
@@ -24,6 +24,12 @@ class InvalidParameterValidation(OperationExceptionBase):
       translated_detail: str,
       operation_class: "Any",
   ) -> None:
+    """Initialize InvalidParameterValidation exceptions.
+
+    :param translated_description:  A translated description of the exception.
+    :param translated_detail:  Translated details relating to the exception.
+    :param operation_class:  The class that triggered the exception.
+    """
     message = f(
         translated_description,
         nl=1,

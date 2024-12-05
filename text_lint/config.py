@@ -1,4 +1,4 @@
-""""Temporary config file."""
+"""Core application configuration."""
 
 import os
 import re

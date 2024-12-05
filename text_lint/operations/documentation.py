@@ -23,7 +23,7 @@ REGISTRY_NAMES = ["Assertion", "Validator", "Validator Lookup"]
 
 
 class OperationDocumentation:
-  """Documentation for text file Operation subclasses."""
+  """Documentation for text file operation classes."""
 
   content = ""
   registries: Mapping[str, AliasRegistry]
@@ -41,6 +41,7 @@ class OperationDocumentation:
   msg_fmt_operation_unknown = _("Unknown operation '{0}' !")
 
   def __init__(self) -> None:
+    """Initialize OperationDocumentation instances."""
     self.registries = {
         REGISTRY_NAMES[0]: self._filter_registry(assertion_registry),
         REGISTRY_NAMES[1]: self._filter_registry(validator_registry),
@@ -56,7 +57,6 @@ class OperationDocumentation:
 
   def list(self) -> None:
     """Generate a list of all operations in the registries."""
-
     self.content += f(
         self.msg_fmt_operation_list_headers[0],
         nl=1,
@@ -81,8 +81,10 @@ class OperationDocumentation:
       self.content += NEW_LINE
 
   def search(self, operation_name: str) -> None:
-    """Search the documentation for the specified operation name."""
+    """Search the documentation for the specified operation name.
 
+    :param operation_name: The operation name to search for.
+    """
     for registry_type, registry in self.registries.items():
       try:
         operation_class = self._registry_search(
@@ -149,5 +151,4 @@ class OperationDocumentation:
 
   def print(self) -> None:
     """Write the search results to the console."""
-
     sys.stdout.write(self.content + NEW_LINE)

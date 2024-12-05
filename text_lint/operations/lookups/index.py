@@ -3,8 +3,8 @@
 from typing import TYPE_CHECKING
 
 from text_lint.exceptions.lookups import LookupFailure
+from text_lint.operations.lookups.bases.lookup_base import LookupBase
 from text_lint.utilities.translations import _, f
-from .bases.lookup_base import LookupBase
 
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.linter.states import LookupState
@@ -36,7 +36,6 @@ class IndexLookup(LookupBase):
       state: "LookupState",
   ) -> None:
     """Select the indexed tree from the current ResultForest location."""
-
     index = int(self.lookup_name)
 
     try:

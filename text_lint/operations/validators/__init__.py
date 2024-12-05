@@ -1,4 +1,4 @@
-"""Validator operations for text_lint."""
+"""Validator operations."""
 
 from typing import Dict, Type
 

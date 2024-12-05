@@ -4,12 +4,12 @@ from typing import TYPE_CHECKING, List, Union, cast
 
 from text_lint.exceptions.lookups import LookupFailure
 from text_lint.operations.bases.operation_base import YAML_EXAMPLE_SECTIONS
+from text_lint.operations.lookups.bases.lookup_base import LookupBase
 from text_lint.operations.mixins.parameter_validation import (
     validator_factories,
 )
 from text_lint.results.tree import ResultTree
 from text_lint.utilities.translations import _, f
-from .bases.lookup_base import LookupBase
 
 if TYPE_CHECKING:  # pragma: no cover
   from text_lint.linter.states import LookupState
@@ -65,6 +65,14 @@ class CaptureLookup(LookupBase):
       lookup_params: "AliasLookupParams",
       requesting_operation_name: str,
   ) -> None:
+    """Initialize CaptureLookup instances.
+
+    :param lookup_name: The name of this lookup operation.
+    :param lookup_expression: The lookup expression this lookup is a part of.
+    :param lookup_params: The parameters being used with this lookup operation.
+    :param requesting_operation_name: The name of the validation operation.
+    :raises: LookupFailure
+    """
     super().__init__(
         lookup_name,
         lookup_expression,
@@ -74,6 +82,8 @@ class CaptureLookup(LookupBase):
     self.index = cast(int, self.lookup_params[0])
 
   class Parameters(LookupBase.Parameters):
+    """Parameter validation for this operation."""
+
     lookup_params = {
         "type":
             list,
@@ -98,7 +108,6 @@ class CaptureLookup(LookupBase):
       state: "LookupState",
   ) -> None:
     """Select a capture group from the current ResultForest location."""
-
     state.results = []
 
     while self.index > 0:

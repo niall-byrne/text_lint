@@ -1,4 +1,4 @@
-"""Schema class."""
+"""Core linter schema."""
 
 import os
 import re
@@ -34,6 +34,11 @@ class Schema:
   msg_fmt_invalid_schema_version = _("Invalid schema version")
 
   def __init__(self, schema_path: str, interpolate: bool) -> None:
+    """Initialize Schema instances.
+
+    :param schema_path: The path to file containing the schema YAML.
+    :param interpolate: Controls rendering of environment variables.
+    """
     self.path = schema_path
     with open(self.path, 'r', encoding="utf-8") as file_handle:
       content = file_handle.read()
@@ -46,7 +51,10 @@ class Schema:
     self._validators = SchemaValidators(self)
 
   def load_assertions(self) -> List["AssertionBase"]:
-    """Create and return the text file parser assertion operation instances."""
+    """Create assertion operations from the schema's YAML content.
+
+    :returns: A list of assertion operation instances.
+    """
     return self._assertions.load(self._parse_schema_assertions())
 
   def _parse_schema_assertions(self) -> List["AliasYamlOperation"]:
@@ -61,7 +69,10 @@ class Schema:
       ) from exc
 
   def load_validators(self) -> List["ValidatorBase"]:
-    """Create and return the text file parser validation instances."""
+    """Create validator operations from the schema's YAML content.
+
+    :returns: A list of validator operation instances.
+    """
     return self._validators.load(self._parse_schema_validators())
 
   def _parse_schema_validators(self) -> List["AliasYamlOperation"]:
@@ -110,6 +121,12 @@ class Schema:
       description: str,
       operation_definition: Optional["AliasYamlOperation"] = None,
   ) -> "SchemaError":
+    """Create a properly formatted schema error exception.
+
+    :param description: A description of the schema error encountered.
+    :param operation_definition: Any YAML config associated with the error.
+    :returns: The exception instance.
+    """
     return SchemaError(
         description=description,
         schema=self,

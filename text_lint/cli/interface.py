@@ -1,4 +1,4 @@
-"""The text_lint command line interface."""
+"""The core command line interface."""
 
 import argparse
 import os
@@ -33,6 +33,7 @@ class TextLintCli:
   )
 
   def __init__(self) -> None:
+    """Initialize the text_lint CLI."""
     self.command_instances = [command() for command in command_classes]
     self.parser = argparse.ArgumentParser(
         description=self.program_description,
@@ -95,6 +96,7 @@ class TextLintCli:
     return []
 
   def invoke(self) -> None:
+    """Invoke the CLI."""
     args = self.parser.parse_args()
 
     self._load_extensions(args)
