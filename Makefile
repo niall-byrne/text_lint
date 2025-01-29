@@ -1,12 +1,14 @@
 #!/usr/bin/make -f
 
-.PHONY: help clean fmt lint security spelling test types clean-git clean-pycache coverage format-python format-shell format-toml lint-make lint-markdown lint-python lint-shell lint-workflows lint-yaml security-audit security-leaks spelling-add spelling-markdown spelling-sync test-python translations-add translations-check translations-compile translations-update types-python
+.PHONY: help clean docs fmt lint security spelling test types build-docs build-docs-translate clean-git clean-pycache coverage format-python format-shell format-toml lint-make lint-markdown lint-python lint-shell lint-workflows lint-yaml security-audit security-leaks spelling-add spelling-markdown spelling-sync test-python translations-add translations-check translations-compile translations-update types-python
 
 help:
 	@echo "Please use 'make <target>' where <target> is one of:"
+	@echo "  build-docs             to build the Sphinx documentation"
+	@echo "  build-docs-translate   to build the Sphinx translations"
 	@echo "  clean-git              to run git clean"
-	@echo "  clean-pycache          to clean Python cache files."
-	@echo "  coverage               to generate a code coverage report."
+	@echo "  clean-pycache          to clean Python cache files"
+	@echo "  coverage               to generate a code coverage report"
 	@echo "  format-python          to format Python scripts"
 	@echo "  format-shell           to format shell scripts"
 	@echo "  format-toml            to format TOML files"
@@ -29,12 +31,25 @@ help:
 	@echo "  types-python           to check the Python typing"
 
 clean: clean-git clean-pycache
+docs: build-docs
 fmt: format-shell format-toml format-python
 lint: lint-make lint-markdown lint-python lint-shell lint-workflows lint-yaml
 security: security-audit security-leaks
 spelling: spelling-markdown
 test: test-python
 types: types-python
+
+build-docs:
+	@echo "Building documentation ..."
+	@rm -rf "documentation/source/codebase/text_lint/_autosummary"
+	@poetry run bash -c "cd documentation && make clean && make html"
+	@echo "Done."
+
+build-docs-translate:
+	@echo "Building documentation translations ..."
+	@poetry run bash -c "cd documentation && make gettext"
+	@poetry run bash -c "cd documentation && while IFS= read -r TRANSLATION; do sphinx-intl update -p build/gettext -l \$${TRANSLATION}; done < translations"
+	@echo "Done."
 
 clean-git:
 	@echo "Cleaning git content ..."

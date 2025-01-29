@@ -116,6 +116,20 @@ version = '^6.0'
 python = '>=3.6,<3.8'
 version = '^5.4.1'
 
+[tool.poetry.group.docs]
+[tool.poetry.group.docs.dependencies]
+[[tool.poetry.group.docs.dependencies.sphinx]]
+python = '^3.9'
+version = '^7.0'
+
+[[tool.poetry.group.docs.dependencies.sphinx-intl]]
+python = '^3.9'
+version = '^2.3.1'
+
+[[tool.poetry.group.docs.dependencies.sphinx_rtd_theme]]
+python = '^3.9'
+version = '^3.0.2'
+
 [[tool.poetry.include]]
 format = ['sdist', 'wheel']
 path = 'text_lint/locales/**/LC_MESSAGES/*.mo'

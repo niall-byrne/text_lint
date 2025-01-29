@@ -19,3 +19,9 @@ def mocked_locale(monkeypatch: pytest.MonkeyPatch) -> mock.Mock:
   instance = mock.Mock()
   monkeypatch.setattr(translations, "locale", instance)
   return instance
+
+
+@pytest.fixture
+def mocked_module() -> mock.Mock:
+  instance = mock.Mock()
+  return instance

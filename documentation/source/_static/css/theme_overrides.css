@@ -1,0 +1,12 @@
+.full-width-table {
+  width: 100%;
+}
+
+
+.tight-table td {
+  white-space: normal !important;
+}
+
+.wy-nav-content {
+    max-width: 100%;
+}

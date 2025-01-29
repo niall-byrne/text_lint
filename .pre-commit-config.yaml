@@ -123,6 +123,7 @@ repos:
         name: lint-makefile
         entry: poetry run ./testing_shim check -s schemas/makefile.yml
         files: "^(.+/)*Makefile$"
+        exclude: "documentation/Makefile"
         language: system
         pass_filenames: true
         stages: [commit]
