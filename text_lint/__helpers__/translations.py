@@ -1,12 +1,29 @@
 """Shared translation testing helpers."""
 
-from typing import Sequence
+from typing import Any, List, Sequence
 
 from text_lint.conftest import TRANSLATION_MARKER, mocked_t
 from text_lint.operations.assertions.bases.assertion_regex_base import (
     YAML_ASSERTION_REGEX_EXAMPLE_OPTIONS,
 )
 from text_lint.operations.bases.operation_base import YAML_EXAMPLE_SECTIONS
+from text_lint.utilities.translations import f as translation_f
+
+
+class TranslationsCapture:
+  """Extract interpolated translation strings."""
+
+  def __init__(self) -> None:
+    """Instantiate TranslationsCapture instances."""
+    self._expected_translations: List[str] = []
+
+  def assert_all_translated(self) -> None:
+    assert_all_translated(self._expected_translations)
+
+  # pylint: disable=invalid-name
+  def f(self, *args: Any, nl: int = 0, **kwargs: Any) -> str:
+    self._expected_translations.append(args[0])
+    return translation_f(*args, nl=nl, **kwargs)
 
 
 def as_translation(string: str) -> str:

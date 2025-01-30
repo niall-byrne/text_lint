@@ -4,15 +4,14 @@ from typing import Any, Dict, Tuple, Type
 
 import pytest
 from text_lint.__helpers__.translations import (
+    TranslationsCapture,
     as_translation,
-    assert_all_translated,
 )
 from text_lint.exceptions.operations import InvalidParameterValidation
 from text_lint.operations.bases.operation_base import OperationBase
 from text_lint.operations.mixins.parameter_validation import (
     ParameterValidationMixin,
 )
-from text_lint.utilities.translations import f as translation_f
 
 AliasOperationAttributes = Dict[str, Any]
 AliasParameterDefinitions = Dict[str, Dict[str, Any]]
@@ -31,22 +30,18 @@ def assert_is_invalid_parameter_validation(
     detail_t: Tuple[str, ...],
     operation_class: "Any",
 ) -> None:
-  expected_translation = []
+  captured = TranslationsCapture()
 
-  def f(*args: Any, nl: int = 0, **kwargs: Any) -> str:
-    expected_translation.append(args[0])
-    return translation_f(*args, nl=nl, **kwargs)
-
-  message = f(
+  message = captured.f(
       *description_t,
       nl=1,
   )
-  message += f(
+  message += captured.f(
       InvalidParameterValidation.msg_fmt_operation_class,
       operation_class.__name__,
       nl=1,
   )
-  message += f(
+  message += captured.f(
       InvalidParameterValidation.msg_fmt_detail,
       detail_t[0].format(*detail_t[1:]),
       nl=1,
@@ -54,7 +49,7 @@ def assert_is_invalid_parameter_validation(
 
   assert exc.value.__class__ == InvalidParameterValidation
   assert exc.value.args[0] == message
-  assert_all_translated(expected_translation)
+  captured.assert_all_translated()
 
 
 def assert_operation_attributes(

@@ -3,7 +3,7 @@
 from typing import Any, Protocol, Tuple, Type
 
 import pytest
-from text_lint.__helpers__.translations import assert_all_translated
+from text_lint.__helpers__.translations import TranslationsCapture
 from text_lint.exceptions.validators import (
     ValidationExceptionBase,
     ValidationFailure,
@@ -36,29 +36,25 @@ def validator_helper_factory(
       detail_t: Tuple[Any, ...],
       validator: "ValidatorBase",
   ) -> None:
-    expected_translations = []
+    captured = TranslationsCapture()
 
-    def f(*args: Any, nl: int = 0, **kwargs: Any) -> str:
-      expected_translations.append(args[0])
-      return translation_f(*args, nl=nl, **kwargs)
-
-    message = f(*description_t, nl=1)
-    message += f(
+    message = captured.f(*description_t, nl=1)
+    message += captured.f(
         ValidationFailure.msg_fmt_validation_operation,
         validator.__class__.__name__,
         nl=1,
     )
-    message += f(
+    message += captured.f(
         ValidationFailure.msg_fmt_validation_schema_operation_name,
         make_visible(validator.name),
         nl=1,
     )
-    message += f(
+    message += captured.f(
         ValidationFailure.msg_fmt_validation_detail,
         translation_f(*detail_t),
         nl=1,
     )
-    message += f(
+    message += captured.f(
         ValidationFailure.msg_fmt_validation_hint,
         validator.hint,
         nl=1,
@@ -66,7 +62,7 @@ def validator_helper_factory(
 
     assert exc.value.__class__ == validation_error
     assert exc.value.args[0] == message
-    assert_all_translated(expected_translations)
+    captured.assert_all_translated()
 
   return validator_helper_function
 
