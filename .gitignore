@@ -177,4 +177,5 @@ pyrightconfig.json
 .cicd-tools/boxes/*
 .cicd-tools/manifest.json
 .vale/*
+!.vale/sphinx
 !.vale/Vocab

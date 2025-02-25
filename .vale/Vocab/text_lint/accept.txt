@@ -1,4 +1,6 @@
 (L|l)ookups
+Byrne
+Niall
 text_lint
 to_json
 to_sorted

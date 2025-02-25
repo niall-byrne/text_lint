@@ -18,6 +18,9 @@
     },
     {
       "pattern": "^https://pypi.org/project/text-lint/"
+    },
+    {
+      "pattern": "^https://text-lint.readthedocs.io/"
     }
   ]
 }

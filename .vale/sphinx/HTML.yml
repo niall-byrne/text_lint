@@ -1,0 +1,12 @@
+---
+extends: spelling
+message: "Did you really mean '%s'?"
+level: error
+ignore:
+  - sphinx/ignore/html.txt
+  - cicd-tools/ignore/acronym.txt
+  - cicd-tools/ignore/general.txt
+  - cicd-tools/ignore/name.txt
+  - cicd-tools/ignore/pypi.txt
+  - cicd-tools/ignore/python.txt
+  - cicd-tools/ignore/security.txt

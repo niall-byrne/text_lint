@@ -22,8 +22,8 @@ Audit groups of text files to enforce a common schema:
 
 ## Documentation
 
-- Learn to use `text_lint` through a [real usage example](markdown/EXAMPLES.md).
-- See some [common recipes](markdown/RECIPES.md) for useful lookup expressions.
+- Learn to use `text_lint` through a [real usage example](https://text-lint.readthedocs.io/latest/usage/examples.html).
+- See some [common recipes](https://text-lint.readthedocs.io/latest/usage/recipes.html) for useful lookup expressions.
 
 ## CLI Installation
 
@@ -54,24 +54,12 @@ Older versions of Python require a workaround for [PyYAML](https://pypi.org/proj
     python -m text_lint
 ```
 
-There is comprehensive documentation in the CLI that is the best reference for how to use the various `Assertions`, `Lookups` and `Validations` that make up the `text_lint` ecosystem.
+There is help documentation in the CLI that is the best reference for how to use the various `Assertions`, `Lookups` and `Validations` that make up the `text_lint` ecosystem.
+
+Before diving into all that though, it might be helpful to look at a usage [example](https://text-lint.readthedocs.io/latest/usage/examples.html).
 
 ## Pre-Commit Integration
 
 Adding `text_lint` to your [pre-commit](https://pre-commit.com/index.html) tool chain is also fairly straightforward.
 
-Add a stanza to your `.pre-commit-config.yaml` file identifying the schema file to use and the types of files to use it on:
-
-```yaml
-  - repo: https://github.com/niall-byrne/text_lint
-    rev: v0.1.0
-    hooks:
-      - id: text_lint
-        name: "Enforce a text file schema"
-        args:
-          - "check"
-          - "-s"
-          - "path/to/my/schema"
-        files: "^.+\\.txt$"
-        stages: [pre-commit]
-```
+An example can be found in the [documentation](https://text-lint.readthedocs.io/latest/usage/getting_started.html#pre_commit_integration).

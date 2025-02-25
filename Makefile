@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 
-.PHONY: help clean docs fmt lint security spelling test types build-docs build-docs-translate clean-git clean-pycache coverage format-python format-shell format-toml lint-make lint-markdown lint-python lint-shell lint-workflows lint-yaml security-audit security-leaks spelling-add spelling-markdown spelling-sync test-python translations-add translations-check translations-compile translations-update types-python
+.PHONY: help clean docs fmt lint security spelling test types build-docs build-docs-translate clean-git clean-pycache coverage format-python format-shell format-toml lint-make lint-markdown lint-python lint-shell lint-workflows lint-yaml security-audit security-leaks spelling-add spelling-markdown spelling-sphinx-html spelling-sync test-python translations-add translations-check translations-compile translations-update types-python
 
 help:
 	@echo "Please use 'make <target>' where <target> is one of:"
@@ -22,6 +22,7 @@ help:
 	@echo "  security-leaks         to check for credential leaks"
 	@echo "  spelling-add           to add a regex to the ignore patterns"
 	@echo "  spelling-markdown      to spellcheck markdown files"
+	@echo "  spelling-sphinx-html   to spellcheck built documentation"
 	@echo "  spelling-sync          to synchronize vale packages"
 	@echo "  test-python            to test the Python scripts"
 	@echo "  translations-add       to add a new language"
@@ -35,7 +36,7 @@ docs: build-docs
 fmt: format-shell format-toml format-python
 lint: lint-make lint-markdown lint-python lint-shell lint-workflows lint-yaml
 security: security-audit security-leaks
-spelling: spelling-markdown
+spelling: spelling-markdown build-docs spelling-sphinx-html
 test: test-python
 types: types-python
 
@@ -135,6 +136,11 @@ spelling-add:
 spelling-markdown:
 	@echo "Checking spelling ..."
 	@poetry run bash -c "pre-commit run spelling-markdown --all-files --verbose"
+	@echo "Done."
+
+spelling-sphinx-html:
+	@echo "Checking sphinx html spelling ..."
+	@poetry run bash -c "pre-commit run --hook-stage manual spelling-sphinx-html --all-files --verbose"
 	@echo "Done."
 
 spelling-sync:

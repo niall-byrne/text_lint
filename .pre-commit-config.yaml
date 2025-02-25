@@ -76,6 +76,7 @@ repos:
       - id: spelling-markdown
       - id: spelling-vale-sync
       - id: spelling-vale-vocab
+        files: "^.vale/Vocab/.+/(accept|reject)\\.txt$|^.vale/sphinx/ignore/\\.txt$"
   - repo: https://github.com/commitizen-tools/commitizen
     rev: v3.2.2
     hooks:
@@ -127,3 +128,11 @@ repos:
         language: system
         pass_filenames: true
         stages: [commit]
+      - id: spelling-sphinx-html
+        name: spelling-sphinx-html
+        description: "Spellcheck the generated documentation files."
+        entry: docker run -v .:/mnt --workdir /mnt ghcr.io/cicd-tools-org/cicd-tools:main vale --glob=**/*.html documentation/build2/html
+        files: "^documentation/source/.+\\.rst|^.vale/Vocab/\\.+$"
+        language: system
+        pass_filenames: false
+        stages: [manual]
