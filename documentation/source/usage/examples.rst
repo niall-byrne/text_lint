@@ -146,7 +146,7 @@ Static Values
 
 Other lookup expressions contain text prefixed with ``~`` to indicate they are literal static values.
 
-For example a lookup expression containing ``~help`` would be interpreted as simply the string ‘help’, and NOT as reference to a ``save id`` or lookup operation.
+For example a lookup expression containing ``~help`` would be interpreted as just the string ‘help’, and NOT as reference to a ``save id`` or lookup operation.
 
 Index Lookups
 ^^^^^^^^^^^^^

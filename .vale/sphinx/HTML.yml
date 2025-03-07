@@ -3,7 +3,10 @@ extends: spelling
 message: "Did you really mean '%s'?"
 level: error
 ignore:
-  - sphinx/ignore/html.txt
+  - sphinx/ignore/args.txt
+  - sphinx/ignore/generic.txt
+  - sphinx/ignore/project.txt
+  - sphinx/ignore/types.txt
   - cicd-tools/ignore/acronym.txt
   - cicd-tools/ignore/general.txt
   - cicd-tools/ignore/name.txt

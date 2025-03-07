@@ -1,0 +1,10 @@
+Typehint
+args
+boolean
+iter
+kwargs
+len
+misconfiguration
+misconfigured
+regexes
+typehint

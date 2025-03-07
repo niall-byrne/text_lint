@@ -1,56 +1,46 @@
 #!/usr/bin/make -f
 
-.PHONY: help clean docs fmt lint security spelling test types build-docs build-docs-translate clean-git clean-pycache coverage format-python format-shell format-toml lint-make lint-markdown lint-python lint-shell lint-workflows lint-yaml security-audit security-leaks spelling-add spelling-markdown spelling-sphinx-html spelling-sync test-python translations-add translations-check translations-compile translations-update types-python
+.PHONY: help clean docs fmt lint security spelling test types clean-git clean-pycache coverage docs-build docs-translations-add docs-translations-check docs-translations-update format-python format-shell format-toml lint-make lint-markdown lint-python lint-shell lint-workflows lint-yaml security-audit security-leaks spelling-add spelling-markdown spelling-sphinx-html spelling-sync test-python translations-add translations-check translations-compile translations-update types-python
 
 help:
 	@echo "Please use 'make <target>' where <target> is one of:"
-	@echo "  build-docs             to build the Sphinx documentation"
-	@echo "  build-docs-translate   to build the Sphinx translations"
-	@echo "  clean-git              to run git clean"
-	@echo "  clean-pycache          to clean Python cache files"
-	@echo "  coverage               to generate a code coverage report"
-	@echo "  format-python          to format Python scripts"
-	@echo "  format-shell           to format shell scripts"
-	@echo "  format-toml            to format TOML files"
-	@echo "  lint-make              to lint Makefiles"
-	@echo "  lint-markdown          to lint Markdown files"
-	@echo "  lint-python            to lint Python scripts"
-	@echo "  lint-shell             to lint shell scripts"
-	@echo "  lint-workflows         to lint GitHub workflows"
-	@echo "  lint-yaml              to lint YAML files"
-	@echo "  security-audit         to scan for dependency vulnerabilities"
-	@echo "  security-leaks         to check for credential leaks"
-	@echo "  spelling-add           to add a regex to the ignore patterns"
-	@echo "  spelling-markdown      to spellcheck markdown files"
-	@echo "  spelling-sphinx-html   to spellcheck built documentation"
-	@echo "  spelling-sync          to synchronize vale packages"
-	@echo "  test-python            to test the Python scripts"
-	@echo "  translations-add       to add a new language"
-	@echo "  translations-check     to check for missing entries"
-	@echo "  translations-compile   to compile '.mo' files for distribution"
-	@echo "  translations-update	to regenerate '.pot' files from code"
-	@echo "  types-python           to check the Python typing"
+	@echo "  clean-git                  to run git clean"
+	@echo "  clean-pycache              to clean Python cache files"
+	@echo "  coverage                   to generate a code coverage report"
+	@echo "  docs-build                 to build the Sphinx documentation"
+	@echo "  docs-translations-add      to add a new language"
+	@echo "  docs-translations-check    to check for missing Sphinx translations"
+	@echo "  docs-translations-update   to update the Sphinx translations"
+	@echo "  format-python              to format Python scripts"
+	@echo "  format-shell               to format shell scripts"
+	@echo "  format-toml                to format TOML files"
+	@echo "  lint-make                  to lint Makefiles"
+	@echo "  lint-markdown              to lint Markdown files"
+	@echo "  lint-python                to lint Python scripts"
+	@echo "  lint-shell                 to lint shell scripts"
+	@echo "  lint-workflows             to lint GitHub workflows"
+	@echo "  lint-yaml                  to lint YAML files"
+	@echo "  security-audit             to scan for dependency vulnerabilities"
+	@echo "  security-leaks             to check for credential leaks"
+	@echo "  spelling-add               to add a regex to the ignore patterns"
+	@echo "  spelling-markdown          to spellcheck markdown files"
+	@echo "  spelling-sphinx-html       to spellcheck HTML documentation"
+	@echo "  spelling-sync              to synchronize vale packages"
+	@echo "  test-python                to test the Python scripts"
+	@echo "  translations-add           to add a new language"
+	@echo "  translations-check         to check for missing entries"
+	@echo "  translations-compile       to compile '.mo' files for distribution"
+	@echo "  translations-update        to regenerate '.pot' files from code"
+	@echo "  types-python               to check the Python typing"
 
 clean: clean-git clean-pycache
-docs: build-docs
+docs: docs-build
 fmt: format-shell format-toml format-python
 lint: lint-make lint-markdown lint-python lint-shell lint-workflows lint-yaml
 security: security-audit security-leaks
-spelling: spelling-markdown build-docs spelling-sphinx-html
+spelling: spelling-markdown spelling-sphinx-html
 test: test-python
 types: types-python
-
-build-docs:
-	@echo "Building documentation ..."
-	@rm -rf "documentation/source/codebase/text_lint/_autosummary"
-	@poetry run bash -c "cd documentation && make clean && make html"
-	@echo "Done."
-
-build-docs-translate:
-	@echo "Building documentation translations ..."
-	@poetry run bash -c "cd documentation && make gettext"
-	@poetry run bash -c "cd documentation && while IFS= read -r TRANSLATION; do sphinx-intl update -p build/gettext -l \$${TRANSLATION}; done < translations"
-	@echo "Done."
 
 clean-git:
 	@echo "Cleaning git content ..."
@@ -65,6 +55,25 @@ clean-pycache:
 coverage:
 	@echo "Running coverage ..."
 	@poetry run bash -c "coverage run -m pytest text_lint && coverage html || (coverage report; exit 127)"
+	@echo "Done."
+
+docs-build:
+	@echo "Building documentation ..."
+	@poetry run bash -c "pre-commit run 10-sphinx-build-html --verbose --all-files"
+	@echo "Done."
+
+docs-translations-add:
+	@echo "Adding a new language ..."
+	@poetry run bash -c 'export SPHINX_TRANSLATIONS_LANGUAGES; read -rp "Enter 2 character language code: " SPHINX_TRANSLATIONS_LANGUAGES && poetry run pre-commit run --hook-stage=manual sphinx-translations-add --all-files --verbose'
+
+docs-translations-check:
+	@echo "Building documentation translations ..."
+	@poetry run bash -c "pre-commit run sphinx-translations-missing --verbose --all-files"
+	@echo "Done."
+
+docs-translations-update:
+	@echo "Building documentation translations ..."
+	@poetry run bash -c "pre-commit run sphinx-translations-update --verbose --all-files"
 	@echo "Done."
 
 format-python:
@@ -130,8 +139,8 @@ security-leaks:
 
 spelling-add:
 	@echo "Adding word ..."
-	@echo "${MAKE_ARGS}" >> ".vale/Vocab/${PROJECT_NAME}/accept.txt"
-	@sort -u -o ".vale/Vocab/${PROJECT_NAME}/accept.txt" ".vale/Vocab/${PROJECT_NAME}/accept.txt"
+	@read -rp "Enter New Ignore Pattern > " CICD_SPELLING_IGNORE_PATTERN && echo "$${CICD_SPELLING_IGNORE_PATTERN}" >> ".vale/Vocab/text_lint/accept.txt"
+	@poetry run bash -c "pre-commit run spelling-vale-vocab --all-files --verbose"
 
 spelling-markdown:
 	@echo "Checking spelling ..."
@@ -139,8 +148,8 @@ spelling-markdown:
 	@echo "Done."
 
 spelling-sphinx-html:
-	@echo "Checking sphinx html spelling ..."
-	@poetry run bash -c "pre-commit run --hook-stage manual spelling-sphinx-html --all-files --verbose"
+	@echo "Checking Sphinx HTML spelling ..."
+	@poetry run bash -c "pre-commit run spelling-sphinx-html --all-files --verbose"
 	@echo "Done."
 
 spelling-sync:
