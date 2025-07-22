@@ -131,12 +131,13 @@ jobs:
       fail-fast: true
       matrix:
         install:
-          - version: "3.6"
-            platform: "ubuntu-20.04"
-            constraint: true
-          - version: "3.7"
-            platform: "ubuntu-20.04"
-            constraint: true
+          # TODO: these ubuntu versions are deprecated, perhaps I can use pyenv or build myself to verify?
+          #- version: "3.6"
+          #  platform: "ubuntu-20.04"
+          #  constraint: true
+          #- version: "3.7"
+          #  platform: "ubuntu-20.04"
+          #  constraint: true
           - version: "3.8"
             platform: "ubuntu-latest"
             constraint: false
